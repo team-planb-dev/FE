@@ -43,13 +43,26 @@
   padding: 6px 17.5px;
 }
 
-/* ---- 오류 상태 (237:5711 / 237:5713) ----
-   두 인풋 모두 1.5px Status/Negative_solid.
-   focus-within 보다 뒤에 두어 포커스보다 우선하게 합니다. */
-.input--error,
-.input--error:focus-within {
-  box-shadow: inset 0 0 0 1.5px var(--status-negative-solid);
+/* ---- 상태 테두리 (237:5711 / 237:5909 / 237:5923) ----
+   negative · positive 모두 1.5px 이며 focus 보다 우선합니다.
+   border: none 이 필요한 이유 — Input_password 는 기본 테두리가 실제 1px border 라
+   box-shadow 만 얹으면 바깥에 회색 1px, 안쪽에 상태색 1.5px 이 겹쳐 보입니다. */
+.input--negative,
+.input--negative:focus-within,
+.input--positive,
+.input--positive:focus-within {
+  border: none;
   padding: 6px 17.5px;
+}
+
+.input--negative,
+.input--negative:focus-within {
+  box-shadow: inset 0 0 0 1.5px var(--status-negative-solid);
+}
+
+.input--positive,
+.input--positive:focus-within {
+  box-shadow: inset 0 0 0 1.5px var(--status-positive);
 }
 
 /* ---- slot (204:1613 / 148:790) — h24, 남는 폭 전부 ---- */

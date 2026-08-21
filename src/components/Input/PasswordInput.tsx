@@ -12,8 +12,8 @@ type PasswordInputProps = {
   placeholder?: string;
   autoComplete?: string;
   clearable?: boolean;
-  /** 오류 상태 — Figma 237:5711 / 237:5713 */
-  error?: boolean;
+  /** 상태 테두리 — negative: 오류(237:5713) / positive: 사용 가능 */
+  status?: "negative" | "positive";
 };
 
 /**
@@ -32,7 +32,7 @@ export default function PasswordInput({
   placeholder,
   autoComplete = "current-password",
   clearable = true,
-  error = false,
+  status,
 }: PasswordInputProps) {
   const [visible, setVisible] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -40,7 +40,7 @@ export default function PasswordInput({
   const showClear = clearable && focused && value.length > 0;
 
   return (
-    <div className={`input input--password${error ? " input--error" : ""}`}>
+    <div className={`input input--password${status ? ` input--${status}` : ""}`}>
       <input
         id={id}
         className="input__control"

@@ -1,7 +1,7 @@
-import Signup from "./pages/Signup/Signup";
+import Terms from "./pages/Terms/Terms";
 
 function App() {
-  return <Signup />;
+  return <Terms />;
 }
 
 export default App;

@@ -5,6 +5,7 @@ import "./Terms.css";
 import Header from "../../components/Header/Header";
 import Checkbox from "../../components/Checkbox/Checkbox";
 import Btn from "../../components/Btn/Btn";
+import TermsDetail from "./TermsDetail";
 
 /**
  * Figma: [S3-6] 이용약관 동의 (237:5772 미체크 / 237:5794 전체 체크)
@@ -29,18 +30,25 @@ const TERMS: readonly Term[] = [
 type TermsProps = {
   onBack?: () => void;
   onConfirm?: () => void;
-  /** 전체보기 진입 — Figma [3-6-1] 237:6043 / [3-6-2] 237:6047 */
-  onOpenDetail?: (key: TermKey) => void;
 };
 
-export default function Terms({ onBack, onConfirm, onOpenDetail }: TermsProps) {
+export default function Terms({ onBack, onConfirm }: TermsProps) {
   const [agreed, setAgreed] = useState<Record<TermKey, boolean>>({
     age: false,
     service: false,
     privacy: false,
   });
 
+  /**
+   * 전체보기로 열린 항목 — Figma [3-6-1] 237:6043 / [3-6-2] 237:6047
+   * 라우터가 없어 같은 화면 위에 덮어 띄웁니다. 라우팅이 들어오면 별도 경로로 분리하세요.
+   */
+  const [openedTerm, setOpenedTerm] = useState<Term | null>(null);
+
   const allAgreed = TERMS.every((term) => agreed[term.key]);
+
+  const setAgreedFor = (key: TermKey, value: boolean) =>
+    setAgreed((prev) => ({ ...prev, [key]: value }));
 
   return (
     <div className="terms-page">
@@ -61,9 +69,7 @@ export default function Terms({ onBack, onConfirm, onOpenDetail }: TermsProps) {
                 <Checkbox
                   id={`terms-${term.key}`}
                   checked={agreed[term.key]}
-                  onChange={(checked) =>
-                    setAgreed((prev) => ({ ...prev, [term.key]: checked }))
-                  }
+                  onChange={(checked) => setAgreedFor(term.key, checked)}
                 />
                 <label
                   className="terms-page__label"
@@ -77,7 +83,7 @@ export default function Terms({ onBack, onConfirm, onOpenDetail }: TermsProps) {
                 <button
                   type="button"
                   className="terms-page__detail"
-                  onClick={() => onOpenDetail?.(term.key)}
+                  onClick={() => setOpenedTerm(term)}
                 >
                   전체보기
                 </button>
@@ -95,6 +101,18 @@ export default function Terms({ onBack, onConfirm, onOpenDetail }: TermsProps) {
       >
         확인
       </Btn>
+
+      {/* 전체보기 — 동의하기를 누르면 해당 항목이 체크되고 닫힙니다 */}
+      {openedTerm && (
+        <TermsDetail
+          title={openedTerm.label}
+          onClose={() => setOpenedTerm(null)}
+          onAgree={() => {
+            setAgreedFor(openedTerm.key, true);
+            setOpenedTerm(null);
+          }}
+        />
+      )}
     </div>
   );
 }

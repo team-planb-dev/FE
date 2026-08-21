@@ -6,7 +6,10 @@
    ========================================================= */
 
 .terms-detail {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
   width: 390px;
   height: 844px;
   background: var(--neutral-0);

@@ -1,7 +1,7 @@
-import Terms from "./pages/Terms/Terms";
+import SignupComplete from "./pages/Signup/SignupComplete";
 
 function App() {
-  return <Terms />;
+  return <SignupComplete nickname="그랜드캐니언" />;
 }
 
 export default App;

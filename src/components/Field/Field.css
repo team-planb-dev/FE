@@ -1,0 +1,31 @@
+/* Figma: Frame 132 (237:5634 / 237:5636) — 342×114 */
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 0;
+  flex-shrink: 0;
+}
+
+/* Figma: 88:579 — padding 10/0, 높이 36 */
+.field__label-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
+  flex-shrink: 0;
+}
+
+/* Figma: 73:639 — 16px Medium / 1 / -0.16px / neutral-900 */
+.field__label {
+  flex-shrink: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.16px;
+  color: var(--neutral-900);
+  white-space: nowrap;
+}

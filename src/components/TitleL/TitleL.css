@@ -1,0 +1,20 @@
+/* Figma: title_L (187:1401) — w390, padding 12/24 */
+.title-l {
+  display: flex;
+  align-items: center;
+  width: 390px;
+  padding: 12px 24px;
+}
+
+/* Figma: 187:1397 — 22px SemiBold / 1.4 / -0.22px / neutral-900 */
+.title-l__text {
+  margin: 0;
+  flex-shrink: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.22px;
+  color: var(--neutral-900);
+  word-break: break-word;
+}

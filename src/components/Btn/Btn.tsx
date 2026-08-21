@@ -16,6 +16,8 @@ type BtnProps = {
   onClick?: () => void;
   type?: "button" | "submit";
   disabled?: boolean;
+  /** 페이지에서 폭을 잡을 때 쓰는 추가 클래스 */
+  className?: string;
 };
 
 /** Figma: Btn — h54, r10, 14px SemiBold / 1.3 / -0.14px */
@@ -25,11 +27,12 @@ export default function Btn({
   onClick,
   type = "button",
   disabled,
+  className,
 }: BtnProps) {
   return (
     <button
       type={type}
-      className={`btn btn--${variant}`}
+      className={`btn btn--${variant}${className ? ` ${className}` : ""}`}
       onClick={onClick}
       disabled={disabled}
     >

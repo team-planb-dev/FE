@@ -1,0 +1,33 @@
+/* Figma: bottom (237:5889) — 390×120, rgba(255,255,255,0) → #FFFFFF 세로 그라데이션 */
+.bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 390px;
+  height: 120px;
+  overflow: hidden;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    var(--neutral-0) 100%
+  );
+  pointer-events: none;
+}
+
+/* Figma: frame (206:3044) — 중앙 정렬, top 46, w342 */
+.bottom-bar__inner {
+  position: absolute;
+  top: 46px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  width: 342px;
+  pointer-events: auto;
+}
+
+/* 버튼은 남는 폭 전부 — Figma flex-[1_0_0] */
+.bottom-bar__inner > * {
+  flex: 1 0 0;
+  min-width: 0;
+}

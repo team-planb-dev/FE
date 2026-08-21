@@ -13,8 +13,12 @@ type TextInputProps = {
   autoComplete?: string;
   /** 포커스 상태에서 값이 있을 때 오른쪽에 지우기(x) 버튼 노출 — Figma 237:5649 */
   clearable?: boolean;
-  /** 오류 상태 — Figma 237:5711 / 237:5713 */
-  error?: boolean;
+  /** 상태 테두리 — negative: 오류(237:5711, 237:5909) / positive: 사용 가능(237:5923) */
+  status?: "negative" | "positive";
+  /** 인풋 왼쪽 아이콘 (20x20) — Figma Input 206:3496 의 돋보기 */
+  leadingIcon?: string;
+  /** 페이지에서 폭을 잡을 때 쓰는 추가 클래스 */
+  className?: string;
 };
 
 /** Figma: Input (88:580) — h54, 테두리 1.5px, focus 시 Brand/Solid */
@@ -26,7 +30,9 @@ export default function TextInput({
   type = "text",
   autoComplete,
   clearable = true,
-  error = false,
+  status,
+  leadingIcon,
+  className,
 }: TextInputProps) {
   const [focused, setFocused] = useState(false);
 
@@ -35,7 +41,14 @@ export default function TextInput({
   const showClear = clearable && focused && value.length > 0;
 
   return (
-    <div className={`input input--text${error ? " input--error" : ""}`}>
+    <div
+      className={`input input--text${status ? ` input--${status}` : ""}${
+        className ? ` ${className}` : ""
+      }`}
+    >
+      {leadingIcon && (
+        <img className="input__icon" src={leadingIcon} alt="" aria-hidden="true" />
+      )}
       <input
         id={id}
         className="input__control"

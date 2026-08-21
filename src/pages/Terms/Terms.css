@@ -1,0 +1,135 @@
+/* =========================================================
+   [S3-6] 이용약관 동의  —  Figma 237:5772 / 237:5794
+   프레임 390 × 844
+   ⚠ 본문 블록은 x24 w342 인데 확인 버튼만 x20 w350 입니다.
+     한 화면 안에서 좌우 여백이 24 / 20 으로 갈리지만 원본 그대로 재현했습니다.
+   ========================================================= */
+
+.terms-page {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  background: var(--neutral-0);
+  overflow: hidden;
+}
+
+/* Header (237:5773) — x0 y0 */
+.terms-page__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* 237:5792 — x24 y74, 22px SemiBold / 1.4 / -0.22px
+   ⚠ 이 화면은 title_L 컴포넌트를 쓰지 않고 텍스트를 직접 배치했습니다.
+     (회원가입 폼은 title_L 을 써서 y54 + padding 12 구조) */
+.terms-page__title {
+  position: absolute;
+  top: 74px;
+  left: 24px;
+  margin: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.22px;
+  color: var(--neutral-900);
+  white-space: nowrap;
+}
+
+/* Frame 138 (237:5774) — x24 y156, 342×156, gap 8 */
+.terms-page__body {
+  position: absolute;
+  top: 156px;
+  left: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 342px;
+}
+
+/* Frame 130 (237:5775) — padding 10/0, 높이 36, 16px Medium */
+.terms-page__section-label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
+  flex-shrink: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.16px;
+  color: var(--neutral-900);
+  white-space: nowrap;
+}
+
+/* Frame 154 (237:5776) — gap 20 */
+.terms-page__list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex-shrink: 0;
+}
+
+/* 각 행 — 높이 24 (텍스트 16px × 1.5), 체크박스는 중앙 정렬로 y+2 */
+.terms-page__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+/* 237:5782 — 체크박스 + 라벨, gap 10 */
+.terms-page__check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* 237:5779 — 16px Regular / 1.5 / -0.24px / neutral-600 */
+.terms-page__label {
+  font-family: Pretendard, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.24px;
+  color: var(--neutral-600);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* 237:5785 — 같은 타이포에 밑줄 */
+.terms-page__detail {
+  padding: 0;
+  border: none;
+  background: transparent;
+  flex-shrink: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.24px;
+  color: var(--neutral-600);
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+
+/* Btn (237:5793) — x20 y756, 350×54 */
+.btn.terms-page__confirm {
+  position: absolute;
+  top: 756px;
+  left: 20px;
+  width: 350px;
+}

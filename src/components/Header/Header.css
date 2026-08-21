@@ -1,0 +1,27 @@
+/* Figma: Header (19:831) — 390×54 */
+.header {
+  display: flex;
+  align-items: center;
+  width: 390px;
+  height: 54px;
+  padding: 15px 20px;
+  background: var(--neutral-0);
+  overflow: hidden;
+}
+
+/* icn_empty_s / Variant2 (16:34) — 20×20 */
+.header__back {
+  display: block;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.header__back-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+}

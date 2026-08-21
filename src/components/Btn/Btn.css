@@ -1,0 +1,40 @@
+/* Figma: Btn — h54, r10, padding 15, 14px SemiBold / 1.3 / -0.14px */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 54px;
+  padding: 15px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  overflow: hidden;
+  font-family: Pretendard, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.14px;
+  font-feature-settings: "dlig" 1, "lnum" 1, "pnum" 1;
+  white-space: nowrap;
+}
+
+/* Btn / Variant1 (18:331) — 활성 CTA */
+.btn--primary {
+  border: none;
+  background: var(--brand-solid);
+  color: var(--neutral-0);
+}
+
+/* Btn / Variant2 (73:844) */
+.btn--muted {
+  border: none;
+  background: var(--neutral-100);
+  color: var(--neutral-400);
+}
+
+/* Btn / Default (73:685) */
+.btn--outline {
+  border: 1px solid var(--neutral-200);
+  background: var(--neutral-0);
+  color: var(--neutral-950);
+}

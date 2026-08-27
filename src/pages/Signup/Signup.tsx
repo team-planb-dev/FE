@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import "./Signup.css";
 
@@ -12,6 +13,8 @@ import Btn from "../../components/Btn/Btn";
 import BottomBar from "../../components/BottomBar/BottomBar";
 
 import { isValidEmail, isValidPassword } from "../../utils/validation";
+import { useSignup } from "./signupContext";
+import { PATHS } from "../../routes/paths";
 
 import searchIcon from "../../assets/icn_search.svg";
 
@@ -60,12 +63,16 @@ const CHECK_MESSAGE = {
 const CHECK_TONE = { taken: "negative", available: "positive" } as const;
 
 export default function Signup() {
-  const [nickname, setNickname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
+  const navigate = useNavigate();
+  const { form, setField } = useSignup();
+  const { nickname, email, password, passwordConfirm, question, answer } = form;
+
+  const setNickname = (v: string) => setField("nickname", v);
+  const setEmail = (v: string) => setField("email", v);
+  const setPassword = (v: string) => setField("password", v);
+  const setPasswordConfirm = (v: string) => setField("passwordConfirm", v);
+  const setQuestion = (v: string) => setField("question", v);
+  const setAnswer = (v: string) => setField("answer", v);
 
   const [nicknameCheck, setNicknameCheck] = useState<CheckResult>("idle");
   const [emailCheck, setEmailCheck] = useState<CheckResult>("idle");
@@ -92,7 +99,10 @@ export default function Signup() {
 
   return (
     <div className="signup-page">
-      <Header className="signup-page__header" />
+      <Header
+        className="signup-page__header"
+        onBack={() => navigate(PATHS.login)}
+      />
 
       <div className="signup-page__scroll">
         <div className="signup-page__content">
@@ -252,7 +262,12 @@ export default function Signup() {
 
       {/* bottom (237:5889) — 390×120 하단 고정 */}
       <BottomBar>
-        <Btn variant={canSubmit ? "primary" : "muted"}>가입하기</Btn>
+        <Btn
+          variant={canSubmit ? "primary" : "muted"}
+          onClick={() => canSubmit && navigate(PATHS.signupTerms)}
+        >
+          가입하기
+        </Btn>
       </BottomBar>
     </div>
   );

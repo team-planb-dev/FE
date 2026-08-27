@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import "./Login.css";
 
@@ -11,6 +12,7 @@ import Btn from "../../components/Btn/Btn";
 import Snackbar from "../../components/Snackbar/Snackbar";
 
 import { PASSWORD_MIN_LENGTH } from "../../utils/validation";
+import { PATHS } from "../../routes/paths";
 
 /**
  * Figma: [S2] 로그인 — 한 화면의 상태들
@@ -51,6 +53,7 @@ const LOGIN_ERROR_MESSAGE: Record<LoginErrorCode, string> = {
 };
 
 export default function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorCode, setErrorCode] = useState<LoginErrorCode | null>(null);
@@ -118,7 +121,9 @@ export default function Login() {
           <Btn variant={canSubmit ? "primary" : "muted"} onClick={handleSubmit}>
             로그인
           </Btn>
-          <Btn variant="outline">이메일로 회원가입</Btn>
+          <Btn variant="outline" onClick={() => navigate(PATHS.signup)}>
+            이메일로 회원가입
+          </Btn>
         </div>
 
         {/* Frame 1707482516 (237:5640) — 176×48, gap 8 */}

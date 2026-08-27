@@ -4,6 +4,8 @@ import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import SignupComplete from "./pages/Signup/SignupComplete";
 import Terms from "./pages/Terms/Terms";
+import FindEmail from "./pages/FindEmail/FindEmail";
+import FindEmailResult from "./pages/FindEmail/FindEmailResult";
 import TermsDetail from "./pages/Terms/TermsDetail";
 
 import SignupProvider from "./pages/Signup/SignupProvider";
@@ -30,6 +32,9 @@ function App() {
           <Route path={PATHS.signupTermsDetail} element={<TermsDetail />} />
           <Route path={PATHS.signupComplete} element={<SignupComplete />} />
         </Route>
+
+        <Route path={PATHS.findEmail} element={<FindEmail />} />
+        <Route path={PATHS.findEmailResult} element={<FindEmailResult />} />
 
         <Route path="*" element={<Navigate to={PATHS.login} replace />} />
       </Routes>

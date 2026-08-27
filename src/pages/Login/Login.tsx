@@ -128,7 +128,11 @@ export default function Login() {
 
         {/* Frame 1707482516 (237:5640) — 176×48, gap 8 */}
         <div className="login-page__links">
-          <button type="button" className="login-page__link">
+          <button
+            type="button"
+            className="login-page__link"
+            onClick={() => navigate(PATHS.findEmail)}
+          >
             이메일 찾기
           </button>
           <button type="button" className="login-page__link">

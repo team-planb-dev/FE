@@ -6,6 +6,8 @@ export const PATHS = {
   /** :termKey 는 SignupContext 의 TermKey */
   signupTermsDetail: "/signup/terms/:termKey",
   signupComplete: "/signup/complete",
+  findEmail: "/find-email",
+  findEmailResult: "/find-email/result",
 } as const;
 
 export const termsDetailPath = (termKey: string) => `/signup/terms/${termKey}`;

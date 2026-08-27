@@ -14,6 +14,7 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 
 import { isValidEmail, isValidPassword } from "../../utils/validation";
 import { useSignup } from "./signupContext";
+import { RECOVERY_QUESTIONS } from "../../constants/recoveryQuestions";
 import { PATHS } from "../../routes/paths";
 
 import searchIcon from "../../assets/icn_search.svg";
@@ -27,18 +28,6 @@ import searchIcon from "../../assets/icn_search.svg";
  *  4. 필수 필드 미입력 시 버튼 disabled
  *  5. 계정 복구 질문 8종
  */
-
-/** 디자인 노트 5 — 계정 복구 질문 목록 */
-const RECOVERY_QUESTIONS = [
-  "내가 어릴 때 가장 좋아했던 선생님의 성함은?",
-  "처음 키웠던 반려동물의 이름은?",
-  "어린 시절 가장 좋아했던 책의 제목은?",
-  "처음 혼자 여행한 장소는?",
-  "내가 가장 좋아했던 학창시절 별명은?",
-  "어릴 때 가장 자주 먹었던 간식은?",
-  "가장 기억에 남는 어린 시절 장소는?",
-  "처음 배운 악기나 운동은?",
-] as const;
 
 const PASSWORD_HINT = "영문, 숫자, 특문 중 2개 조합 8자 이상";
 

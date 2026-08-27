@@ -9,11 +9,12 @@ type HeaderProps = {
   onBack?: () => void;
   backLabel?: string;
   /**
-   * 왼쪽 아이콘 — Figma Header 변형
-   *  "back"  : 19:831  (icn_empty_s / Variant2, ←)
-   *  "close" : 87:3765 (icn_empty_s / Variant3, ×)
+   * Figma Header 변형
+   *  "back"  : 19:831   (icn_empty_s / Variant2, ←)
+   *  "close" : 87:3765  (icn_empty_s / Variant3, ×)
+   *  "logo"  : 148:1834 (Variant4, 가운데 LOGO 텍스트 · 뒤로가기 없음)
    */
-  variant?: "back" | "close";
+  variant?: "back" | "close" | "logo";
 };
 
 /** Figma: Header — 390×54, padding 15/20 */
@@ -23,11 +24,24 @@ export default function Header({
   backLabel,
   variant = "back",
 }: HeaderProps) {
+  const rootClass = `header header--${variant}${className ? ` ${className}` : ""}`;
+
+  // Variant4 (148:1834) — 로고만 가운데 놓입니다.
+  // TODO(asset): 로고 이미지가 나오면 이 텍스트를 <img>로 교체하세요.
+  if (variant === "logo") {
+    return (
+      <header className={rootClass}>
+        <span className="header__logo">LOGO</span>
+      </header>
+    );
+  }
+
   const isClose = variant === "close";
   const icon = isClose ? closeIcon : backIcon;
   const label = backLabel ?? (isClose ? "닫기" : "뒤로 가기");
+
   return (
-    <header className={className ? `header ${className}` : "header"}>
+    <header className={rootClass}>
       <button
         type="button"
         className="header__back"

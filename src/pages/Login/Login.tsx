@@ -135,7 +135,11 @@ export default function Login() {
           >
             이메일 찾기
           </button>
-          <button type="button" className="login-page__link">
+          <button
+            type="button"
+            className="login-page__link"
+            onClick={() => navigate(PATHS.findPassword)}
+          >
             비밀번호 찾기
           </button>
         </div>

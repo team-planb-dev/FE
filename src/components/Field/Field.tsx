@@ -23,6 +23,8 @@ type FieldProps = {
   /** subtext 색 — negative #FA5852 (237:5909) / positive #3A9675 (237:5923) */
   subtextTone?: "default" | "negative" | "positive";
   spacing?: FieldSpacing;
+  /** 페이지에서 폭을 잡을 때 쓰는 추가 클래스 */
+  className?: string;
   children: ReactNode;
 };
 
@@ -34,10 +36,13 @@ export default function Field({
   reserveSubtext = false,
   subtextTone = "default",
   spacing = "default",
+  className,
   children,
 }: FieldProps) {
   return (
-    <div className={`field field--${spacing}`}>
+    <div
+      className={`field field--${spacing}${className ? ` ${className}` : ""}`}
+    >
       <div className="field__label-row">
         <label className="field__label" htmlFor={htmlFor}>
           {label}

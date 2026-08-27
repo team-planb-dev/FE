@@ -1,0 +1,126 @@
+/* =========================================================
+   Bottom Navigation — Figma 148:1750 / 390×90
+   화면 하단 고정. 프레임에서는 y754 (844 - 90) 입니다.
+   ========================================================= */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 390px;
+  height: 90px;
+  /* 위쪽 22px은 원형 버튼만 떠 있는 영역이라 클릭이 통과해야 합니다 */
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Frame 17 (148:1750) — y22, 390×68 */
+.bottom-nav__tabs {
+  position: absolute;
+  top: 22px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  width: 390px;
+  height: 68px;
+  margin: 0;
+  padding: 0 11px;
+  list-style: none;
+  background: var(--neutral-0);
+  border-top: 1px solid var(--gray-100);
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+/* Frame 19 / 23 / 24 — 75×64 */
+.bottom-nav__item {
+  flex-shrink: 0;
+  width: 75px;
+  height: 64px;
+}
+
+.bottom-nav__tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 75px;
+  height: 64px;
+  padding: 0 0 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* 28×28 — 아이콘 색을 CSS에서 칠하려고 mask 로 씁니다 */
+.bottom-nav__icon {
+  display: block;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  background-color: var(--gray-400);
+  mask-image: var(--bottom-nav-icon);
+  -webkit-mask-image: var(--bottom-nav-icon);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: 28px 28px;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: 28px 28px;
+}
+
+/* 아이콘 없는 탭 — 자리만 차지합니다 (라벨 높이를 맞추기 위해) */
+.bottom-nav__icon--empty {
+  background-color: transparent;
+}
+
+/* 86:290 / 86:295 — 10px Medium / 1.5 / -0.25px */
+.bottom-nav__label {
+  display: block;
+  width: 100%;
+  font-family: Pretendard, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.25px;
+  text-align: center;
+  color: var(--gray-400);
+}
+
+/* 활성 탭 — gray/700 */
+.bottom-nav__tab--active .bottom-nav__icon {
+  background-color: var(--gray-700);
+}
+
+.bottom-nav__tab--active .bottom-nav__label {
+  color: var(--gray-700);
+}
+
+/* Frame 1707482456 (148:1820) — x171 y0, 53×53, Brand/Solid */
+.bottom-nav__fab {
+  position: absolute;
+  top: 0;
+  left: 171px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 53px;
+  height: 53px;
+  padding: 0;
+  border: none;
+  border-radius: 2000px;
+  background: var(--brand-solid);
+  overflow: hidden;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/* icn_empty_s (148:1822) — 20×20, 원 안 (17, 17) */
+.bottom-nav__fab-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+}

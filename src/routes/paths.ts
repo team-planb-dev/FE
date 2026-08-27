@@ -10,6 +10,8 @@ export const PATHS = {
   findEmailResult: "/find-email/result",
   findPassword: "/find-password",
   findPasswordResult: "/find-password/result",
+  /** 로그인 이후 메인 — 바텀 네비가 붙는 화면들의 시작점 */
+  home: "/home",
 } as const;
 
 export const termsDetailPath = (termKey: string) => `/signup/terms/${termKey}`;

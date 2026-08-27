@@ -13,6 +13,11 @@
   --neutral-900: #171717;
   --neutral-950: #0A0A0A;
 
+  /* gray 계열은 neutral 과 별개 팔레트입니다 — [S5] 바텀 네비에서 처음 등장 */
+  --gray-100: #EBEDF0;
+  --gray-400: #57697F;
+  --gray-700: #1A2534;
+
   --brand-solid: #00513F; /* Figma: Brand/Solid */
   --status-negative-solid: #FA5852; /* Figma: Status/Negative_solid */
   --status-positive: #3A9675; /* Figma: Status/Positive */

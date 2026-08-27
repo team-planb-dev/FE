@@ -9,6 +9,23 @@
   overflow: hidden;
 }
 
+/* Variant4 (148:1834) — 로고를 가운데 놓습니다 */
+.header--logo {
+  justify-content: center;
+}
+
+/* 148:1843 — 16px Medium / 1.5 / -0.32px / neutral-900 */
+.header__logo {
+  flex-shrink: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.32px;
+  color: var(--neutral-900);
+  white-space: nowrap;
+}
+
 /* icn_empty_s / Variant2 (16:34) — 20×20 */
 .header__back {
   display: block;

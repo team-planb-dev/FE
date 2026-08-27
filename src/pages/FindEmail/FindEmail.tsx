@@ -39,8 +39,17 @@ export default function FindEmail() {
 
   const handleSubmit = () => {
     if (!canSubmit) return;
+
     // TODO(api): 이메일 조회 API로 교체하세요.
     // 성공 시 마스킹된 이메일을 결과 화면으로 넘기고, 실패 시 setNotMatched(true).
+    //
+    // 지금은 서버가 없어 임시로 동작합니다 — 첫 클릭은 실패([4-4] Snackbar),
+    // 한 번 더 누르면 성공([4-3])으로 넘어가 두 상태를 모두 확인할 수 있습니다.
+    // 성공이 먼저면 화면이 바로 넘어가 실패 상태를 볼 수 없어 이 순서로 두었습니다.
+    if (!notMatched) {
+      setNotMatched(true);
+      return;
+    }
     navigate(PATHS.findEmailResult, { state: { email: "ye***@gmail.com" } });
   };
 

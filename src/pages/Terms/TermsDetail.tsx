@@ -8,7 +8,7 @@ import Btn from "../../components/Btn/Btn";
 import BottomBar from "../../components/BottomBar/BottomBar";
 
 import { useSignup } from "../Signup/signupContext";
-import { findTerm } from "./terms";
+import { findTerm } from "./termsData";
 import { PATHS } from "../../routes/paths";
 
 /**

@@ -7,7 +7,7 @@ import Checkbox from "../../components/Checkbox/Checkbox";
 import Btn from "../../components/Btn/Btn";
 
 import { useSignup } from "../Signup/signupContext";
-import { TERMS } from "./terms";
+import { TERMS } from "./termsData";
 import { PATHS, termsDetailPath } from "../../routes/paths";
 
 /**

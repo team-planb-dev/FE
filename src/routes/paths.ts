@@ -8,6 +8,8 @@ export const PATHS = {
   signupComplete: "/signup/complete",
   findEmail: "/find-email",
   findEmailResult: "/find-email/result",
+  findPassword: "/find-password",
+  findPasswordResult: "/find-password/result",
 } as const;
 
 export const termsDetailPath = (termKey: string) => `/signup/terms/${termKey}`;

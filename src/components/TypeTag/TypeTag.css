@@ -1,0 +1,44 @@
+/* =========================================================
+   Figma: Chips_XL/type tag (344:9740) — 90 × 28
+   padding 4/8, r200, Brand/bg-weak 배경, 12px Medium 글자 + ⊗ 20×20
+   ========================================================= */
+
+.type-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 200px;
+  background: var(--brand-bg-weak);
+}
+
+/* 344:9736 — 12px Medium / 1.5 / -0.24px / Brand/pressed */
+.type-tag__label {
+  flex-shrink: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.24px;
+  color: var(--brand-pressed);
+  white-space: nowrap;
+}
+
+/* icn_empty_s / Variant8 (119:784) — 20×20 ⊗ */
+.type-tag__remove {
+  display: block;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.type-tag__remove-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+}

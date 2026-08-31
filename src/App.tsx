@@ -33,6 +33,7 @@ import TripName from "./pages/Trip/TripName";
 import TripRegion from "./pages/Trip/TripRegion";
 import TripDate from "./pages/Trip/TripDate";
 import TripTransport from "./pages/Trip/TripTransport";
+import TripPlace from "./pages/Trip/TripPlace";
 import TripFormProvider from "./pages/Trip/TripFormProvider";
 
 import SignupProvider from "./pages/Signup/SignupProvider";
@@ -139,6 +140,7 @@ function App() {
           <Route path={PATHS.tripRegion} element={<TripRegion />} />
           <Route path={PATHS.tripDate} element={<TripDate />} />
           <Route path={PATHS.tripTransport} element={<TripTransport />} />
+          <Route path={PATHS.tripPlace} element={<TripPlace />} />
         </Route>
 
         <Route path="*" element={<Navigate to={PATHS.login} replace />} />

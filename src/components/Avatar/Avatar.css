@@ -1,0 +1,22 @@
+/* =========================================================
+   Figma: Avatar / Variant2 (87:3241) — 60 × 60
+
+   ⚠ 에셋이 없습니다. 원본은 초록색 캐릭터 그림인데 Figma 애셋 URL 이 막혀 있어
+     받을 수 없었습니다. 자리와 크기만 맞춘 임시 도형입니다
+     — `87:3241` 을 60×60 프레임째 export 해서 `avatar.svg` 로 넣고
+     `Avatar.tsx` 의 <span> 을 <img> 로 바꾸면 됩니다(확인 필요 문서 참고).
+   ========================================================= */
+
+.avatar {
+  display: block;
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+}
+
+.avatar--placeholder {
+  border-radius: 20px;
+  background: var(--brand-bg-weak);
+  border: 1.5px dashed var(--brand-solid);
+  box-sizing: border-box;
+}

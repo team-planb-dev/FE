@@ -111,9 +111,8 @@ export default function TripPlace() {
         <Btn variant="outline" onClick={() => navigate(PATHS.tripTransport)}>
           이전으로
         </Btn>
-        {/* TODO(route): [7-6] 여행 스타일 화면이 생기면 연결해주세요.
-            "미리 정해진 장소가 있나요?" 라 아무것도 안 골라도 넘어갑니다. */}
-        <Btn variant="primary" onClick={() => undefined}>
+        {/* "미리 정해진 장소가 있나요?" 라 아무것도 안 골라도 넘어갑니다. */}
+        <Btn variant="primary" onClick={() => navigate(PATHS.tripStyle)}>
           다음으로
         </Btn>
       </BottomBar>

@@ -47,6 +47,16 @@ export const PATHS = {
   tripTransport: "/plan/trip/transport",
   /** [7-5] 미리 정해진 장소 선택 */
   tripPlace: "/plan/trip/place",
+  /** [7-6] 여행 스타일 설정 */
+  tripStyle: "/plan/trip/style",
+  /** [7-7] 여행 테마 설정 */
+  tripTheme: "/plan/trip/theme",
+  /** [7-8] 지역 음식 설정 */
+  tripFood: "/plan/trip/food",
+  /** [7-9] 입력 정보 확인 */
+  tripConfirm: "/plan/trip/confirm",
+  /** [7-10] AI 일정 생성 중 */
+  tripLoading: "/plan/trip/loading",
 } as const;
 
 export const termsDetailPath = (termKey: string) => `/signup/terms/${termKey}`;

@@ -28,7 +28,26 @@ export type TripForm = {
   transport: Transport | null;
   /** [7-5] 미리 정해진 장소 — 복수 선택 (344:10973) */
   places: Place[];
+  /** [7-6] 여행 스타일 (237:6471) */
+  style: TripStyle | null;
+  /** [7-7] 여행 테마 (344:9591) */
+  theme: TripTheme | null;
+  /** [7-8] 지역 음식 (344:9748) */
+  foods: string[];
 };
+
+/** Figma 344:9566 / 344:9567 / 344:9587 */
+export const TRIP_STYLES = ["덜 걷기", "식사시간 맞추기", "관광지 줄이기"] as const;
+export type TripStyle = (typeof TRIP_STYLES)[number];
+
+/** Figma 344:9599~9601 / 344:9621 */
+export const TRIP_THEMES = [
+  "역사 중심",
+  "자연 중심",
+  "미식 중심",
+  "액티비티 중심",
+] as const;
+export type TripTheme = (typeof TRIP_THEMES)[number];
 
 /** Figma 237:6357~6359 — 세 가지뿐입니다 */
 export const NIGHT_OPTIONS = [
@@ -52,6 +71,9 @@ export const EMPTY_TRIP_FORM: TripForm = {
   nights: 0,
   transport: null,
   places: [],
+  style: null,
+  theme: null,
+  foods: [],
 };
 
 export type TripFormContextValue = {

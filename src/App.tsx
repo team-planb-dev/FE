@@ -34,6 +34,11 @@ import TripRegion from "./pages/Trip/TripRegion";
 import TripDate from "./pages/Trip/TripDate";
 import TripTransport from "./pages/Trip/TripTransport";
 import TripPlace from "./pages/Trip/TripPlace";
+import TripStyle from "./pages/Trip/TripStyle";
+import TripTheme from "./pages/Trip/TripTheme";
+import TripFood from "./pages/Trip/TripFood";
+import TripConfirm from "./pages/Trip/TripConfirm";
+import TripLoading from "./pages/Trip/TripLoading";
 import TripFormProvider from "./pages/Trip/TripFormProvider";
 
 import SignupProvider from "./pages/Signup/SignupProvider";
@@ -141,6 +146,11 @@ function App() {
           <Route path={PATHS.tripDate} element={<TripDate />} />
           <Route path={PATHS.tripTransport} element={<TripTransport />} />
           <Route path={PATHS.tripPlace} element={<TripPlace />} />
+          <Route path={PATHS.tripStyle} element={<TripStyle />} />
+          <Route path={PATHS.tripTheme} element={<TripTheme />} />
+          <Route path={PATHS.tripFood} element={<TripFood />} />
+          <Route path={PATHS.tripConfirm} element={<TripConfirm />} />
+          <Route path={PATHS.tripLoading} element={<TripLoading />} />
         </Route>
 
         <Route path="*" element={<Navigate to={PATHS.login} replace />} />

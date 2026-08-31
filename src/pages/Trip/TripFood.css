@@ -1,0 +1,82 @@
+/* =========================================================
+   [7-8] 지역 음식 설정. Figma 343:9093 (= 344:9625) · 344:9748
+   프레임 390 × 844
+   ========================================================= */
+
+.trip-food {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  background: var(--neutral-0);
+  overflow: hidden;
+}
+
+/* Header / Variant2 (343:9094) — x0 y0 */
+.trip-food__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* heading (343:9096) — y54, 두 줄이라 86 */
+.trip-food__heading {
+  position: absolute;
+  top: 54px;
+  left: 0;
+  width: 390px;
+}
+
+/* Frame 1707482569 (343:9140) — x24 y180, 세로 gap 20 */
+.trip-food__form {
+  position: absolute;
+  top: 180px;
+  left: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  width: 342px;
+}
+
+/* Frame 1707482568 (343:9139) — 세로 gap 8 */
+.trip-food__suggest {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 342px;
+}
+
+/* text (343:9134) — padding 8, 높이 33.
+   88:505 — 12px Regular / 1.4 / -0.12px / neutral-700 */
+.trip-food__suggest-label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px;
+  margin: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -0.12px;
+  color: var(--neutral-700);
+}
+
+/* Frame 1707482567 (343:9138) — 가로 gap 8, 줄바꿈 */
+.trip-food__suggest-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  width: 342px;
+}
+
+/* Frame 1707482571 (344:9776) — 고른 음식 태그, 가로 gap 8 */
+.trip-food__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 8px;
+  width: 342px;
+}

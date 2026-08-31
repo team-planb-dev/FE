@@ -4,6 +4,8 @@ import type { ReactNode } from "react";
 import { EMPTY_MEMBER_FORM, MemberFormContext } from "./memberFormContext";
 import type {
   Condition,
+  Meal,
+  MealMedsSetting,
   MemberForm,
   MemberFormContextValue,
 } from "./memberFormContext";
@@ -26,6 +28,14 @@ export default function MemberFormProvider({
           conditions: prev.conditions.includes(condition)
             ? prev.conditions.filter((c) => c !== condition)
             : [...prev.conditions, condition],
+        })),
+      setMealMeds: (meal: Meal, patch: Partial<MealMedsSetting>) =>
+        setForm((prev) => ({
+          ...prev,
+          mealMeds: {
+            ...prev.mealMeds,
+            [meal]: { ...prev.mealMeds[meal], ...patch },
+          },
         })),
       reset: () => setForm(EMPTY_MEMBER_FORM),
     }),

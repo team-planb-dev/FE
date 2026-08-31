@@ -8,11 +8,25 @@ import Subtitle from "../../components/Subtitle/Subtitle";
 import Field from "../../components/Field/Field";
 import TextInput from "../../components/Input/TextInput";
 import Chips from "../../components/Chips/Chips";
+import ChipsM from "../../components/ChipsM/ChipsM";
+import Checkbox from "../../components/Checkbox/Checkbox";
+import Select from "../../components/Select/Select";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 
-import { MEDS_TIMINGS, useMemberForm } from "./memberFormContext";
+import {
+  MEALS,
+  MEAL_RELATIONS,
+  MEDS_TIMINGS,
+  useMemberForm,
+} from "./memberFormContext";
 import { PATHS } from "../../routes/paths";
+
+/** 복약 시간 셀렉트 옵션 — 디자인에 목록이 없어 일반적인 값으로 채웠습니다. */
+const MERIDIEMS = ["AM", "PM"] as const;
+const HOURS = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, "0"));
+const MINUTES = ["00", "10", "20", "30", "40", "50"];
+const INTERVALS = ["30", "60", "90", "120"];
 
 /**
  * Figma: [6-6] 약 이름 + 복약 시점 (237:6690 / 237:6704 / 237:6717)
@@ -25,10 +39,21 @@ import { PATHS } from "../../routes/paths";
  */
 export default function MemberMedsDetail() {
   const navigate = useNavigate();
-  const { form, setField } = useMemberForm();
+  const { form, setField, setMealMeds } = useMemberForm();
+
+  const byTime = form.medsTiming === "특정 시간대에 먹어요";
+  const byMeal = form.medsTiming === "식사를 기준으로 기억해요";
+
+  // '특정 시간대'는 시간 3칸, '식사 기준'은 끼니를 하나 이상 골라야 넘어갑니다.
+  // '잘 모르겠어요'는 뒤따르는 화면이 없어 시점만 고르면 됩니다.
+  const detailDone = byTime
+    ? Boolean(form.medsTime.meridiem && form.medsTime.hour && form.medsTime.minute)
+    : byMeal
+      ? MEALS.some((m) => form.mealMeds[m].checked)
+      : true;
 
   const canSubmit =
-    form.medsLabel.trim().length > 0 && form.medsTiming !== null;
+    form.medsLabel.trim().length > 0 && form.medsTiming !== null && detailDone;
 
   return (
     <div className="member-meds-detail">
@@ -89,9 +114,119 @@ export default function MemberMedsDetail() {
             ))}
           </div>
         </Field>
+
+        {/* 237:6740 — '특정 시간대에 먹어요' 를 고르면 나타납니다 (개발 노트) */}
+        {byTime && (
+          <Field label="복약 시간" htmlFor="meds-time" required spacing="gap">
+            <div className="meds-time" id="meds-time">
+              <div className="meds-time__meridiem">
+                <Select
+                  id="meds-meridiem"
+                  value={form.medsTime.meridiem}
+                  onChange={(v) =>
+                    setField("medsTime", { ...form.medsTime, meridiem: v })
+                  }
+                  options={MERIDIEMS}
+                  placeholder="AM"
+                />
+              </div>
+              <div className="meds-time__unit">
+                <Select
+                  id="meds-hour"
+                  value={form.medsTime.hour}
+                  onChange={(v) =>
+                    setField("medsTime", { ...form.medsTime, hour: v })
+                  }
+                  options={HOURS}
+                  placeholder="00"
+                />
+              </div>
+              {/* 237:6745 — 2×14 콜론 자리 (점 두 개) */}
+              <span className="meds-time__colon" aria-hidden="true" />
+              <div className="meds-time__unit">
+                <Select
+                  id="meds-minute"
+                  value={form.medsTime.minute}
+                  onChange={(v) =>
+                    setField("medsTime", { ...form.medsTime, minute: v })
+                  }
+                  options={MINUTES}
+                  placeholder="00"
+                />
+              </div>
+            </div>
+          </Field>
+        )}
+
+        {/* 237:6763 — '식사를 기준으로 기억해요' 를 고르면 나타납니다 (개발 노트) */}
+        {byMeal && (
+          <>
+            <Field
+              label="식사를 기준으로 복약 시간을 설정해주세요."
+              htmlFor="meal-meds"
+              required
+              spacing="gap"
+            >
+              <div className="meal-meds" id="meal-meds">
+                {MEALS.map((meal) => (
+                  <div className="meal-meds__row" key={meal}>
+                    <span className="meal-meds__check">
+                      <Checkbox
+                        id={`meal-${meal}`}
+                        checked={form.mealMeds[meal].checked}
+                        onChange={(checked) => setMealMeds(meal, { checked })}
+                      />
+                      <label
+                        className="meal-meds__label"
+                        htmlFor={`meal-${meal}`}
+                      >
+                        {meal}
+                      </label>
+                    </span>
+
+                    <div className="meal-meds__relations">
+                      {MEAL_RELATIONS.map((relation) => (
+                        <ChipsM
+                          key={relation}
+                          selected={form.mealMeds[meal].relation === relation}
+                          onClick={() =>
+                            setMealMeds(meal, { relation, checked: true })
+                          }
+                        >
+                          {relation}
+                        </ChipsM>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Field>
+
+            {/* 237:6796 — 필수 표시가 없습니다(선택 항목) */}
+            <Field
+              label="정확한 간격을 안내받았다면"
+              htmlFor="meds-interval"
+              spacing="gap"
+            >
+              <div className="meds-interval" id="meds-interval">
+                <div className="meds-interval__select">
+                  <Select
+                    id="meds-interval-select"
+                    value={form.medsIntervalMinutes}
+                    onChange={(v) => setField("medsIntervalMinutes", v)}
+                    options={INTERVALS}
+                    placeholder="00"
+                  />
+                </div>
+                <span className="meds-interval__unit">분 간격</span>
+              </div>
+            </Field>
+          </>
+        )}
       </div>
 
-      {/* bottom (237:6703) — 이전으로 / 다음으로 */}
+      {/* bottom (237:6703) — 이전으로 / 다음으로.
+          개발 노트: 스크롤이 길어져도 하단 버튼은 고정입니다 (237:6804). */}
       <BottomBar>
         <Btn variant="outline" onClick={() => navigate(PATHS.memberNewMeds)}>
           이전으로

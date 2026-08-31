@@ -35,6 +35,26 @@ export const MEDS_TIMINGS = [
 ] as const;
 export type MedsTiming = (typeof MEDS_TIMINGS)[number];
 
+/** Figma 237:6770 / 6780 / 6790 */
+export const MEALS = ["아침", "점심", "저녁"] as const;
+export type Meal = (typeof MEALS)[number];
+
+/** Figma 237:6772~6775 — 식사 기준 복약 시점 */
+export const MEAL_RELATIONS = ["식전", "식사 중", "식후", "무관"] as const;
+export type MealRelation = (typeof MEAL_RELATIONS)[number];
+
+/** 끼니별 설정 — 체크했는지와 식전/식후 중 무엇인지 */
+export type MealMedsSetting = {
+  checked: boolean;
+  relation: MealRelation | null;
+};
+
+export const EMPTY_MEAL_MEDS: Record<Meal, MealMedsSetting> = {
+  아침: { checked: false, relation: null },
+  점심: { checked: false, relation: null },
+  저녁: { checked: false, relation: null },
+};
+
 export type MemberForm = {
   name: string;
   considerHealth: ConsiderHealth;
@@ -46,6 +66,12 @@ export type MemberForm = {
   /** 일정에 표시할 약 이름 */
   medsLabel: string;
   medsTiming: MedsTiming | null;
+  /** '특정 시간대에 먹어요' — 복약 시간 (237:6740) */
+  medsTime: { meridiem: string; hour: string; minute: string };
+  /** '식사를 기준으로 기억해요' — 끼니별 설정 (237:6763) */
+  mealMeds: Record<Meal, MealMedsSetting>;
+  /** 정확한 간격을 안내받았다면 — 분 (237:6796) */
+  medsIntervalMinutes: string;
 };
 
 export const EMPTY_MEMBER_FORM: MemberForm = {
@@ -57,12 +83,16 @@ export const EMPTY_MEMBER_FORM: MemberForm = {
   takesMeds: null,
   medsLabel: "",
   medsTiming: null,
+  medsTime: { meridiem: "", hour: "", minute: "" },
+  mealMeds: EMPTY_MEAL_MEDS,
+  medsIntervalMinutes: "",
 };
 
 export type MemberFormContextValue = {
   form: MemberForm;
   setField: <K extends keyof MemberForm>(key: K, value: MemberForm[K]) => void;
   toggleCondition: (condition: Condition) => void;
+  setMealMeds: (meal: Meal, patch: Partial<MealMedsSetting>) => void;
   reset: () => void;
 };
 

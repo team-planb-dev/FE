@@ -24,6 +24,17 @@ export const WALK_LEVELS = [
 ] as const;
 export type WalkLevel = (typeof WALK_LEVELS)[number];
 
+/** 여행 중 챙겨야 하는 약이 있는지 — 아직 고르지 않았으면 null */
+export type TakesMeds = "yes" | "no" | null;
+
+/** Figma 237:6697~6699 — 단일 선택 */
+export const MEDS_TIMINGS = [
+  "특정 시간대에 먹어요",
+  "식사를 기준으로 기억해요",
+  "잘 모르겠어요",
+] as const;
+export type MedsTiming = (typeof MEDS_TIMINGS)[number];
+
 export type MemberForm = {
   name: string;
   considerHealth: ConsiderHealth;
@@ -31,6 +42,10 @@ export type MemberForm = {
   sensitiveAgreed: boolean;
   conditions: Condition[];
   walkLevel: WalkLevel | null;
+  takesMeds: TakesMeds;
+  /** 일정에 표시할 약 이름 */
+  medsLabel: string;
+  medsTiming: MedsTiming | null;
 };
 
 export const EMPTY_MEMBER_FORM: MemberForm = {
@@ -39,6 +54,9 @@ export const EMPTY_MEMBER_FORM: MemberForm = {
   sensitiveAgreed: false,
   conditions: [],
   walkLevel: null,
+  takesMeds: null,
+  medsLabel: "",
+  medsTiming: null,
 };
 
 export type MemberFormContextValue = {

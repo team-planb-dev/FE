@@ -1,0 +1,77 @@
+import "./MemberSelectCard.css";
+
+import Checkbox from "../Checkbox/Checkbox";
+import Tag from "../Tag/Tag";
+import BtnWithIcon from "../BtnWithIcon/BtnWithIcon";
+
+import editIcon from "../../assets/icn_edit.svg";
+import trashIcon from "../../assets/icn_trash.svg";
+
+type MemberSelectCardProps = {
+  id: string;
+  name: string;
+  /** 알레르기·복약·질환 등 구성원 특성 라벨 */
+  tags: string[];
+  selected: boolean;
+  onToggle: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
+};
+
+/**
+ * Figma: 구성원 select card
+ *  · Default  (148:1556) 배경 흰색,   테두리 neutral-200
+ *  · Variant3 (232:2706) 배경 Brand/bg-weak, 테두리 Brand/Solid
+ *
+ * 개발 노트([6-3] 1번): 터치 영역은 체크박스가 아니라 카드 전체입니다.
+ * 카드 안의 수정·삭제 버튼은 카드 선택과 겹치므로 클릭 전파를 막습니다.
+ */
+export default function MemberSelectCard({
+  id,
+  name,
+  tags,
+  selected,
+  onToggle,
+  onEdit,
+  onDelete,
+}: MemberSelectCardProps) {
+  return (
+    <div
+      className={`member-card${selected ? " member-card--selected" : ""}`}
+      onClick={onToggle}
+    >
+      <div className="member-card__row">
+        {/* 체크박스 자체 클릭은 input 의 onChange 가 처리하므로 카드로 전파하지 않습니다 */}
+        <span
+          className="member-card__check"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Checkbox id={`member-${id}`} checked={selected} onChange={onToggle} />
+        </span>
+
+        {/* 148:1537 — 18px Medium / 1.5 / -0.36px / neutral-900 */}
+        <p className="member-card__name">{name}</p>
+
+        {/* 187:1317 — gap 4 */}
+        <div
+          className="member-card__actions"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* TODO(route): [6-4] 구성원 수정 화면이 생기면 연결해주세요. */}
+          <BtnWithIcon icon={editIcon} label="수정" onClick={onEdit} />
+          {/* TODO(route): [6-5] 구성원 삭제 화면이 생기면 연결해주세요. */}
+          <BtnWithIcon icon={trashIcon} label="삭제" onClick={onDelete} />
+        </div>
+      </div>
+
+      {/* 148:1532 — gap 3 */}
+      <div className="member-card__tags">
+        {tags.map((tag) => (
+          <Tag key={tag} tone="neutral">
+            {tag}
+          </Tag>
+        ))}
+      </div>
+    </div>
+  );
+}

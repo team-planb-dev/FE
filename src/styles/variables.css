@@ -23,6 +23,7 @@
   --purple-solid: #B747E3;
 
   --brand-solid: #00513F; /* Figma: Brand/Solid */
+  --brand-bg-weak: #F3FEFB; /* Figma: Brand/bg-weak — [6-3] 선택된 구성원 카드 배경 */
   --status-negative-solid: #FA5852; /* Figma: Status/Negative_solid */
   --status-positive: #3A9675; /* Figma: Status/Positive */
 

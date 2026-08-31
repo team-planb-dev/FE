@@ -1,0 +1,20 @@
+/* Figma: subtitle (187:1402) — w390, padding 12/24 */
+.subtitle {
+  display: flex;
+  align-items: center;
+  width: 390px;
+  padding: 12px 24px;
+}
+
+/* Figma: 187:1400 — 14px Medium / 1.6 / -0.28px / neutral-700 */
+.subtitle__text {
+  margin: 0;
+  flex-shrink: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: -0.28px;
+  color: var(--neutral-700);
+  word-break: break-word;
+}

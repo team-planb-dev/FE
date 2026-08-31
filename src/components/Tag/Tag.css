@@ -1,4 +1,4 @@
-/* Figma: Tag (393:9377) — padding 4/8, radius 200, 10px Medium / 1.5 / -0.2px */
+/* Figma: Tag (393:9377 / 87:3470) — padding 4/8, radius 200, 10px Medium / 1.5 / -0.2px */
 .tag {
   display: inline-flex;
   align-items: center;
@@ -13,8 +13,14 @@
   white-space: nowrap;
 }
 
-/* purple/bg #FDF6FF + purple/solid #B747E3 */
+/* 393:9377 — purple/bg #FDF6FF + purple/solid #B747E3 */
 .tag--purple {
   background: var(--purple-bg);
   color: var(--purple-solid);
+}
+
+/* 87:3470 — neutral-50 #FAFAFA + neutral-600 #525252 */
+.tag--neutral {
+  background: var(--neutral-50);
+  color: var(--neutral-600);
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import "./Home.css";
 
@@ -7,6 +8,7 @@ import Btn from "../../components/Btn/Btn";
 import Card from "../../components/Card/Card";
 
 import characterImage from "../../assets/character.svg";
+import { PATHS } from "../../routes/paths";
 
 /**
  * Figma: [5-1] 메인 홈 — 한 화면의 두 상태
@@ -52,6 +54,7 @@ const MOCK_TRIPS: Record<TabKey, Trip[]> = {
 const PREVIEW_EMPTY = false;
 
 export default function Home() {
+  const navigate = useNavigate();
   const [tab, setTab] = useState<TabKey>("upcoming");
   const trips = MOCK_TRIPS[tab];
 
@@ -60,8 +63,8 @@ export default function Home() {
   const hasAnyTrip = Object.values(MOCK_TRIPS).some((list) => list.length > 0);
   const isEmpty = PREVIEW_EMPTY || !hasAnyTrip;
 
-  // TODO(route): [S6] 계획 생성 화면이 생기면 여기서 이동시켜주세요.
-  const handleCreate = () => {};
+  // 개발 노트 1 — [일정 생성하기]는 [S6]으로 연결됩니다.
+  const handleCreate = () => navigate(PATHS.planStart);
 
   return (
     <div className="home">

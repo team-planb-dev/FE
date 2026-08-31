@@ -12,6 +12,11 @@ export const PATHS = {
   findPasswordResult: "/find-password/result",
   /** 로그인 이후 메인 — 바텀 네비가 붙는 화면들의 시작점 */
   home: "/home",
+
+  /** [6-1] 여행 생성 — [S6] 진입 화면 */
+  planStart: "/plan",
+  /** [6-2] / [6-3] 여행 구성원 선택 */
+  planMembers: "/plan/members",
 } as const;
 
 export const termsDetailPath = (termKey: string) => `/signup/terms/${termKey}`;

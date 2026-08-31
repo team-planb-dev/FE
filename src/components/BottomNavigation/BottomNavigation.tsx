@@ -42,8 +42,7 @@ const TABS: Tab[] = [
    * 지우고 초록 원이 이 자리의 아이콘 역할을 하게 했습니다.
    * 계획 생성 전용 아이콘이 나오면 icon 을 넣고 좌표를 다시 맞춰야 합니다.
    */
-  // TODO(route): [S6] 계획 생성 화면이 생기면 to: PATHS.plan 을 넣어주세요.
-  { key: "plan", label: "계획 생성" },
+  { key: "plan", label: "계획 생성", to: PATHS.planStart },
   // TODO(route): 프로필 화면이 생기면 to: PATHS.profile 을 넣어주세요.
   { key: "profile", label: "프로필", icon: profileIcon },
 ];

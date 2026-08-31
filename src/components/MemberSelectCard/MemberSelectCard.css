@@ -1,0 +1,62 @@
+/* Figma: 구성원 select card (148:1556 / 232:2706) — w342, padding 16, r10, gap 19 */
+.member-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 19px;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid var(--neutral-200);
+  border-radius: 10px;
+  background: var(--neutral-0);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Variant3 (232:2706) — 선택됨 */
+.member-card--selected {
+  border-color: var(--brand-solid);
+  background: var(--brand-bg-weak);
+}
+
+/* 148:1536 — 체크박스 / 이름 / 버튼을 양끝 정렬 */
+.member-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.member-card__check {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* 148:1537 — 18px Medium / 1.5 / -0.36px / neutral-900 */
+.member-card__name {
+  margin: 0;
+  flex-shrink: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.36px;
+  color: var(--neutral-900);
+  white-space: nowrap;
+}
+
+/* 187:1317 — 수정 / 삭제 */
+.member-card__actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 148:1532 */
+.member-card__tags {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 3px;
+}

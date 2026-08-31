@@ -1,4 +1,11 @@
-import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
@@ -10,6 +17,8 @@ import FindPassword from "./pages/FindPassword/FindPassword";
 import FindPasswordResult from "./pages/FindPassword/FindPasswordResult";
 import TermsDetail from "./pages/Terms/TermsDetail";
 import Home from "./pages/Home/Home";
+import PlanStart from "./pages/Plan/PlanStart";
+import PlanMembers from "./pages/Plan/PlanMembers";
 
 import SignupProvider from "./pages/Signup/SignupProvider";
 import BottomNavigation from "./components/BottomNavigation/BottomNavigation";
@@ -29,11 +38,14 @@ function SignupLayout() {
  * 인증 화면(로그인·회원가입·찾기)은 이 레이아웃 밖에 있어 네비가 나타나지 않습니다.
  */
 function AppLayout() {
+  const navigate = useNavigate();
+
   return (
     <>
       <Outlet />
-      {/* TODO(route): [S6] 계획 생성 화면이 생기면 onFabClick 으로 이동시켜주세요. */}
-      <BottomNavigation />
+      {/* ⚠ 가운데 초록 원의 역할이 디자인에 명시되어 있지 않습니다(확인 필요 문서 2-c).
+          "계획 생성" 탭과 같은 자리라 우선 같은 곳으로 보냅니다. */}
+      <BottomNavigation onFabClick={() => navigate(PATHS.planStart)} />
     </>
   );
 }
@@ -63,6 +75,10 @@ function App() {
         <Route element={<AppLayout />}>
           <Route path={PATHS.home} element={<Home />} />
         </Route>
+
+        {/* [S6] 화면에는 디자인에 바텀 네비게이션이 없어 AppLayout 밖에 둡니다. */}
+        <Route path={PATHS.planStart} element={<PlanStart />} />
+        <Route path={PATHS.planMembers} element={<PlanMembers />} />
 
         <Route path="*" element={<Navigate to={PATHS.login} replace />} />
       </Routes>

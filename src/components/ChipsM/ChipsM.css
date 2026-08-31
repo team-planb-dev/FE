@@ -27,10 +27,11 @@
   color: #636363;
 }
 
-/* 선택 — 디자인에 없어 Chips_L 의 선택 상태를 그대로 가져왔습니다.
+/* 선택 (17:230 / 17:231) — neutral-800 배경 + 흰 글자.
+   [7-2] 여행 지역(343:7908)에서 선택된 Chips_m 이 처음 나와 확인했습니다.
    테두리 폭을 유지해야 선택할 때 크기가 흔들리지 않습니다. */
 .chips-m--on {
-  border: 1px solid var(--brand-solid);
-  background: var(--brand-solid);
+  border: 1px solid var(--neutral-800);
+  background: var(--neutral-800);
   color: var(--neutral-0);
 }

@@ -7,6 +7,8 @@ import TitleL from "../../components/TitleL/TitleL";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 
+import { PATHS } from "../../routes/paths";
+
 /**
  * Figma: [6-6] 여행 구성원 확정 (237:6589)
  *
@@ -30,8 +32,9 @@ export default function MemberConfirm() {
 
       {/* bottom (343:9203) — 버튼 1개 */}
       <BottomBar>
-        {/* TODO(route): 여행 계획의 다음 단계 화면이 아직 없습니다. */}
-        <Btn variant="primary" onClick={() => navigate(-1)}>
+        {/* ⚠ 이 버튼의 목적지가 디자인에 없습니다. 섹션 순서상
+            [S7] 여행 일정 생성의 첫 화면([7-1])으로 연결했습니다. */}
+        <Btn variant="primary" onClick={() => navigate(PATHS.tripName)}>
           다음으로
         </Btn>
       </BottomBar>

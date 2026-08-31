@@ -18,6 +18,10 @@
   --gray-400: #57697F;
   --gray-700: #1A2534;
 
+  /* Tag 색 — [S5] 여행 테마 태그에서 처음 등장 */
+  --purple-bg: #FDF6FF;
+  --purple-solid: #B747E3;
+
   --brand-solid: #00513F; /* Figma: Brand/Solid */
   --status-negative-solid: #FA5852; /* Figma: Status/Negative_solid */
   --status-positive: #3A9675; /* Figma: Status/Positive */

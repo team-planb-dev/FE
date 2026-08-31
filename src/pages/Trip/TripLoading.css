@@ -58,3 +58,19 @@
   color: #414141;
   white-space: nowrap;
 }
+
+/* ⚠ 디자인에 없는 임시 버튼입니다.
+   로딩이 끝났을 때의 동작(자동 이동인지, 몇 초인지)이 정해지지 않아
+   [8-1]로 갈 수 있는 길만 열어뒀습니다. 확정되면 이 블록을 지우세요. */
+.trip-loading__next {
+  position: absolute;
+  top: 320px;
+  left: 24px;
+  padding: 8px 16px;
+  border: 1px dashed var(--neutral-300);
+  border-radius: 10px;
+  background: transparent;
+  font-family: Pretendard, sans-serif;
+  font-size: 14px;
+  color: var(--neutral-500);
+}

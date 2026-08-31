@@ -57,6 +57,11 @@ export const PATHS = {
   tripConfirm: "/plan/trip/confirm",
   /** [7-10] AI 일정 생성 중 */
   tripLoading: "/plan/trip/loading",
+
+  /** [8-1] 생성된 여행 일정 — 저장 전 */
+  tripDetail: "/trip/detail",
+  /** [8-3] 저장 완료 — 같은 화면의 저장 후 상태 */
+  tripSaved: "/trip/saved",
 } as const;
 
 export const termsDetailPath = (termKey: string) => `/signup/terms/${termKey}`;

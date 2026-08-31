@@ -22,6 +22,10 @@
   --purple-bg: #FDF6FF;
   --purple-solid: #B747E3;
 
+  /* [8-1] 일정 카드 — 식당은 주황, 관광지는 위 purple 을 그대로 씁니다 */
+  --orange-bg: #FFF4EF;
+  --orange-solid: #E76238;
+
   --brand-solid: #00513F; /* Figma: Brand/Solid */
   --brand-bg-weak: #F3FEFB; /* Figma: Brand/bg-weak — [6-3] 선택된 구성원 카드 배경 */
   --brand-pressed: #003D30; /* Figma: Brand/pressed — [7-3] 선택된 날짜 · [7-4] 선택된 카드 테두리 */

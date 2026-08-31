@@ -154,7 +154,11 @@ function App() {
           <Route path={PATHS.tripLoading} element={<TripLoading />} />
           {/* [S8] 여행 일정 상세 — [7-1]에서 받은 이름·조건을 그대로 씁니다 */}
           <Route path={PATHS.tripDetail} element={<TripDetail />} />
-          <Route path={PATHS.tripSaved} element={<TripDetail saved />} />
+          <Route path={PATHS.tripSaved} element={<TripDetail mode="saved" />} />
+          {/* [10-2] 공유되는 화면 — [S10] 개발 노트 1: 확인만 가능, 페이지 이동 불가.
+              TODO(api): 실제로는 링크로 들어오는 화면이라 서버에서 일정을 받아야 합니다.
+              지금은 목업이라 다른 [S7]·[S8] 화면과 같은 Provider 안에 둡니다. */}
+          <Route path={PATHS.tripShared} element={<TripDetail mode="shared" />} />
         </Route>
 
         <Route path="*" element={<Navigate to={PATHS.login} replace />} />

@@ -10,6 +10,8 @@ type HeaderProps = {
   backLabel?: string;
   /** variant="title" 일 때 가운데에 놓을 문구 */
   title?: string;
+  /** variant="title" 오른쪽 20×20 자리에 넣을 동작 (396:4988 공유 아이콘) */
+  action?: { label: string; onClick: () => void };
   /**
    * Figma Header 변형
    *  "back"  : 19:831   (icn_empty_s / Variant2, ←)
@@ -27,6 +29,7 @@ export default function Header({
   onBack,
   backLabel,
   title,
+  action,
   variant = "back",
 }: HeaderProps) {
   const rootClass = `header header--${variant}${className ? ` ${className}` : ""}`;
@@ -48,12 +51,24 @@ export default function Header({
 
   // 237:7165 — 가운데 타이틀. 좌우의 20×20 은 icn_empty_s/Default(16:32)로
   // 아이콘이 비어 있습니다. 자리를 남겨야 타이틀이 가운데에 옵니다.
+  //
+  // [S10]에서는 오른쪽 자리에 공유 아이콘이 들어갑니다(396:4988).
+  // ⚠ 그 아이콘(16:96 / 220:3039) 에셋이 없어 자리만 그려둡니다.
   if (variant === "title") {
     return (
       <header className={rootClass}>
         <span className="header__slot" aria-hidden="true" />
         <span className="header__title">{title}</span>
-        <span className="header__slot" aria-hidden="true" />
+        {action ? (
+          <button
+            type="button"
+            className="header__action"
+            aria-label={action.label}
+            onClick={action.onClick}
+          />
+        ) : (
+          <span className="header__slot" aria-hidden="true" />
+        )}
       </header>
     );
   }

@@ -87,10 +87,10 @@ export default function MemberHealth() {
         </Field>
       </div>
 
-      {/* bottom (237:6874) */}
+      {/* bottom (237:6874) — 1단계와 달리 왼쪽이 [이전으로]입니다 */}
       <BottomBar>
-        <Btn variant="outline" onClick={() => navigate(PATHS.planMembers)}>
-          그만두기
+        <Btn variant="outline" onClick={() => navigate(PATHS.memberNew)}>
+          이전으로
         </Btn>
         {/* TODO(route): [6-6] 복약 정보 화면이 생기면 연결해주세요. */}
         <Btn

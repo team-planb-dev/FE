@@ -64,14 +64,18 @@ export default function MemberSelectCard({
         </div>
       </div>
 
-      {/* 148:1532 — gap 3 */}
-      <div className="member-card__tags">
-        {tags.map((tag) => (
-          <Tag key={tag} tone="neutral">
-            {tag}
-          </Tag>
-        ))}
-      </div>
+      {/* 148:1532 — gap 3.
+          건강조건을 '아니오'로 등록하면 뱃지가 없습니다([6-6] 개발 노트 3).
+          그때는 태그 행과 gap 을 통째로 빼야 카드가 66px 이 됩니다(237:6996). */}
+      {tags.length > 0 && (
+        <div className="member-card__tags">
+          {tags.map((tag) => (
+            <Tag key={tag} tone="neutral">
+              {tag}
+            </Tag>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

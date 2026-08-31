@@ -19,6 +19,10 @@ import TermsDetail from "./pages/Terms/TermsDetail";
 import Home from "./pages/Home/Home";
 import PlanStart from "./pages/Plan/PlanStart";
 import PlanMembers from "./pages/Plan/PlanMembers";
+import MemberNew from "./pages/Plan/MemberNew";
+import MemberConsent from "./pages/Plan/MemberConsent";
+import MemberHealth from "./pages/Plan/MemberHealth";
+import MemberFormProvider from "./pages/Plan/MemberFormProvider";
 
 import SignupProvider from "./pages/Signup/SignupProvider";
 import BottomNavigation from "./components/BottomNavigation/BottomNavigation";
@@ -30,6 +34,15 @@ function SignupLayout() {
     <SignupProvider>
       <Outlet />
     </SignupProvider>
+  );
+}
+
+/** [6-6] 신규 구성원 등록 플로우 전체를 감싸 단계 간 입력값을 공유합니다. */
+function MemberFormLayout() {
+  return (
+    <MemberFormProvider>
+      <Outlet />
+    </MemberFormProvider>
   );
 }
 
@@ -79,6 +92,13 @@ function App() {
         {/* [S6] 화면에는 디자인에 바텀 네비게이션이 없어 AppLayout 밖에 둡니다. */}
         <Route path={PATHS.planStart} element={<PlanStart />} />
         <Route path={PATHS.planMembers} element={<PlanMembers />} />
+
+        {/* [6-6] 신규 구성원 등록 — 단계 간 입력값을 Context 로 공유합니다 */}
+        <Route element={<MemberFormLayout />}>
+          <Route path={PATHS.memberNew} element={<MemberNew />} />
+          <Route path={PATHS.memberNewConsent} element={<MemberConsent />} />
+          <Route path={PATHS.memberNewHealth} element={<MemberHealth />} />
+        </Route>
 
         <Route path="*" element={<Navigate to={PATHS.login} replace />} />
       </Routes>

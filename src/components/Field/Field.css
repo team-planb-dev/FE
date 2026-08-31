@@ -25,6 +25,12 @@
   gap: 0;
 }
 
+/* Frame 1707482488 (237:6615) — padding 0, gap 8 — [6-6] 칩 질문 */
+.field--gap {
+  padding: 0;
+  gap: 8px;
+}
+
 /* Figma: 88:579 / Frame 130 (73:646, 182:1429) — padding 10/0, 높이 36 */
 .field__label-row {
   display: flex;

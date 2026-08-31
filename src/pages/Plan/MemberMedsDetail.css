@@ -54,39 +54,6 @@
 }
 
 /* ---------------------------------------------------------
-   237:6740 — 복약 시간 (특정 시간대에 먹어요)
-   --------------------------------------------------------- */
-
-.meds-time {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* Component 1 은 폭이 100% 라 여기서 잡아줍니다 — 피그마 84 / 79 / 79 */
-.meds-time__meridiem {
-  width: 84px;
-}
-
-.meds-time__unit {
-  width: 79px;
-}
-
-/* 237:6745 — 2×14, 위아래 2px 점 두 개 */
-.meds-time__colon {
-  position: relative;
-  display: block;
-  flex-shrink: 0;
-  width: 2px;
-  height: 14px;
-  background:
-    radial-gradient(circle, var(--neutral-500) 1px, transparent 1px) 0 0 / 2px 2px
-      no-repeat,
-    radial-gradient(circle, var(--neutral-500) 1px, transparent 1px) 0 12px / 2px
-      2px no-repeat;
-}
-
-/* ---------------------------------------------------------
    237:6763 — 식사 기준 복약 시간
    --------------------------------------------------------- */
 

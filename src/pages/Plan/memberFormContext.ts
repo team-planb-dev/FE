@@ -1,5 +1,7 @@
 import { createContext, useContext } from "react";
 
+import type { TimeValue } from "../../components/TimeSelect/TimeSelect";
+
 /**
  * [6-6] 신규 구성원 등록 플로우 동안만 살아 있는 상태.
  * 회원가입(SignupProvider)과 같은 방식입니다 — 단계가 많아 라우터 state 로 넘기면
@@ -72,6 +74,18 @@ export type MemberForm = {
   mealMeds: Record<Meal, MealMedsSetting>;
   /** 정확한 간격을 안내받았다면 — 분 (237:6796) */
   medsIntervalMinutes: string;
+
+  /** 평소 식사시간을 여행 일정에 반영할지 (237:6894) */
+  reflectMealtime: "yes" | "no" | null;
+  /** 끼니별 식사시간 (237:6926) */
+  mealTimes: Record<Meal, { checked: boolean; time: TimeValue }>;
+
+  /** 음식 알레르기가 있나요? (237:6969) */
+  hasAllergy: "yes" | "no" | null;
+  allergyText: string;
+  /** 먹고 싶지 않거나 피하고 싶은 음식이 있나요? (237:6975) */
+  hasDislikedFood: "yes" | "no" | null;
+  dislikedFoodText: string;
 };
 
 export const EMPTY_MEMBER_FORM: MemberForm = {
@@ -86,6 +100,16 @@ export const EMPTY_MEMBER_FORM: MemberForm = {
   medsTime: { meridiem: "", hour: "", minute: "" },
   mealMeds: EMPTY_MEAL_MEDS,
   medsIntervalMinutes: "",
+  reflectMealtime: null,
+  mealTimes: {
+    아침: { checked: false, time: { meridiem: "", hour: "", minute: "" } },
+    점심: { checked: false, time: { meridiem: "", hour: "", minute: "" } },
+    저녁: { checked: false, time: { meridiem: "", hour: "", minute: "" } },
+  },
+  hasAllergy: null,
+  allergyText: "",
+  hasDislikedFood: null,
+  dislikedFoodText: "",
 };
 
 export type MemberFormContextValue = {

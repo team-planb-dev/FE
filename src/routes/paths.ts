@@ -17,6 +17,13 @@ export const PATHS = {
   planStart: "/plan",
   /** [6-2] / [6-3] 여행 구성원 선택 */
   planMembers: "/plan/members",
+
+  /** [6-6] 신규 구성원 등록 — 이름 + 건강조건 고려 여부 */
+  memberNew: "/plan/members/new",
+  /** [6-6] 민감정보 수집·이용 동의 전체보기 */
+  memberNewConsent: "/plan/members/new/consent",
+  /** [6-6] 관리 질환 + 걷기 정도 */
+  memberNewHealth: "/plan/members/new/health",
 } as const;
 
 export const termsDetailPath = (termKey: string) => `/signup/terms/${termKey}`;

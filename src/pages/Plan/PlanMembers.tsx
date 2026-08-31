@@ -118,8 +118,11 @@ export default function PlanMembers() {
         ))}
 
         {/* Frame 156 (148:1572) — 342×114, r10, neutral-100 */}
-        {/* TODO(route): [6-6] 신규 구성원 등록 화면이 생기면 연결해주세요. */}
-        <button type="button" className="plan-members__add">
+        <button
+          type="button"
+          className="plan-members__add"
+          onClick={() => navigate(PATHS.memberNew)}
+        >
           {/* icn_empty_s / Variant7 (88:1049) — 20×20, y33
               TODO(asset): icn_plus.svg 는 임시본입니다. Variant7 을 20×20 프레임째
               export 하면 이 자리와 바텀 네비 가운데 버튼이 함께 해결됩니다. */}

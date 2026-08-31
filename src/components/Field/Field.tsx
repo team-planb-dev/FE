@@ -8,8 +8,9 @@ import "./Field.css";
  *  - "default" : Frame 132 (88:579+88:580)      padding 8/0, gap 8  ← 로그인, 복구질문, 답변
  *  - "no-gap"  : Frame 152 / Frame 154 (206:4615) padding 8/0, gap 0  ← 비밀번호, 비밀번호 확인
  *  - "none"    : Frame 155 / Frame 154 (206:3495) padding 0,   gap 0  ← 닉네임, 이메일
+ *  - "gap"     : Frame 1707482488 (237:6615)      padding 0,   gap 8  ← [6-6] 칩 질문
  */
-type FieldSpacing = "default" | "no-gap" | "none";
+type FieldSpacing = "default" | "no-gap" | "none" | "gap";
 
 type FieldProps = {
   label: string;

@@ -1,0 +1,29 @@
+/* Figma: Chips_L — padding 8/24, radius 200, 16px Medium / 1.5 / -0.48px, 높이 40 */
+.chips {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 8px 24px;
+  border: none;
+  border-radius: 200px;
+  font-family: Pretendard, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.48px;
+  font-feature-settings: "dlig" 1, "lnum" 1, "pnum" 1;
+  white-space: nowrap;
+}
+
+/* 17:169 — 선택됨 */
+.chips--on {
+  background: var(--brand-solid);
+  color: var(--neutral-0);
+}
+
+/* 17:143 — 미선택 */
+.chips--off {
+  background: var(--neutral-50);
+  color: var(--neutral-400);
+}

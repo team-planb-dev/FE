@@ -53,6 +53,18 @@ type TripDetailMode = "edit" | "saved" | "shared";
 /** 237:6206 — Snackbar 문구 */
 const COPIED_TEXT = "링크가 클립보드에 복사되었습니다.";
 
+/**
+ * 헤더 타이틀이 화면마다 다릅니다.
+ *  [8-1] 344:9909  "여행 일정 생성"
+ *  [8-3] 344:11272 "내 일정"        ← 화살표도 여기에만 있습니다
+ *  [10-2] 396:5149 "여행 일정 생성"
+ */
+const HEADER_TITLE: Record<TripDetailMode, string> = {
+  edit: "여행 일정 생성",
+  saved: "내 일정",
+  shared: "여행 일정 생성",
+};
+
 export default function TripDetail({
   mode = "edit",
 }: {
@@ -89,14 +101,16 @@ export default function TripDetail({
 
   return (
     <div className={`trip-detail${saved ? " trip-detail--saved" : ""}`}>
-      {/* Header (344:9909) — 16:26 가운데 타이틀형, 좌우는 빈 20×20.
-          ⚠ [8-3] 개발 노트 1 은 "헤더의 화살표를 누르면 홈으로", "공유 아이콘을 누르면
-            [S10]으로" 라고 하는데 **이 헤더에는 화살표도 공유 아이콘도 없습니다.**
-            디자인 그대로 두었습니다(확인 필요 문서 61번). */}
+      {/* Header — 16:26 가운데 타이틀형.
+          [8-3] 개발 노트 1 대로 화살표는 홈으로, 공유 아이콘은 링크 복사([S10])입니다.
+          ⚠ 화살표는 [8-3](344:11272)에만 있고 [10-1]·[10-2]에는 없습니다.
+            [10-2]는 링크로 들어온 사람이 보는 화면이라 홈으로 보낼 곳이 없어
+            디자인 그대로 화살표를 두지 않았습니다(확인 필요 문서 참고). */}
       <Header
         className="trip-detail__header"
         variant="title"
-        title="여행 일정 생성"
+        title={HEADER_TITLE[mode]}
+        onBack={mode === "saved" ? () => navigate(PATHS.home) : undefined}
         action={saved ? { label: "일정 공유하기", onClick: share } : undefined}
       />
 

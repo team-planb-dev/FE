@@ -42,3 +42,29 @@
   width: 20px;
   height: 20px;
 }
+
+/* 237:7165 — 가운데 타이틀 헤더 */
+.header--title {
+  justify-content: space-between;
+}
+
+/* icn_empty_s / Default (16:32) — 아이콘이 비어 있는 20×20 자리.
+   좌우에 같은 자리를 둬야 타이틀이 가운데에 옵니다. */
+.header__slot {
+  display: block;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+/* I237:7165;16:99 — 16px SemiBold / 1.5 / -0.32px / neutral-900 */
+.header__title {
+  flex-shrink: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.32px;
+  color: var(--neutral-900);
+  white-space: nowrap;
+}

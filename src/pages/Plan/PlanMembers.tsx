@@ -11,7 +11,7 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 import Modal from "../../components/Modal/Modal";
 
-import { PATHS } from "../../routes/paths";
+import { PATHS, memberEditPath } from "../../routes/paths";
 
 /**
  * Figma: [6-2] 등록한 구성원 없을 때 (237:7084)
@@ -125,8 +125,7 @@ export default function PlanMembers() {
             tags={member.tags}
             selected={selectedIds.includes(member.id)}
             onToggle={() => toggle(member.id)}
-            // TODO(route): [6-4] 구성원 수정 화면이 생기면 연결해주세요.
-            onEdit={() => {}}
+            onEdit={() => navigate(memberEditPath(member.id))}
             onDelete={() => setPendingDelete(member)}
           />
         ))}

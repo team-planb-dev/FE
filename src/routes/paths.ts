@@ -34,6 +34,11 @@ export const PATHS = {
   memberNewFood: "/plan/members/new/food",
   /** [6-6] 여행 구성원 확정 */
   memberConfirm: "/plan/members/confirm",
+  /** [6-4] 구성원 수정 — 건강정보 확인. :memberId 는 구성원 id */
+  memberEdit: "/plan/members/:memberId/edit",
 } as const;
 
 export const termsDetailPath = (termKey: string) => `/signup/terms/${termKey}`;
+
+export const memberEditPath = (memberId: string) =>
+  `/plan/members/${memberId}/edit`;

@@ -24,6 +24,28 @@ export default function MemberFood() {
   const navigate = useNavigate();
   const { form, setField } = useMemberForm();
 
+  /**
+   * TODO(api): 구성원 등록 API로 교체하세요.
+   * 지금은 방금 입력한 값으로 카드 하나를 만들어 목록 화면에 넘깁니다.
+   */
+  const finish = () => {
+    const tags: string[] = [];
+    if (form.hasAllergy === "yes") tags.push("알레르기 주의");
+    if (form.takesMeds === "yes") tags.push("복약");
+    tags.push(...form.conditions);
+
+    navigate(PATHS.planMembers, {
+      state: {
+        justRegistered: true,
+        newMember: {
+          id: `new-${Date.now()}`,
+          name: form.name || "{구성원 이름}",
+          tags,
+        },
+      },
+    });
+  };
+
   // 두 질문 모두 * 필수입니다. 자유 입력칸에는 * 가 없어 선택으로 두었습니다.
   const canSubmit = form.hasAllergy !== null && form.hasDislikedFood !== null;
 
@@ -132,11 +154,12 @@ export default function MemberFood() {
         >
           이전으로
         </Btn>
-        {/* TODO(route): [6-6] 구성원 등록 확인 화면(237:6589)이 생기면 연결해주세요. */}
+        {/* 등록을 마치면 구성원 선택 화면으로 돌아갑니다 (237:6569 / 237:6579).
+            방금 등록한 구성원이 선택된 채로 목록에 들어갑니다. */}
         <Btn
           variant={canSubmit ? "primary" : "muted"}
           disabled={!canSubmit}
-          onClick={() => {}}
+          onClick={() => canSubmit && finish()}
         >
           다음으로
         </Btn>

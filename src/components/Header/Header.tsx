@@ -20,6 +20,7 @@ type HeaderProps = {
    *  "logo"  : 148:1834 (Variant4, 가운데 LOGO 텍스트 · 뒤로가기 없음)
    *  "empty" : 182:1622 (Variant5, 아이콘도 텍스트도 없는 빈 헤더)
    *  "title" : 237:7165 (가운데 타이틀 · 좌우는 빈 20×20 자리)
+   *            onBack 을 주면 왼쪽이 뒤로가기 버튼이 됩니다([8-3] 344:11272)
    */
   variant?: "back" | "close" | "logo" | "empty" | "title";
 };
@@ -57,7 +58,20 @@ export default function Header({
   if (variant === "title") {
     return (
       <header className={rootClass}>
-        <span className="header__slot" aria-hidden="true" />
+        {/* [8-3](I344:11272;16:36)처럼 왼쪽에 화살표가 있는 변형도 있어
+            onBack 이 넘어오면 빈 자리 대신 뒤로가기 버튼을 놓습니다. */}
+        {onBack ? (
+          <button
+            type="button"
+            className="header__back"
+            aria-label={backLabel ?? "뒤로 가기"}
+            onClick={onBack}
+          >
+            <img className="header__back-icon" src={backIcon} alt="" />
+          </button>
+        ) : (
+          <span className="header__slot" aria-hidden="true" />
+        )}
         <span className="header__title">{title}</span>
         {action ? (
           <button

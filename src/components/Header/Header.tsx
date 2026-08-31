@@ -13,8 +13,9 @@ type HeaderProps = {
    *  "back"  : 19:831   (icn_empty_s / Variant2, ←)
    *  "close" : 87:3765  (icn_empty_s / Variant3, ×)
    *  "logo"  : 148:1834 (Variant4, 가운데 LOGO 텍스트 · 뒤로가기 없음)
+   *  "empty" : 182:1622 (Variant5, 아이콘도 텍스트도 없는 빈 헤더)
    */
-  variant?: "back" | "close" | "logo";
+  variant?: "back" | "close" | "logo" | "empty";
 };
 
 /** Figma: Header — 390×54, padding 15/20 */
@@ -34,6 +35,11 @@ export default function Header({
         <span className="header__logo">LOGO</span>
       </header>
     );
+  }
+
+  // Variant5 (182:1622) — 빈 헤더. [6-6] 확정 화면처럼 되돌아갈 수 없는 곳에 씁니다.
+  if (variant === "empty") {
+    return <header className={rootClass} />;
   }
 
   const isClose = variant === "close";

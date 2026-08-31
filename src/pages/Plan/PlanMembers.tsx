@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import "./PlanMembers.css";
 
@@ -52,11 +52,25 @@ const PREVIEW_EMPTY = false;
 
 export default function PlanMembers() {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [members, setMembers] = useState<Member[]>(
-    PREVIEW_EMPTY ? [] : MOCK_MEMBERS,
+  /**
+   * [6-6] 등록을 마치고 돌아온 경우 (237:6569 / 237:6579).
+   * 방금 등록한 구성원이 선택된 채로 목록에 들어가고, CTA 가 [완료]로 바뀝니다.
+   * TODO(api): 목록 조회 API 가 붙으면 이 라우터 state 대신 서버 응답을 쓰면 됩니다.
+   */
+  const registered = location.state as
+    | { justRegistered?: boolean; newMember?: Member }
+    | null;
+  const justRegistered = registered?.justRegistered === true;
+
+  const [members, setMembers] = useState<Member[]>(() => {
+    const base = PREVIEW_EMPTY ? [] : MOCK_MEMBERS;
+    return registered?.newMember ? [registered.newMember, ...base] : base;
+  });
+  const [selectedIds, setSelectedIds] = useState<string[]>(
+    registered?.newMember ? [registered.newMember.id] : [],
   );
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   /** [6-5] 삭제 확인 모달 — 지울 구성원. null 이면 닫힌 상태입니다. */
   const [pendingDelete, setPendingDelete] = useState<Member | null>(null);
 
@@ -137,13 +151,19 @@ export default function PlanMembers() {
         <Btn variant="outline" onClick={leave}>
           그만두기
         </Btn>
-        {/* TODO(route): 구성원 선택 다음 단계 화면이 아직 없습니다. */}
+        {/* [6-6] 등록 직후에는 [완료]입니다 (237:6569 / 237:6579).
+            ⚠ 그 프레임의 하단은 x20 y760 w350·버튼 171·그라데이션 없음이라
+              [6-3]의 bottom(342 / 167 / 그라데이션)과 구조가 다릅니다.
+              같은 화면에서 버튼이 튀지 않도록 기존 BottomBar 를 유지했습니다
+              (확인 필요 문서 참고). */}
         <Btn
           variant={canSubmit ? "primary" : "muted"}
-          onClick={() => {}}
+          onClick={() =>
+            canSubmit && justRegistered && navigate(PATHS.memberConfirm)
+          }
           disabled={!canSubmit}
         >
-          등록하기
+          {justRegistered ? "완료" : "등록하기"}
         </Btn>
       </BottomBar>
 

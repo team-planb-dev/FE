@@ -26,6 +26,7 @@ import MemberMeds from "./pages/Plan/MemberMeds";
 import MemberMedsDetail from "./pages/Plan/MemberMedsDetail";
 import MemberMealtime from "./pages/Plan/MemberMealtime";
 import MemberFood from "./pages/Plan/MemberFood";
+import MemberConfirm from "./pages/Plan/MemberConfirm";
 import MemberFormProvider from "./pages/Plan/MemberFormProvider";
 
 import SignupProvider from "./pages/Signup/SignupProvider";
@@ -110,6 +111,9 @@ function App() {
           <Route path={PATHS.memberNewMealtime} element={<MemberMealtime />} />
           <Route path={PATHS.memberNewFood} element={<MemberFood />} />
         </Route>
+
+        {/* [6-6] 확정 화면 — 등록 폼 밖이라 Provider 를 씌우지 않습니다 */}
+        <Route path={PATHS.memberConfirm} element={<MemberConfirm />} />
 
         <Route path="*" element={<Navigate to={PATHS.login} replace />} />
       </Routes>

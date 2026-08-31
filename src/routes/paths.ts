@@ -32,6 +32,8 @@ export const PATHS = {
   memberNewMealtime: "/plan/members/new/mealtime",
   /** [6-6] 기피 음식 및 알레르기 */
   memberNewFood: "/plan/members/new/food",
+  /** [6-6] 여행 구성원 확정 */
+  memberConfirm: "/plan/members/confirm",
 } as const;
 
 export const termsDetailPath = (termKey: string) => `/signup/terms/${termKey}`;

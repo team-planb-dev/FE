@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./MemberHealth.css";
@@ -10,6 +11,7 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 
 import { CONDITIONS, WALK_LEVELS, useMemberForm } from "./memberFormContext";
+import ExitRegistrationModal from "./ExitRegistrationModal";
 import { PATHS } from "../../routes/paths";
 
 /**
@@ -23,6 +25,8 @@ import { PATHS } from "../../routes/paths";
  */
 export default function MemberHealth() {
   const navigate = useNavigate();
+  /** [6-7] 등록 중 이탈 확인 모달 (237:7248) */
+  const [exitOpen, setExitOpen] = useState(false);
   const { form, setField, toggleCondition } = useMemberForm();
 
   // 두 질문 모두 * 필수입니다.
@@ -34,7 +38,8 @@ export default function MemberHealth() {
       <Header
         className="member-health__header"
         variant="close"
-        onBack={() => navigate(PATHS.planMembers)}
+        backLabel="구성원 등록 그만두기"
+        onBack={() => setExitOpen(true)}
       />
 
       {/* title_L (237:6873) — y54, 86. 원본은 "{구성원 이름} 님의" 입니다. */}
@@ -100,6 +105,9 @@ export default function MemberHealth() {
           다음으로
         </Btn>
       </BottomBar>
+
+      {/* [6-7] 등록 중 이탈 (237:7248) — 딤이 하단 바까지 덮도록 맨 뒤에 둡니다 */}
+      <ExitRegistrationModal open={exitOpen} onCancel={() => setExitOpen(false)} />
     </div>
   );
 }

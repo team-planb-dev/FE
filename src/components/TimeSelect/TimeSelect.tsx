@@ -11,12 +11,14 @@ type TimeSelectProps = {
   onChange: (value: TimeValue) => void;
 };
 
-/** 오전/오후 · 시 · 분 선택지 — 디자인에 목록이 없어 일반적인 값으로 채웠습니다. */
-export const MERIDIEMS = ["AM", "PM"] as const;
-export const HOURS = Array.from({ length: 12 }, (_, i) =>
+/** 오전/오후 · 시 · 분 선택지 — 디자인에 목록이 없어 일반적인 값으로 채웠습니다.
+ *  이 파일 밖에서 쓰는 곳이 없어 export 하지 않습니다.
+ *  (export 하면 react-refresh/only-export-components 에 걸립니다.) */
+const MERIDIEMS = ["AM", "PM"] as const;
+const HOURS = Array.from({ length: 12 }, (_, i) =>
   String(i + 1).padStart(2, "0"),
 );
-export const MINUTES = ["00", "10", "20", "30", "40", "50"];
+const MINUTES = ["00", "10", "20", "30", "40", "50"];
 
 /**
  * Figma: Component 1 ×3 + 콜론 (237:6742 복약 시간 / 237:6931 식사시간)

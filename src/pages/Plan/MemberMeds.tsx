@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./MemberMeds.css";
@@ -11,6 +12,7 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 
 import { useMemberForm } from "./memberFormContext";
+import ExitRegistrationModal from "./ExitRegistrationModal";
 import { PATHS } from "../../routes/paths";
 
 /**
@@ -23,6 +25,8 @@ import { PATHS } from "../../routes/paths";
 
 export default function MemberMeds() {
   const navigate = useNavigate();
+  /** [6-7] 등록 중 이탈 확인 모달 (237:7248) */
+  const [exitOpen, setExitOpen] = useState(false);
   const { form, setField } = useMemberForm();
 
   const canSubmit = form.takesMeds !== null;
@@ -33,7 +37,8 @@ export default function MemberMeds() {
       navigate(PATHS.memberNewMedsDetail);
       return;
     }
-    // TODO(route): [6-6] 3단계 식사시간 화면이 생기면 연결해주세요.
+    // '아니오'는 약 이름·복약 시점을 건너뛰고 바로 식사시간으로 갑니다.
+    navigate(PATHS.memberNewMealtime);
   };
 
   return (
@@ -42,7 +47,8 @@ export default function MemberMeds() {
       <Header
         className="member-meds__header"
         variant="close"
-        onBack={() => navigate(PATHS.planMembers)}
+        backLabel="구성원 등록 그만두기"
+        onBack={() => setExitOpen(true)}
       />
 
       {/* heading (237:6662) — y54, title_L 86 + subtitle 68 = 154 */}
@@ -97,6 +103,9 @@ export default function MemberMeds() {
           다음으로
         </Btn>
       </BottomBar>
+
+      {/* [6-7] 등록 중 이탈 (237:7248) — 딤이 하단 바까지 덮도록 맨 뒤에 둡니다 */}
+      <ExitRegistrationModal open={exitOpen} onCancel={() => setExitOpen(false)} />
     </div>
   );
 }

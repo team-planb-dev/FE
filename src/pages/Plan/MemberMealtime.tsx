@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./MemberMealtime.css";
@@ -12,6 +13,7 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 
 import { MEALS, useMemberForm } from "./memberFormContext";
+import ExitRegistrationModal from "./ExitRegistrationModal";
 import { PATHS } from "../../routes/paths";
 
 /**
@@ -22,6 +24,8 @@ import { PATHS } from "../../routes/paths";
  */
 export default function MemberMealtime() {
   const navigate = useNavigate();
+  /** [6-7] 등록 중 이탈 확인 모달 (237:7248) */
+  const [exitOpen, setExitOpen] = useState(false);
   const { form, setField } = useMemberForm();
 
   const reflects = form.reflectMealtime === "yes";
@@ -46,7 +50,8 @@ export default function MemberMealtime() {
       <Header
         className="member-mealtime__header"
         variant="close"
-        onBack={() => navigate(PATHS.planMembers)}
+        backLabel="구성원 등록 그만두기"
+        onBack={() => setExitOpen(true)}
       />
 
       {/* title_L (237:6902) — y54, 86 */}
@@ -132,6 +137,9 @@ export default function MemberMealtime() {
           다음으로
         </Btn>
       </BottomBar>
+
+      {/* [6-7] 등록 중 이탈 (237:7248) — 딤이 하단 바까지 덮도록 맨 뒤에 둡니다 */}
+      <ExitRegistrationModal open={exitOpen} onCancel={() => setExitOpen(false)} />
     </div>
   );
 }

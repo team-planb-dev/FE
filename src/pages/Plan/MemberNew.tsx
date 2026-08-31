@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./MemberNew.css";
@@ -14,6 +15,7 @@ import Btn from "../../components/Btn/Btn";
 
 import searchIcon from "../../assets/icn_search.svg";
 import { useMemberForm } from "./memberFormContext";
+import ExitRegistrationModal from "./ExitRegistrationModal";
 import { PATHS } from "../../routes/paths";
 
 /**
@@ -35,6 +37,8 @@ const SUBTITLE = "입력한 정보는 일정 추천에만 사용돼요.";
 
 export default function MemberNew() {
   const navigate = useNavigate();
+  /** [6-7] 등록 중 이탈 확인 모달 (237:7248) */
+  const [exitOpen, setExitOpen] = useState(false);
   const { form, setField } = useMemberForm();
 
   const considersHealth = form.considerHealth === "yes";
@@ -59,11 +63,12 @@ export default function MemberNew() {
   return (
     <div className="member-new">
       {/* Header / Variant3 (237:6626) — 닫기(×)
-          TODO(design): × 의 목적지가 디자인에 없습니다. 구성원 선택으로 되돌립니다. */}
+          [6-7] 개발 노트 1 — × 는 등록 과정에서 아예 이탈합니다(237:7270). */}
       <Header
         className="member-new__header"
         variant="close"
-        onBack={() => navigate(PATHS.planMembers)}
+        backLabel="구성원 등록 그만두기"
+        onBack={() => setExitOpen(true)}
       />
 
       {/* heading (237:6645) — y54, title_L 86 + subtitle 46 */}
@@ -168,6 +173,9 @@ export default function MemberNew() {
           {form.considerHealth === "no" ? "등록하기" : "다음으로"}
         </Btn>
       </BottomBar>
+
+      {/* [6-7] 등록 중 이탈 (237:7248) — 딤이 하단 바까지 덮도록 맨 뒤에 둡니다 */}
+      <ExitRegistrationModal open={exitOpen} onCancel={() => setExitOpen(false)} />
     </div>
   );
 }

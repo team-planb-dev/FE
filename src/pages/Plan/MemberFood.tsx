@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./MemberFood.css";
@@ -11,6 +12,7 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 
 import { useMemberForm } from "./memberFormContext";
+import ExitRegistrationModal from "./ExitRegistrationModal";
 import { PATHS } from "../../routes/paths";
 
 /**
@@ -22,6 +24,8 @@ import { PATHS } from "../../routes/paths";
  */
 export default function MemberFood() {
   const navigate = useNavigate();
+  /** [6-7] 등록 중 이탈 확인 모달 (237:7248) */
+  const [exitOpen, setExitOpen] = useState(false);
   const { form, setField } = useMemberForm();
 
   /**
@@ -55,7 +59,8 @@ export default function MemberFood() {
       <Header
         className="member-food__header"
         variant="close"
-        onBack={() => navigate(PATHS.planMembers)}
+        backLabel="구성원 등록 그만두기"
+        onBack={() => setExitOpen(true)}
       />
 
       {/* title_L (237:6964) — y54, 86 */}
@@ -164,6 +169,9 @@ export default function MemberFood() {
           다음으로
         </Btn>
       </BottomBar>
+
+      {/* [6-7] 등록 중 이탈 (237:7248) — 딤이 하단 바까지 덮도록 맨 뒤에 둡니다 */}
+      <ExitRegistrationModal open={exitOpen} onCancel={() => setExitOpen(false)} />
     </div>
   );
 }

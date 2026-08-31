@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./MemberMedsDetail.css";
@@ -21,6 +22,7 @@ import {
   MEDS_TIMINGS,
   useMemberForm,
 } from "./memberFormContext";
+import ExitRegistrationModal from "./ExitRegistrationModal";
 import { PATHS } from "../../routes/paths";
 
 /** 분 간격 선택지 — 디자인에 목록이 없어 일반적인 값으로 채웠습니다. */
@@ -37,6 +39,8 @@ const INTERVALS = ["30", "60", "90", "120"];
  */
 export default function MemberMedsDetail() {
   const navigate = useNavigate();
+  /** [6-7] 등록 중 이탈 확인 모달 (237:7248) */
+  const [exitOpen, setExitOpen] = useState(false);
   const { form, setField, setMealMeds } = useMemberForm();
 
   const byTime = form.medsTiming === "특정 시간대에 먹어요";
@@ -59,7 +63,8 @@ export default function MemberMedsDetail() {
       <Header
         className="member-meds-detail__header"
         variant="close"
-        onBack={() => navigate(PATHS.planMembers)}
+        backLabel="구성원 등록 그만두기"
+        onBack={() => setExitOpen(true)}
       />
 
       {/* heading (237:6700) — 복약 여부 화면과 같은 제목·부제 */}
@@ -207,6 +212,9 @@ export default function MemberMedsDetail() {
           다음으로
         </Btn>
       </BottomBar>
+
+      {/* [6-7] 등록 중 이탈 (237:7248) — 딤이 하단 바까지 덮도록 맨 뒤에 둡니다 */}
+      <ExitRegistrationModal open={exitOpen} onCancel={() => setExitOpen(false)} />
     </div>
   );
 }

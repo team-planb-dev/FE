@@ -24,6 +24,8 @@ import MemberConsent from "./pages/Plan/MemberConsent";
 import MemberHealth from "./pages/Plan/MemberHealth";
 import MemberMeds from "./pages/Plan/MemberMeds";
 import MemberMedsDetail from "./pages/Plan/MemberMedsDetail";
+import MemberMealtime from "./pages/Plan/MemberMealtime";
+import MemberFood from "./pages/Plan/MemberFood";
 import MemberFormProvider from "./pages/Plan/MemberFormProvider";
 
 import SignupProvider from "./pages/Signup/SignupProvider";
@@ -105,6 +107,8 @@ function App() {
             path={PATHS.memberNewMedsDetail}
             element={<MemberMedsDetail />}
           />
+          <Route path={PATHS.memberNewMealtime} element={<MemberMealtime />} />
+          <Route path={PATHS.memberNewFood} element={<MemberFood />} />
         </Route>
 
         <Route path="*" element={<Navigate to={PATHS.login} replace />} />

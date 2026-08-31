@@ -11,6 +11,7 @@ import Chips from "../../components/Chips/Chips";
 import ChipsM from "../../components/ChipsM/ChipsM";
 import Checkbox from "../../components/Checkbox/Checkbox";
 import Select from "../../components/Select/Select";
+import TimeSelect from "../../components/TimeSelect/TimeSelect";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 
@@ -22,10 +23,7 @@ import {
 } from "./memberFormContext";
 import { PATHS } from "../../routes/paths";
 
-/** 복약 시간 셀렉트 옵션 — 디자인에 목록이 없어 일반적인 값으로 채웠습니다. */
-const MERIDIEMS = ["AM", "PM"] as const;
-const HOURS = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, "0"));
-const MINUTES = ["00", "10", "20", "30", "40", "50"];
+/** 분 간격 선택지 — 디자인에 목록이 없어 일반적인 값으로 채웠습니다. */
 const INTERVALS = ["30", "60", "90", "120"];
 
 /**
@@ -35,7 +33,7 @@ const INTERVALS = ["30", "60", "90", "120"];
  *  · '특정 시간대에 먹어요'를 고르면 복약 시간 옵션이 나타납니다 (237:6731).
  *  · '식사를 기준으로 기억해요'를 고르면 복약 시간 옵션과
  *    '정확한 간격(선택)' 옵션이 나타납니다 (237:6753).
- *  두 상세 옵션은 2b 에서 붙입니다.
+ *  · 스크롤이 길어져도 하단 버튼은 고정입니다 (237:6804).
  */
 export default function MemberMedsDetail() {
   const navigate = useNavigate();
@@ -118,42 +116,12 @@ export default function MemberMedsDetail() {
         {/* 237:6740 — '특정 시간대에 먹어요' 를 고르면 나타납니다 (개발 노트) */}
         {byTime && (
           <Field label="복약 시간" htmlFor="meds-time" required spacing="gap">
-            <div className="meds-time" id="meds-time">
-              <div className="meds-time__meridiem">
-                <Select
-                  id="meds-meridiem"
-                  value={form.medsTime.meridiem}
-                  onChange={(v) =>
-                    setField("medsTime", { ...form.medsTime, meridiem: v })
-                  }
-                  options={MERIDIEMS}
-                  placeholder="AM"
-                />
-              </div>
-              <div className="meds-time__unit">
-                <Select
-                  id="meds-hour"
-                  value={form.medsTime.hour}
-                  onChange={(v) =>
-                    setField("medsTime", { ...form.medsTime, hour: v })
-                  }
-                  options={HOURS}
-                  placeholder="00"
-                />
-              </div>
-              {/* 237:6745 — 2×14 콜론 자리 (점 두 개) */}
-              <span className="meds-time__colon" aria-hidden="true" />
-              <div className="meds-time__unit">
-                <Select
-                  id="meds-minute"
-                  value={form.medsTime.minute}
-                  onChange={(v) =>
-                    setField("medsTime", { ...form.medsTime, minute: v })
-                  }
-                  options={MINUTES}
-                  placeholder="00"
-                />
-              </div>
+            <div id="meds-time">
+              <TimeSelect
+                idPrefix="meds"
+                value={form.medsTime}
+                onChange={(v) => setField("medsTime", v)}
+              />
             </div>
           </Field>
         )}
@@ -231,11 +199,10 @@ export default function MemberMedsDetail() {
         <Btn variant="outline" onClick={() => navigate(PATHS.memberNewMeds)}>
           이전으로
         </Btn>
-        {/* TODO(route): 선택한 시점에 따른 상세 옵션 화면(237:6731 / 237:6753)은 2b 에서 붙입니다. */}
         <Btn
           variant={canSubmit ? "primary" : "muted"}
           disabled={!canSubmit}
-          onClick={() => {}}
+          onClick={() => canSubmit && navigate(PATHS.memberNewMealtime)}
         >
           다음으로
         </Btn>

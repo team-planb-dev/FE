@@ -28,6 +28,10 @@ export const PATHS = {
   memberNewMeds: "/plan/members/new/meds",
   /** [6-6] 약 이름 + 복약 시점 */
   memberNewMedsDetail: "/plan/members/new/meds/detail",
+  /** [6-6] 식사시간 */
+  memberNewMealtime: "/plan/members/new/mealtime",
+  /** [6-6] 기피 음식 및 알레르기 */
+  memberNewFood: "/plan/members/new/food",
 } as const;
 
 export const termsDetailPath = (termKey: string) => `/signup/terms/${termKey}`;

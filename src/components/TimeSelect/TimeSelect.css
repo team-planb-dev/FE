@@ -1,0 +1,29 @@
+/* Figma: 237:6742 / 237:6931 — 84 + 10 + 79 + 10 + 2 + 10 + 79 = 274 */
+.time-select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Select 는 폭이 100% 라 여기서 잡아줍니다 */
+.time-select__meridiem {
+  width: 84px;
+}
+
+.time-select__unit {
+  width: 79px;
+}
+
+/* 237:6745 — 2×14, 위아래 2px 점 두 개 */
+.time-select__colon {
+  display: block;
+  flex-shrink: 0;
+  width: 2px;
+  height: 14px;
+  background:
+    radial-gradient(circle, var(--neutral-500) 1px, transparent 1px) 0 0 / 2px 2px
+      no-repeat,
+    radial-gradient(circle, var(--neutral-500) 1px, transparent 1px) 0 12px / 2px
+      2px no-repeat;
+}

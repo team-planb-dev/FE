@@ -1,0 +1,78 @@
+/* =========================================================
+   Card — Figma 237:7433 / 280×247
+   ========================================================= */
+
+.card {
+  width: 280px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  /* drop-shadow 0 2px 5px rgba(0,0,0,0.02) */
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.02));
+}
+
+.card__button {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 280px;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+}
+
+/* Frame 140 (87:3891) — 280×160 */
+.card__thumbnail {
+  position: relative;
+  width: 280px;
+  height: 160px;
+  flex-shrink: 0;
+  background: var(--neutral-200);
+  overflow: hidden;
+}
+
+.card__thumbnail-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Frame 139 (87:3892) — 280×87, padding 16 */
+.card__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 280px;
+  padding: 16px;
+  flex-shrink: 0;
+  background: var(--neutral-0);
+  border-radius: 0 0 10px 10px;
+}
+
+/* Frame 1707482543 (393:9254) — 248×24 */
+.card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+/* 87:3894 — 16px SemiBold / 1.5 / -0.24px / neutral-800 */
+.card__title {
+  margin: 0;
+  flex-shrink: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.24px;
+  color: var(--neutral-800);
+  white-space: nowrap;
+}

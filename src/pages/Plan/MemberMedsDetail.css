@@ -29,7 +29,11 @@
   width: 390px;
 }
 
-/* 237:6692 — x24 y228, w342, gap 40 */
+/* 237:6692 — x24 y228, w342, gap 40
+   시점을 고르면 블록이 더 붙어 844를 넘습니다(237:6753 은 h1019).
+   개발 노트대로 하단 버튼은 고정이고 이 영역만 스크롤합니다(237:6804).
+   ⚠ 상세 옵션이 붙은 프레임은 피그마상 x25 w345 입니다. 앞 단계와 이어지는 화면이라
+     x24 w342 로 맞췄습니다(확인 필요 문서 참고). */
 .member-meds-detail__form {
   position: absolute;
   top: 228px;
@@ -39,6 +43,124 @@
   align-items: flex-start;
   gap: 40px;
   width: 342px;
+  height: calc(844px - 228px);
+  padding-bottom: 120px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.member-meds-detail__form::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------------------------------------------------------
+   237:6740 — 복약 시간 (특정 시간대에 먹어요)
+   --------------------------------------------------------- */
+
+.meds-time {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Component 1 은 폭이 100% 라 여기서 잡아줍니다 — 피그마 84 / 79 / 79 */
+.meds-time__meridiem {
+  width: 84px;
+}
+
+.meds-time__unit {
+  width: 79px;
+}
+
+/* 237:6745 — 2×14, 위아래 2px 점 두 개 */
+.meds-time__colon {
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+  width: 2px;
+  height: 14px;
+  background:
+    radial-gradient(circle, var(--neutral-500) 1px, transparent 1px) 0 0 / 2px 2px
+      no-repeat,
+    radial-gradient(circle, var(--neutral-500) 1px, transparent 1px) 0 12px / 2px
+      2px no-repeat;
+}
+
+/* ---------------------------------------------------------
+   237:6763 — 식사 기준 복약 시간
+   --------------------------------------------------------- */
+
+.meal-meds {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+}
+
+/* 237:6766 — h54, 체크 블록과 칩 그룹 사이 20 */
+.meal-meds__row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 54px;
+  width: 100%;
+}
+
+/* 237:6768 — 체크박스 20 + gap 10 */
+.meal-meds__check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* 237:6770 — 16px Regular / 1.5 / -0.24px / neutral-600 */
+.meal-meds__label {
+  flex-shrink: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.24px;
+  color: var(--neutral-600);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* 237:6771 — 칩 4개, gap 4 */
+.meal-meds__relations {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------
+   237:6796 — 정확한 간격 (선택)
+   --------------------------------------------------------- */
+
+.meds-interval {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 237:6799 — 79 */
+.meds-interval__select {
+  width: 79px;
+}
+
+/* 237:6800 — 16px Regular / 1.5 / -0.24px / neutral-600 */
+.meds-interval__unit {
+  flex-shrink: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.24px;
+  color: var(--neutral-600);
+  white-space: nowrap;
 }
 
 /* 237:6696 — 세로 배치, gap 12, w203 */

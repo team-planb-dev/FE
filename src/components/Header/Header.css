@@ -57,17 +57,23 @@
   height: 20px;
 }
 
-/* icn_empty_s (16:96) — [S10] 공유 아이콘 자리.
-   ⚠ 에셋이 없어 점선 사각형으로 자리만 잡았습니다(확인 필요 문서 참고). */
+/* icn_empty_s (16:96) — [S10] 공유 아이콘. 20×20 */
 .header__action {
   display: block;
   flex-shrink: 0;
   width: 20px;
   height: 20px;
   padding: 0;
-  border: 1px dashed var(--neutral-300);
-  border-radius: 4px;
+  border: none;
   background: transparent;
+}
+
+/* 220:3039 — 아이콘은 20×20 안쪽에 좌우 20%, 위 15%, 아래 18.33% 로 들어갑니다.
+   내려받은 SVG 자체가 그 여백을 포함한 20×20 이라 그대로 채웁니다. */
+.header__action-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
 }
 
 /* I237:7165;16:99 — 16px SemiBold / 1.5 / -0.32px / neutral-900 */

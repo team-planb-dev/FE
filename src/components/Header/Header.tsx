@@ -2,6 +2,7 @@ import "./Header.css";
 
 import backIcon from "../../assets/icn_empty_s.svg";
 import closeIcon from "../../assets/icn_close_line.svg";
+import shareIcon from "../../assets/icn_share.svg";
 
 type HeaderProps = {
   /** 페이지에서 위치를 잡을 때 쓰는 추가 클래스 */
@@ -52,8 +53,7 @@ export default function Header({
   // 237:7165 — 가운데 타이틀. 좌우의 20×20 은 icn_empty_s/Default(16:32)로
   // 아이콘이 비어 있습니다. 자리를 남겨야 타이틀이 가운데에 옵니다.
   //
-  // [S10]에서는 오른쪽 자리에 공유 아이콘이 들어갑니다(396:4988).
-  // ⚠ 그 아이콘(16:96 / 220:3039) 에셋이 없어 자리만 그려둡니다.
+  // [S10]에서는 오른쪽 자리에 공유 아이콘이 들어갑니다(396:4988 / 16:96 / 220:3039).
   if (variant === "title") {
     return (
       <header className={rootClass}>
@@ -65,7 +65,9 @@ export default function Header({
             className="header__action"
             aria-label={action.label}
             onClick={action.onClick}
-          />
+          >
+            <img className="header__action-icon" src={shareIcon} alt="" />
+          </button>
         ) : (
           <span className="header__slot" aria-hidden="true" />
         )}

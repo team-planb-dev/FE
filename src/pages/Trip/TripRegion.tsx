@@ -107,10 +107,9 @@ export default function TripRegion() {
         <Btn variant="outline" onClick={() => navigate(PATHS.tripName)}>
           이전으로
         </Btn>
-        {/* TODO(route): [7-3] 여행 날짜 화면이 생기면 연결해주세요.
-            ⚠ [7-1]과 같은 이유로 항상 활성입니다 — 아무것도 안 고른 초기 화면
+        {/* ⚠ [7-1]과 같은 이유로 항상 활성입니다 — 아무것도 안 고른 초기 화면
               (237:6295)에도 `다음으로` 가 활성색으로 그려져 있습니다. */}
-        <Btn variant="primary" onClick={() => undefined}>
+        <Btn variant="primary" onClick={() => navigate(PATHS.tripDate)}>
           다음으로
         </Btn>
       </BottomBar>

@@ -39,7 +39,16 @@ export default function TripLoading() {
       {/* 237:6552 — x23 y253 */}
       <p className="trip-loading__subtitle">잠시만 기다려 주세요..</p>
 
-      {/* TODO(route): 생성이 끝나면 갈 화면이 디자인에 없습니다. */}
+      {/* ⚠ 로딩이 끝나면 갈 화면이 디자인에 적혀 있지 않습니다.
+          [S8] 여행 일정 상세가 AI 생성 결과라 [8-1]로 연결했습니다.
+          자동으로 넘기는 시간도 정해진 게 없어 사용자가 누르게 두었습니다. */}
+      <button
+        type="button"
+        className="trip-loading__next"
+        onClick={() => navigate(PATHS.tripDetail)}
+      >
+        생성된 일정 보기
+      </button>
     </div>
   );
 }

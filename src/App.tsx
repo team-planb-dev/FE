@@ -39,6 +39,7 @@ import TripTheme from "./pages/Trip/TripTheme";
 import TripFood from "./pages/Trip/TripFood";
 import TripConfirm from "./pages/Trip/TripConfirm";
 import TripLoading from "./pages/Trip/TripLoading";
+import TripDetail from "./pages/Trip/TripDetail";
 import TripFormProvider from "./pages/Trip/TripFormProvider";
 
 import SignupProvider from "./pages/Signup/SignupProvider";
@@ -151,6 +152,9 @@ function App() {
           <Route path={PATHS.tripFood} element={<TripFood />} />
           <Route path={PATHS.tripConfirm} element={<TripConfirm />} />
           <Route path={PATHS.tripLoading} element={<TripLoading />} />
+          {/* [S8] 여행 일정 상세 — [7-1]에서 받은 이름·조건을 그대로 씁니다 */}
+          <Route path={PATHS.tripDetail} element={<TripDetail />} />
+          <Route path={PATHS.tripSaved} element={<TripDetail saved />} />
         </Route>
 
         <Route path="*" element={<Navigate to={PATHS.login} replace />} />

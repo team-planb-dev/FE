@@ -14,7 +14,11 @@
   box-sizing: border-box;
   width: 167px;
   height: 167px;
-  padding: 24px 47px;
+  /* Figma 는 padding 24/47 인데, 좌우 47 은 72px 아이콘을 가운데 두려고 잡힌 값이고
+     라벨은 그 안쪽 폭(71px)에 갇히지 않습니다 — 원본에서 "식사시간 맞추기" 같은
+     라벨이 한 줄로 그려져 있습니다. 좌우 여백을 0 으로 두고 아이콘은
+     align-items 로 가운데 정렬해 같은 그림을 만듭니다. */
+  padding: 24px 0;
   justify-content: center;
   border: 1px solid var(--neutral-100);
   border-radius: 10px;
@@ -59,6 +63,8 @@
    ⚠ #121212 는 neutral 팔레트에 없는 값입니다([6-4]와 같은 색). 원본 그대로입니다. */
 .chips-xl__label {
   width: 100%;
+  /* 원본은 모든 라벨이 한 줄입니다. 줄바꿈을 막습니다. */
+  white-space: nowrap;
   flex-shrink: 0;
   font-family: Pretendard, sans-serif;
   font-size: 18px;

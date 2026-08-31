@@ -29,6 +29,9 @@ import MemberFood from "./pages/Plan/MemberFood";
 import MemberConfirm from "./pages/Plan/MemberConfirm";
 import MemberEdit from "./pages/Plan/MemberEdit";
 import MemberFormProvider from "./pages/Plan/MemberFormProvider";
+import TripName from "./pages/Trip/TripName";
+import TripRegion from "./pages/Trip/TripRegion";
+import TripFormProvider from "./pages/Trip/TripFormProvider";
 
 import SignupProvider from "./pages/Signup/SignupProvider";
 import BottomNavigation from "./components/BottomNavigation/BottomNavigation";
@@ -49,6 +52,15 @@ function MemberFormLayout() {
     <MemberFormProvider>
       <Outlet />
     </MemberFormProvider>
+  );
+}
+
+/** [S7] 여행 일정 생성 플로우 전체를 감싸 단계 간 입력값을 공유합니다. */
+function TripFormLayout() {
+  return (
+    <TripFormProvider>
+      <Outlet />
+    </TripFormProvider>
   );
 }
 
@@ -118,6 +130,12 @@ function App() {
 
         {/* [6-4] 구성원 수정 — 건강정보 확인 */}
         <Route path={PATHS.memberEdit} element={<MemberEdit />} />
+
+        {/* [S7] 여행 일정 생성 — 단계 간 입력값을 Context 로 공유합니다 */}
+        <Route element={<TripFormLayout />}>
+          <Route path={PATHS.tripName} element={<TripName />} />
+          <Route path={PATHS.tripRegion} element={<TripRegion />} />
+        </Route>
 
         <Route path="*" element={<Navigate to={PATHS.login} replace />} />
       </Routes>

@@ -58,13 +58,14 @@ export default function TripDetail({ saved = false }: { saved?: boolean }) {
 
   return (
     <div className={`trip-detail${saved ? " trip-detail--saved" : ""}`}>
-      {/* Header (344:9909).
-          [8-3] 개발 노트 1 — 헤더 화살표를 누르면 홈으로.
-          ⚠ 같은 노트의 "공유 아이콘을 누르면 [S10]으로" 는 아이콘 에셋도,
-            공유 아이콘이 붙은 헤더 variant 도 디자인에 없어 넣지 못했습니다. */}
+      {/* Header (344:9909) — 16:26 가운데 타이틀형, 좌우는 빈 20×20.
+          ⚠ [8-3] 개발 노트 1 은 "헤더의 화살표를 누르면 홈으로", "공유 아이콘을 누르면
+            [S10]으로" 라고 하는데 **이 헤더에는 화살표도 공유 아이콘도 없습니다.**
+            디자인 그대로 두었습니다(확인 필요 문서 61번). */}
       <Header
         className="trip-detail__header"
-        onBack={() => navigate(saved ? PATHS.home : PATHS.tripConfirm)}
+        variant="title"
+        title="여행 일정 생성"
       />
 
       {/* top (344:10582) — y54 */}
@@ -84,7 +85,13 @@ export default function TripDetail({ saved = false }: { saved?: boolean }) {
                   <span>({nightsLabel})</span>
                 </>
               ) : (
-                <span>{"{여행 일정}"}</span>
+                /* 앞 단계를 안 거치고 들어온 경우 — 디자인의 예시 값 그대로 */
+                <>
+                  <span>2026.08.01</span>
+                  <span>-</span>
+                  <span>2026.08.02</span>
+                  <span>(1박 2일)</span>
+                </>
               )}
             </p>
           </div>
@@ -99,7 +106,9 @@ export default function TripDetail({ saved = false }: { saved?: boolean }) {
             <p className="trip-detail__ai-text">
               AI가{" "}
               <span className="trip-detail__ai-strong">
-                {conditions.length > 0 ? conditions.join(", ") : "{조건 A}, {조건 B}"}
+                {conditions.length > 0
+                  ? conditions.join(", ")
+                  : "{조건 A}, {조건 B}, {조건 C}"}
               </span>
               를 고려하여
               <br />

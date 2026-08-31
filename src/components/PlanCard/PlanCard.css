@@ -86,15 +86,12 @@
   height: 20px;
 }
 
+/* 원본은 펼쳐진 상태라 화살표가 위(∧)를 봅니다 */
 .plan-card__toggle-icon img {
   display: block;
   width: 12px;
   height: 7px;
-  transition: transform 0.15s;
-}
-
-.plan-card--closed .plan-card__toggle-icon img {
-  transform: rotate(-90deg);
+  transform: rotate(180deg);
 }
 
 /* cardwithline (344:11151 / 344:10688) — 왼쪽 여백 6, 가로 gap 12 */

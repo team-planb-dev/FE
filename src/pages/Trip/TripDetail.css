@@ -164,6 +164,15 @@
   padding-bottom: 24px;
 }
 
+/* Snackbar (237:6206) — x24 y670, 342×54.
+   ⚠ 위치가 디자인에 없어 [S2]·[S4]와 같은 자리에 두었습니다. */
+.trip-detail__snackbar {
+  position: absolute;
+  top: 670px;
+  left: 24px;
+  width: 342px;
+}
+
 /* 카드는 회색 배경 위의 흰 상자입니다 */
 .trip-detail__list .plan-card__plan {
   background: var(--neutral-0);

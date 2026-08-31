@@ -60,8 +60,10 @@ export const PATHS = {
 
   /** [8-1] 생성된 여행 일정 — 저장 전 */
   tripDetail: "/trip/detail",
-  /** [8-3] 저장 완료 — 같은 화면의 저장 후 상태 */
+  /** [8-3] 저장 완료 · [10-1] 공유하기 — 같은 화면의 저장 후 상태 */
   tripSaved: "/trip/saved",
+  /** [10-2] 공유되는 화면 — 링크로 들어온 사람이 봅니다 */
+  tripShared: "/trip/shared",
 } as const;
 
 export const termsDetailPath = (termKey: string) => `/signup/terms/${termKey}`;

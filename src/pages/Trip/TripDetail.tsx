@@ -10,6 +10,7 @@ import PlanCard from "../../components/PlanCard/PlanCard";
 import PlanSide from "../../components/PlanSide/PlanSide";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
+import Snackbar from "../../components/Snackbar/Snackbar";
 
 import { MOCK_PLAN_DAYS, dayTabLabels } from "./planData";
 import { useTripForm } from "./tripFormContext";
@@ -34,13 +35,43 @@ const dot = (key: string) => key.replaceAll("-", ".");
  * ⚠ 개발 노트가 서로 어긋납니다. [8-1] 노트 4 는 "[저장]을 누를 경우 **[8-2]로**" 인데
  *   [8-3] 노트 1 은 "[8-1]에서 [저장하기]를 누르면 ... **[8-3] 화면으로**" 입니다.
  *   [8-2]는 식당 상세 페이지라 [8-3]이 맞다고 보고 그렇게 구현했습니다.
+ *
+ * [S10] 여행 일정 공유하기도 같은 화면입니다.
+ *  [10-1] 공유하기 (396:4987) — 저장 후 화면에서 공유 아이콘을 누르면 링크 복사 + Snackbar
+ *  [10-2] 공유되는 화면 (396:5148) — 링크로 들어온 사람이 보는 화면
+ *
+ * [S10] 개발 노트 1 (237:6291) [링크 공유] —
+ *   **한 페이지만 공유. 페이지 이동 불가. 확인만 가능, 수정 불가.**
+ *   그래서 shared 모드에서는 `상세 보기`도 열지 않습니다.
+ *
+ * ⚠ [8-3](344:11272) 헤더에는 공유 아이콘이 없는데 [10-1](396:4988)에는 있습니다.
+ *   [8-3] 노트가 "저장 후 헤더 우측에 공유 옵션이 생깁니다" 라고 하니 [10-1]이 맞다고 보고
+ *   저장 후 화면에 아이콘을 넣었습니다(확인 필요 문서 참고).
  */
-export default function TripDetail({ saved = false }: { saved?: boolean }) {
+type TripDetailMode = "edit" | "saved" | "shared";
+
+/** 237:6206 — Snackbar 문구 */
+const COPIED_TEXT = "링크가 클립보드에 복사되었습니다.";
+
+export default function TripDetail({
+  mode = "edit",
+}: {
+  mode?: TripDetailMode;
+}) {
   const navigate = useNavigate();
   const { form } = useTripForm();
 
+  const saved = mode !== "edit";
   const days = MOCK_PLAN_DAYS;
   const [dayIndex, setDayIndex] = useState(0);
+  const [copied, setCopied] = useState(false);
+
+  // TODO(api): 공유 링크는 서버가 만들어 줍니다. 지금은 현재 주소를 복사합니다.
+  const share = () => {
+    void navigator.clipboard?.writeText(window.location.href);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 2000);
+  };
 
   // 개발 노트 1 — 조건 C 는 해당하는 구성원이 있을 때만 들어갑니다.
   // TODO(api): 구성원의 복약·알레르기 정보를 받아 조건 C 를 채우세요.
@@ -66,6 +97,7 @@ export default function TripDetail({ saved = false }: { saved?: boolean }) {
         className="trip-detail__header"
         variant="title"
         title="여행 일정 생성"
+        action={saved ? { label: "일정 공유하기", onClick: share } : undefined}
       />
 
       {/* top (344:10582) — y54 */}
@@ -139,13 +171,27 @@ export default function TripDetail({ saved = false }: { saved?: boolean }) {
               key={item.stop.id}
               stop={item.stop}
               /* TODO(route): [8-2] 식당 상세 화면이 생기면 연결해주세요. */
-              onDetail={item.stop.kind === "food" ? () => undefined : undefined}
+              /* [S10] 노트 1 — 공유된 화면에서는 페이지 이동이 안 됩니다 */
+              onDetail={
+                item.stop.kind === "food" && mode !== "shared"
+                  ? () => undefined
+                  : undefined
+              }
             />
           ) : (
             <PlanSide key={item.gap.id} gap={item.gap} />
           ),
         )}
       </div>
+
+      {/* Snackbar (237:6206) — 링크를 복사하면 나타납니다.
+          ⚠ 화면 안 위치가 디자인에 없습니다(프레임 밖에 주석처럼 그려져 있습니다).
+            [S2]·[S4]와 같은 x24 y670 에 두었습니다. */}
+      {copied && (
+        <Snackbar className="trip-detail__snackbar" withIcon={false}>
+          {COPIED_TEXT}
+        </Snackbar>
+      )}
 
       {/* bottom (344:11243) — 저장 후에는 사라집니다([8-3] 개발 노트 1) */}
       {!saved && (

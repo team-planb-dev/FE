@@ -49,8 +49,7 @@ export default function TripTransport() {
         <Btn variant="outline" onClick={() => navigate(PATHS.tripDate)}>
           이전으로
         </Btn>
-        {/* TODO(route): [7-5] 장소 선택 화면이 생기면 연결해주세요. */}
-        <Btn variant="primary" onClick={() => undefined}>
+        <Btn variant="primary" onClick={() => navigate(PATHS.tripPlace)}>
           다음으로
         </Btn>
       </BottomBar>

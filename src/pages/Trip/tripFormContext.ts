@@ -1,5 +1,7 @@
 import { createContext, useContext } from "react";
 
+import type { Place } from "./placeData";
+
 /**
  * [S7] 여행 일정 생성 플로우 동안만 살아 있는 상태.
  * [6-6] 구성원 등록(MemberFormProvider)과 같은 방식입니다 — 단계가 10개라
@@ -24,6 +26,8 @@ export type TripForm = {
   nights: number;
   /** [7-4] 이동수단 (343:8449) */
   transport: Transport | null;
+  /** [7-5] 미리 정해진 장소 — 복수 선택 (344:10973) */
+  places: Place[];
 };
 
 /** Figma 237:6357~6359 — 세 가지뿐입니다 */
@@ -47,6 +51,7 @@ export const EMPTY_TRIP_FORM: TripForm = {
   startDate: null,
   nights: 0,
   transport: null,
+  places: [],
 };
 
 export type TripFormContextValue = {

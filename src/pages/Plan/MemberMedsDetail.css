@@ -1,0 +1,51 @@
+/* =========================================================
+   [6-6] 약 이름 + 복약 시점 — Figma 237:6690 / 237:6704 / 237:6717
+   프레임 390 × 844
+   ========================================================= */
+
+.member-meds-detail {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  background: var(--neutral-0);
+  overflow: hidden;
+}
+
+/* Header / Variant3 (237:6691) — x0 y0 */
+.member-meds-detail__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* heading (237:6700) — y54, title_L 86 + subtitle 68 = 154 */
+.member-meds-detail__heading {
+  position: absolute;
+  top: 54px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 390px;
+}
+
+/* 237:6692 — x24 y228, w342, gap 40 */
+.member-meds-detail__form {
+  position: absolute;
+  top: 228px;
+  left: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  width: 342px;
+}
+
+/* 237:6696 — 세로 배치, gap 12, w203 */
+.member-meds-detail__chips {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  width: 203px;
+}

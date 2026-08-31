@@ -24,6 +24,10 @@ export const PATHS = {
   memberNewConsent: "/plan/members/new/consent",
   /** [6-6] 관리 질환 + 걷기 정도 */
   memberNewHealth: "/plan/members/new/health",
+  /** [6-6] 복약 여부 */
+  memberNewMeds: "/plan/members/new/meds",
+  /** [6-6] 약 이름 + 복약 시점 */
+  memberNewMedsDetail: "/plan/members/new/meds/detail",
 } as const;
 
 export const termsDetailPath = (termKey: string) => `/signup/terms/${termKey}`;

@@ -92,11 +92,10 @@ export default function MemberHealth() {
         <Btn variant="outline" onClick={() => navigate(PATHS.memberNew)}>
           이전으로
         </Btn>
-        {/* TODO(route): [6-6] 복약 정보 화면이 생기면 연결해주세요. */}
         <Btn
           variant={canSubmit ? "primary" : "muted"}
           disabled={!canSubmit}
-          onClick={() => {}}
+          onClick={() => canSubmit && navigate(PATHS.memberNewMeds)}
         >
           다음으로
         </Btn>

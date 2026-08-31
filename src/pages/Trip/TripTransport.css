@@ -1,0 +1,38 @@
+/* =========================================================
+   [7-4] 이동수단 선택. Figma 343:8323(미선택) · 344:9531(자가용 선택)
+   프레임 390 × 844
+   ========================================================= */
+
+.trip-transport {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  background: var(--neutral-0);
+  overflow: hidden;
+}
+
+/* Header / Variant2 (343:8324) — x0 y0 */
+.trip-transport__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* title_L (343:8418) — y54, 한 줄이라 55 */
+.trip-transport__title {
+  position: absolute;
+  top: 54px;
+  left: 0;
+  height: 55px;
+}
+
+/* Frame 1707482563 (343:8449) — x24 y149, 342×167, 가로 gap 8 */
+.trip-transport__options {
+  position: absolute;
+  top: 149px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 342px;
+}

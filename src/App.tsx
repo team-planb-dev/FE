@@ -31,6 +31,8 @@ import MemberEdit from "./pages/Plan/MemberEdit";
 import MemberFormProvider from "./pages/Plan/MemberFormProvider";
 import TripName from "./pages/Trip/TripName";
 import TripRegion from "./pages/Trip/TripRegion";
+import TripDate from "./pages/Trip/TripDate";
+import TripTransport from "./pages/Trip/TripTransport";
 import TripFormProvider from "./pages/Trip/TripFormProvider";
 
 import SignupProvider from "./pages/Signup/SignupProvider";
@@ -135,6 +137,8 @@ function App() {
         <Route element={<TripFormLayout />}>
           <Route path={PATHS.tripName} element={<TripName />} />
           <Route path={PATHS.tripRegion} element={<TripRegion />} />
+          <Route path={PATHS.tripDate} element={<TripDate />} />
+          <Route path={PATHS.tripTransport} element={<TripTransport />} />
         </Route>
 
         <Route path="*" element={<Navigate to={PATHS.login} replace />} />

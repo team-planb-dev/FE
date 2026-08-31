@@ -18,7 +18,24 @@ export type TripForm = {
   district: string;
   /** [7-2] 지역 검색어 (343:8021) */
   regionQuery: string;
+  /** [7-3] 출발일 — YYYY-MM-DD (237:6347) */
+  startDate: string | null;
+  /** [7-3] 박수 — 0 당일치기 / 1 · 2 (237:6356) */
+  nights: number;
+  /** [7-4] 이동수단 (343:8449) */
+  transport: Transport | null;
 };
+
+/** Figma 237:6357~6359 — 세 가지뿐입니다 */
+export const NIGHT_OPTIONS = [
+  { nights: 0, label: "당일치기" },
+  { nights: 1, label: "1박 2일" },
+  { nights: 2, label: "2박 3일" },
+] as const;
+
+/** Figma 344:9536 / 344:9537 */
+export const TRANSPORTS = ["자가용", "대중교통"] as const;
+export type Transport = (typeof TRANSPORTS)[number];
 
 export const ALL_DISTRICTS = "전체";
 
@@ -27,6 +44,9 @@ export const EMPTY_TRIP_FORM: TripForm = {
   province: null,
   district: ALL_DISTRICTS,
   regionQuery: "",
+  startDate: null,
+  nights: 0,
+  transport: null,
 };
 
 export type TripFormContextValue = {

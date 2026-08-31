@@ -1,0 +1,68 @@
+/* =========================================================
+   [7-3] 여행 날짜 작성. Figma 237:6347(당일치기) · 343:8086(2박 3일)
+   프레임 390 × 844 — 한 화면의 두 상태입니다.
+   ========================================================= */
+
+.trip-date {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  background: var(--neutral-0);
+  overflow: hidden;
+}
+
+/* Header / Variant2 (237:6348) — x0 y0 */
+.trip-date__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* title_L (343:8317) — y54, 한 줄이라 55 */
+.trip-date__title {
+  position: absolute;
+  top: 54px;
+  left: 0;
+  height: 55px;
+}
+
+/* 8 - Calendar with disabled days (237:6360) — x0 y170, 390×358.
+   Date Picker 는 그 안에서 x23.5 y16 입니다. */
+.trip-date__calendar {
+  position: absolute;
+  top: 186px;
+  left: 23.5px;
+}
+
+/* Frame 79 (237:6354) — x24 y568, 342×90. 제목 30 + gap 20 + 칩 40 */
+.trip-date__nights {
+  position: absolute;
+  top: 568px;
+  left: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  width: 342px;
+}
+
+/* 237:6355 — 20px SemiBold / 1.5 / -0.4px.
+   ⚠ 색 #333 은 neutral 팔레트에 없습니다. 원본 그대로입니다. */
+.trip-date__nights-title {
+  margin: 0;
+  width: 100%;
+  font-family: Pretendard, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.4px;
+  color: #333;
+}
+
+/* Frame 78 (237:6356) — 가로 gap 6 */
+.trip-date__nights-chips {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}

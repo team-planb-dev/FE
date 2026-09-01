@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import "./MemberEdit.css";
 
@@ -13,6 +13,10 @@ import { PATHS } from "../../routes/paths";
  *
  * [6-4]의 첫 화면(237:7154)은 [6-3] 구성원 선택 목록 그대로라 새로 만들지 않았습니다.
  * 카드의 [수정]을 누르면 이 화면으로 옵니다.
+ *
+ * [11-3] 여행 구성원 수정하기(237:7368)도 **이 화면과 완전히 같습니다**
+ * (헤더 문구 "여행 일정 설정"까지 같습니다). 그래서 [11-2] 목록에서도 이리로 옵니다.
+ * 어디서 왔는지에 따라 [확인] 이 돌아갈 곳만 달라집니다.
  *
  * ⚠ 이 화면은 다른 [S6] 화면과 규칙이 많이 다릅니다(확인 필요 문서 참고).
  *   · 제목이 title_L(22px)이 아니라 24px 직접 텍스트, 부제도 18px 입니다.
@@ -44,7 +48,12 @@ const SUBMIT_LABEL = "확인";
 
 export default function MemberEdit() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { memberId } = useParams();
+
+  /** [6-3] 구성원 선택에서 왔으면 거기로, [11-2] 마이페이지 목록에서 왔으면 거기로 */
+  const from = (location.state as { from?: string } | null)?.from;
+  const backTo = from ?? PATHS.planMembers;
 
   return (
     <div className="member-edit">
@@ -97,7 +106,7 @@ export default function MemberEdit() {
         <Btn
           variant="primary"
           className="member-edit__submit"
-          onClick={() => navigate(PATHS.planMembers)}
+          onClick={() => navigate(backTo)}
         >
           {SUBMIT_LABEL}
         </Btn>

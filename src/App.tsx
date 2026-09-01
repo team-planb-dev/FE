@@ -8,6 +8,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 
+import Landing from "./pages/Landing/Landing";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import SignupComplete from "./pages/Signup/SignupComplete";
@@ -144,6 +145,8 @@ function App() {
           <Route path={PATHS.tripShared} element={<TripDetail mode="shared" />} />
           <Route path={PATHS.tripEdit} element={<TripEdit />} />
         </Route>
+
+        <Route path={PATHS.landing} element={<Landing />} />
 
         <Route path="*" element={<Navigate to={PATHS.login} replace />} />
       </Routes>

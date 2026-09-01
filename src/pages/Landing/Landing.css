@@ -1,0 +1,35 @@
+/* 랜딩. 시작하기를 누르면 로그인으로 */
+
+.landing {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  background: linear-gradient(180deg, var(--neutral-0) 0%, #e8fff0 100%);
+  overflow: hidden;
+}
+
+.landing__title {
+  position: absolute;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.44px;
+  color: #121212;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.landing__character {
+  position: absolute;
+  top: 214px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  width: 300px;
+  height: 300px;
+}

@@ -1,10 +1,4 @@
-/* =========================================================
-   [7-10] 로딩. Figma 237:6548
-   프레임 390 × 844 — 하단 바가 없습니다.
-
-   ⚠ 색 #121212 · #414141 은 neutral 팔레트 밖입니다([6-4]와 같은 두 값).
-     원본 그대로 두었습니다(확인 필요 문서 참고).
-   ========================================================= */
+/* AI 일정 생성 중 */
 
 .trip-loading {
   position: relative;
@@ -14,21 +8,18 @@
   overflow: hidden;
 }
 
-/* Header / Variant2 (237:6549) — x0 y0 */
 .trip-loading__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* Avatar (237:6551) — x24 y94, 60×60 */
 .trip-loading__avatar {
   position: absolute;
   top: 94px;
   left: 24px;
 }
 
-/* 237:6550 — x24 y171, 22px SemiBold / 1.5 / -0.44px / #121212 */
 .trip-loading__title {
   position: absolute;
   top: 171px;
@@ -43,8 +34,6 @@
   white-space: nowrap;
 }
 
-/* 237:6552 — 18px Medium / 1.5 / -0.36px / #414141.
-   ⚠ x 가 23 입니다. 제목은 24 인데 여기만 1px 다릅니다 — 원본 그대로입니다. */
 .trip-loading__subtitle {
   position: absolute;
   top: 253px;
@@ -59,9 +48,6 @@
   white-space: nowrap;
 }
 
-/* ⚠ 디자인에 없는 임시 버튼입니다.
-   로딩이 끝났을 때의 동작(자동 이동인지, 몇 초인지)이 정해지지 않아
-   [8-1]로 갈 수 있는 길만 열어뒀습니다. 확정되면 이 블록을 지우세요. */
 .trip-loading__next {
   position: absolute;
   top: 320px;

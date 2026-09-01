@@ -1,7 +1,4 @@
-/* =========================================================
-   [7-1] 일정 이름 작성. Figma 237:6557
-   프레임 390 × 844
-   ========================================================= */
+/* 일정 이름 입력 */
 
 .trip-name {
   position: relative;
@@ -11,15 +8,12 @@
   overflow: hidden;
 }
 
-/* Header / Variant2 (237:6558) — x0 y0 */
 .trip-name__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* Frame 1707482555 (343:6572) — y54, w390, 세로 gap 20
-   title_L 55 + gap 20 + Frame 132 114 */
 .trip-name__body {
   position: absolute;
   top: 54px;
@@ -31,14 +25,10 @@
   width: 390px;
 }
 
-/* title_L (237:6562) — 한 줄이라 55 */
 .trip-name__title {
   height: 55px;
 }
 
-/* Frame 132 (237:6563) — x20 w350.
-   ⚠ [7-2] 부터는 x24 w342 입니다. 이 화면만 회원가입 폼과 같은 350 입니다
-     (확인 필요 문서 11·23·33번의 연장). 원본 그대로 두었습니다. */
 .trip-name__field {
   width: 350px;
 }

@@ -1,3 +1,4 @@
+/** 라우터. 단계 입력값을 공유하는 흐름은 Provider 로 감쌉니다 */
 import {
   BrowserRouter,
   Navigate,
@@ -49,7 +50,6 @@ import SignupProvider from "./pages/Signup/SignupProvider";
 import BottomNavigation from "./components/BottomNavigation/BottomNavigation";
 import { PATHS } from "./routes/paths";
 
-/** 회원가입 플로우 전체를 감싸 단계 간 입력값을 공유합니다. */
 function SignupLayout() {
   return (
     <SignupProvider>
@@ -58,7 +58,6 @@ function SignupLayout() {
   );
 }
 
-/** [6-6] 신규 구성원 등록 플로우 전체를 감싸 단계 간 입력값을 공유합니다. */
 function MemberFormLayout() {
   return (
     <MemberFormProvider>
@@ -67,7 +66,6 @@ function MemberFormLayout() {
   );
 }
 
-/** [S7] 여행 일정 생성 플로우 전체를 감싸 단계 간 입력값을 공유합니다. */
 function TripFormLayout() {
   return (
     <TripFormProvider>
@@ -76,18 +74,12 @@ function TripFormLayout() {
   );
 }
 
-/**
- * 로그인 이후 화면들의 공통 껍데기 — 바텀 네비게이션이 항상 붙습니다.
- * 인증 화면(로그인·회원가입·찾기)은 이 레이아웃 밖에 있어 네비가 나타나지 않습니다.
- */
 function AppLayout() {
   const navigate = useNavigate();
 
   return (
     <>
       <Outlet />
-      {/* ⚠ 가운데 초록 원의 역할이 디자인에 명시되어 있지 않습니다(확인 필요 문서 2-c).
-          "계획 생성" 탭과 같은 자리라 우선 같은 곳으로 보냅니다. */}
       <BottomNavigation onFabClick={() => navigate(PATHS.planStart)} />
     </>
   );
@@ -98,7 +90,6 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path={PATHS.login} element={<Login />} />
-
         <Route element={<SignupLayout />}>
           <Route path={PATHS.signup} element={<Signup />} />
           <Route path={PATHS.signupTerms} element={<Terms />} />
@@ -108,7 +99,6 @@ function App() {
 
         <Route path={PATHS.findEmail} element={<FindEmail />} />
         <Route path={PATHS.findEmailResult} element={<FindEmailResult />} />
-
         <Route path={PATHS.findPassword} element={<FindPassword />} />
         <Route
           path={PATHS.findPasswordResult}
@@ -119,11 +109,8 @@ function App() {
           <Route path={PATHS.home} element={<Home />} />
         </Route>
 
-        {/* [S6] 화면에는 디자인에 바텀 네비게이션이 없어 AppLayout 밖에 둡니다. */}
         <Route path={PATHS.planStart} element={<PlanStart />} />
         <Route path={PATHS.planMembers} element={<PlanMembers />} />
-
-        {/* [6-6] 신규 구성원 등록 — 단계 간 입력값을 Context 로 공유합니다 */}
         <Route element={<MemberFormLayout />}>
           <Route path={PATHS.memberNew} element={<MemberNew />} />
           <Route path={PATHS.memberNewConsent} element={<MemberConsent />} />
@@ -137,17 +124,10 @@ function App() {
           <Route path={PATHS.memberNewFood} element={<MemberFood />} />
         </Route>
 
-        {/* [6-6] 확정 화면 — 등록 폼 밖이라 Provider 를 씌우지 않습니다 */}
         <Route path={PATHS.memberConfirm} element={<MemberConfirm />} />
-
-        {/* [6-4] 구성원 수정 — 건강정보 확인 */}
         <Route path={PATHS.memberEdit} element={<MemberEdit />} />
-
-        {/* [S11] 마이페이지 */}
         <Route path={PATHS.myPage} element={<MyPage />} />
         <Route path={PATHS.myMembers} element={<MyMembers />} />
-
-        {/* [S7] 여행 일정 생성 — 단계 간 입력값을 Context 로 공유합니다 */}
         <Route element={<TripFormLayout />}>
           <Route path={PATHS.tripName} element={<TripName />} />
           <Route path={PATHS.tripRegion} element={<TripRegion />} />
@@ -159,14 +139,9 @@ function App() {
           <Route path={PATHS.tripFood} element={<TripFood />} />
           <Route path={PATHS.tripConfirm} element={<TripConfirm />} />
           <Route path={PATHS.tripLoading} element={<TripLoading />} />
-          {/* [S8] 여행 일정 상세 — [7-1]에서 받은 이름·조건을 그대로 씁니다 */}
           <Route path={PATHS.tripDetail} element={<TripDetail />} />
           <Route path={PATHS.tripSaved} element={<TripDetail mode="saved" />} />
-          {/* [10-2] 공유되는 화면 — [S10] 개발 노트 1: 확인만 가능, 페이지 이동 불가.
-              TODO(api): 실제로는 링크로 들어오는 화면이라 서버에서 일정을 받아야 합니다.
-              지금은 목업이라 다른 [S7]·[S8] 화면과 같은 Provider 안에 둡니다. */}
           <Route path={PATHS.tripShared} element={<TripDetail mode="shared" />} />
-          {/* [S9] 여행 일정 수정 — [9-1] AI 수정 */}
           <Route path={PATHS.tripEdit} element={<TripEdit />} />
         </Route>
 

@@ -1,7 +1,4 @@
-/* =========================================================
-   [6-6] 신규 구성원 등록 1단계 — Figma 237:6609 / 237:6625
-   프레임 390 × 844
-   ========================================================= */
+/* 신규 구성원 등록 시작 */
 
 .member-new {
   position: relative;
@@ -11,14 +8,12 @@
   overflow: hidden;
 }
 
-/* Header / Variant3 (237:6626) — x0 y0 */
 .member-new__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* heading (237:6645) — y54, title_L 86 + subtitle 46 = 132 */
 .member-new__heading {
   position: absolute;
   top: 54px;
@@ -29,7 +24,6 @@
   width: 390px;
 }
 
-/* 237:6635 — x24 y206, w342, gap 40 */
 .member-new__form {
   position: absolute;
   top: 206px;
@@ -41,16 +35,12 @@
   width: 342px;
 }
 
-/* 237:6642 — 칩 사이 8 */
 .member-new__chips {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* Frame 138 (237:6627) — x20 y646, w342, gap 8
-   ⚠ 이 블록만 x20 입니다. 같은 화면의 나머지는 24 예요(확인 필요 문서 참고).
-     원본 좌표를 그대로 재현했습니다. */
 .member-new__consent {
   position: absolute;
   top: 646px;
@@ -62,7 +52,6 @@
   width: 342px;
 }
 
-/* Frame 133 (237:6628) — padding 10/0, 16px Medium / 1 / -0.16px / neutral-900 */
 .member-new__consent-label {
   display: flex;
   align-items: center;
@@ -78,7 +67,6 @@
   white-space: nowrap;
 }
 
-/* Frame 137 (237:6630) — 양끝 정렬, 높이 24 */
 .member-new__consent-row {
   display: flex;
   align-items: center;
@@ -86,7 +74,6 @@
   width: 100%;
 }
 
-/* Frame 156 (237:6631) — 체크박스 20 + gap 10 */
 .member-new__consent-check {
   display: flex;
   align-items: center;
@@ -94,7 +81,6 @@
   flex-shrink: 0;
 }
 
-/* 237:6633 — 16px Regular / 1.5 / -0.24px / neutral-600 */
 .member-new__consent-text {
   flex-shrink: 0;
   font-family: Pretendard, sans-serif;
@@ -107,7 +93,6 @@
   cursor: pointer;
 }
 
-/* 237:6634 — 같은 서체에 밑줄 */
 .member-new__consent-detail {
   flex-shrink: 0;
   padding: 0;

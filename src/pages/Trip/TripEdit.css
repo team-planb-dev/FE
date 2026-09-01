@@ -1,7 +1,4 @@
-/* =========================================================
-   [9-1] AI 수정 (393:10977) · [9-2] 빠른 수정 (393:10996 ~ 393:11087)
-   같은 화면의 대화 진행 단계입니다. 390 × 844
-   ========================================================= */
+/* AI 일정 수정 대화. stage 로 요청 → 결과 → 저장까지 진행합니다 */
 
 .trip-edit {
   position: relative;
@@ -11,7 +8,6 @@
   overflow: hidden;
 }
 
-/* Rectangle 12 (393:10978) — 390×320, 위에서 아래로 옅어지는 초록 */
 .trip-edit__glow {
   position: absolute;
   top: 0;
@@ -25,7 +21,6 @@
   );
 }
 
-/* Header (393:10979) — x0 y0. 배경이 비쳐야 해서 흰 배경을 지웁니다 */
 .trip-edit__header {
   position: absolute;
   top: 0;
@@ -33,8 +28,6 @@
   background: transparent;
 }
 
-/* 대화 영역 — 헤더(54) 아래부터 입력바(y724) 위까지.
-   [9-2]에서 대화가 길어지면 위로 밀려 올라갑니다(393:11028 이 음수 top). */
 .trip-edit__scroll {
   position: absolute;
   top: 54px;
@@ -51,7 +44,6 @@
   display: none;
 }
 
-/* 393:11028 — 턴 사이 세로 gap 40, 폭 342 */
 .trip-edit__thread {
   display: flex;
   flex-direction: column;
@@ -60,7 +52,6 @@
   width: 342px;
 }
 
-/* 393:11029 — 아바타 + 인사 말풍선, 세로 gap 20 */
 .trip-edit__intro {
   display: flex;
   flex-direction: column;
@@ -69,7 +60,6 @@
   width: 100%;
 }
 
-/* 393:11031 — 세로 gap 12 */
 .trip-edit__bubbles {
   display: flex;
   flex-direction: column;
@@ -78,13 +68,10 @@
   width: 100%;
 }
 
-/* 393:10983 — [9-1] 첫 말풍선만 216 로 고정됩니다.
-   [9-2]에서는 같은 말풍선이 글자 폭만큼 줄어듭니다(393:11005). */
 .trip-edit__bubble--wide {
   max-width: 216px;
 }
 
-/* 393:11036 — 수정 결과 묶음, 세로 gap 12 */
 .trip-edit__result {
   display: flex;
   flex-direction: column;
@@ -93,7 +80,6 @@
   width: 100%;
 }
 
-/* 393:12619 — 카드 240 두 장 + gap 12 = 492 로 342 를 넘어 가로로 스크롤합니다 */
 .trip-edit__compare {
   display: flex;
   align-items: flex-start;
@@ -107,7 +93,6 @@
   display: none;
 }
 
-/* 393:10985 — x0 y583(첫 화면) / 입력바만 있을 때는 y724 */
 .trip-edit__bottom {
   position: absolute;
   bottom: 0;
@@ -119,7 +104,6 @@
   gap: 20px;
 }
 
-/* 393:10986 — padding 0/24, 세로 gap 12 */
 .trip-edit__suggest {
   display: flex;
   flex-direction: column;
@@ -130,7 +114,6 @@
   padding: 0 24px;
 }
 
-/* 393:10987 — 14px Medium / 1.5 / -0.28px / neutral-900 */
 .trip-edit__suggest-title {
   margin: 0;
   width: 100%;
@@ -142,7 +125,6 @@
   color: var(--neutral-900);
 }
 
-/* 393:10988 — 가로 gap 8, 넘치면 다음 줄 (120 + 8 + 194 = 322 → 342 안) */
 .trip-edit__suggest-list {
   display: flex;
   flex-wrap: wrap;

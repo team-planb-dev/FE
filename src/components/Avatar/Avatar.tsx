@@ -6,10 +6,7 @@ type AvatarProps = {
   className?: string;
 };
 
-/**
- * Figma: Avatar / Variant2 (87:3241) — 60×60
- * [7-10] AI 일정 생성 중 · [9-1] AI 수정에서 씁니다.
- */
+/** AI 캐릭터 아바타 60×60 */
 export default function Avatar({ className }: AvatarProps) {
   return (
     <img

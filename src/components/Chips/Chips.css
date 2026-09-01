@@ -1,4 +1,5 @@
-/* Figma: Chips_L — padding 8/24, radius 200, 16px Medium / 1.5 / -0.48px, 높이 40 */
+/* 선택 칩 */
+
 .chips {
   display: inline-flex;
   align-items: center;
@@ -16,13 +17,11 @@
   white-space: nowrap;
 }
 
-/* 17:169 — 선택됨 */
 .chips--on {
   background: var(--brand-solid);
   color: var(--neutral-0);
 }
 
-/* 17:143 — 미선택 */
 .chips--off {
   background: var(--neutral-50);
   color: var(--neutral-400);

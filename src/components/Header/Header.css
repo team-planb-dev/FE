@@ -1,4 +1,5 @@
-/* Figma: Header (19:831) — 390×54 */
+/* 상단 헤더. back / close / logo / empty / title */
+
 .header {
   display: flex;
   align-items: center;
@@ -9,12 +10,10 @@
   overflow: hidden;
 }
 
-/* Variant4 (148:1834) — 로고를 가운데 놓습니다 */
 .header--logo {
   justify-content: center;
 }
 
-/* 148:1843 — 16px Medium / 1.5 / -0.32px / neutral-900 */
 .header__logo {
   flex-shrink: 0;
   font-family: Pretendard, sans-serif;
@@ -26,7 +25,6 @@
   white-space: nowrap;
 }
 
-/* icn_empty_s / Variant2 (16:34) — 20×20 */
 .header__back {
   display: block;
   flex-shrink: 0;
@@ -43,13 +41,10 @@
   height: 20px;
 }
 
-/* 237:7165 — 가운데 타이틀 헤더 */
 .header--title {
   justify-content: space-between;
 }
 
-/* icn_empty_s / Default (16:32) — 아이콘이 비어 있는 20×20 자리.
-   좌우에 같은 자리를 둬야 타이틀이 가운데에 옵니다. */
 .header__slot {
   display: block;
   flex-shrink: 0;
@@ -57,7 +52,6 @@
   height: 20px;
 }
 
-/* icn_empty_s (16:96) — [S10] 공유 아이콘. 20×20 */
 .header__action {
   display: block;
   flex-shrink: 0;
@@ -68,15 +62,12 @@
   background: transparent;
 }
 
-/* 220:3039 — 아이콘은 20×20 안쪽에 좌우 20%, 위 15%, 아래 18.33% 로 들어갑니다.
-   내려받은 SVG 자체가 그 여백을 포함한 20×20 이라 그대로 채웁니다. */
 .header__action-icon {
   display: block;
   width: 20px;
   height: 20px;
 }
 
-/* I237:7165;16:99 — 16px SemiBold / 1.5 / -0.32px / neutral-900 */
 .header__title {
   flex-shrink: 0;
   font-family: Pretendard, sans-serif;

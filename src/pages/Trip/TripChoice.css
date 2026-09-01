@@ -1,8 +1,4 @@
-/* =========================================================
-   [7-6] 여행 스타일 (237:6471) · [7-7] 여행 테마 (344:9591)
-   두 화면의 구조가 완전히 같아 CSS 를 함께 씁니다.
-   프레임 390 × 844
-   ========================================================= */
+/* 여행 스타일·테마 선택 화면 공용 스타일 */
 
 .trip-choice {
   position: relative;
@@ -12,14 +8,12 @@
   overflow: hidden;
 }
 
-/* Header / Variant2 — x0 y0 */
 .trip-choice__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* heading (344:9577 / 344:9595) — y54, title_L 55 + subtitle 46 = 101 */
 .trip-choice__heading {
   position: absolute;
   top: 54px;
@@ -30,8 +24,6 @@
   width: 390px;
 }
 
-/* Frame 1707482563 (344:9565 / 344:9598) — x24 y195, 342×342.
-   Chips_XL 167 두 개 + 간격 8 = 342. 줄 간격도 8 입니다. */
 .trip-choice__options {
   position: absolute;
   top: 195px;

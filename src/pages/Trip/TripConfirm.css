@@ -1,11 +1,4 @@
-/* =========================================================
-   [7-9] 입력 정보 확인. Figma 237:6512
-   프레임 390 × 844
-
-   ⚠ [6-4] 구성원 수정(237:7164)과 같은 구조입니다 — 80 / 38 / 206 그리드,
-     행 간격 20, 라벨 #222 · 값 #636363. 두 색 모두 neutral 팔레트 밖입니다
-     (확인 필요 문서 30번).
-   ========================================================= */
+/* 입력 정보 확인. 각 행에서 해당 단계로 돌아갑니다 */
 
 .trip-confirm {
   position: relative;
@@ -15,14 +8,12 @@
   overflow: hidden;
 }
 
-/* Header / Variant2 (237:6513) — x0 y0 */
 .trip-confirm__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* heading (343:9197) — y54, title_L 86(두 줄) + subtitle 46 = 132 */
 .trip-confirm__heading {
   position: absolute;
   top: 54px;
@@ -33,8 +24,6 @@
   width: 390px;
 }
 
-/* Frame 91 (237:6520) — x24 y226, 324×244.
-   두 칸(80 / 206) 사이 38, 줄 사이 20 */
 .trip-confirm__rows {
   position: absolute;
   top: 226px;
@@ -47,12 +36,10 @@
   margin: 0;
 }
 
-/* dl 안에서 한 줄이 두 칸을 차지하도록 */
 .trip-confirm__row {
   display: contents;
 }
 
-/* 237:6521 — 16px Medium / 1.5 / -0.32px / #222 */
 .trip-confirm__label {
   margin: 0;
   display: flex;
@@ -65,7 +52,6 @@
   color: #222;
 }
 
-/* 237:6522 — 값 + 아이콘, 간격 4 */
 .trip-confirm__value {
   margin: 0;
   display: flex;
@@ -73,7 +59,6 @@
   gap: 4px;
 }
 
-/* 237:6523 — 16px Medium / 1.5 / -0.32px / #636363 */
 .trip-confirm__value-text {
   flex-shrink: 0;
   font-family: Pretendard, sans-serif;
@@ -85,8 +70,6 @@
   white-space: nowrap;
 }
 
-/* 237:6525 — icn_empty_s / edit 을 24×24 로 키운 것입니다.
-   [6-4]와 같은 아이콘이라 icn_edit.svg 를 그대로 씁니다. */
 .trip-confirm__edit {
   display: block;
   flex-shrink: 0;

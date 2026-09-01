@@ -1,9 +1,4 @@
-/* =========================================================
-   Figma: side — [8-1] 카드 사이에 끼는 블록, 높이 64
-     Default  (344:10648) 복약체크
-     Variant2 (344:10667) 이동시간
-   왼쪽 여백 6 + 세로선 2px(neutral-300) + gap 12
-   ========================================================= */
+/* 일정 카드 사이의 복약체크 · 이동시간 */
 
 .plan-side {
   display: flex;
@@ -13,7 +8,6 @@
   height: 64px;
 }
 
-/* line / Variant4 (344:10487) — 2px, r200, neutral-300 */
 .plan-side__line {
   flex-shrink: 0;
   width: 2px;
@@ -22,7 +16,6 @@
   background: var(--neutral-300);
 }
 
-/* 344:10666 / 344:10669 — 세로 gap 12 */
 .plan-side__texts {
   display: flex;
   flex-direction: column;
@@ -32,7 +25,6 @@
   flex-shrink: 0;
 }
 
-/* 344:10647 / 344:10672 — 12px Medium / 1.5 / -0.24px / neutral-600 */
 .plan-side__label {
   margin: 0;
   font-family: Pretendard, sans-serif;
@@ -44,7 +36,6 @@
   white-space: nowrap;
 }
 
-/* 344:10665 / 344:10675 — 16px Medium / 1.5 / -0.24px / neutral-400, gap 4 */
 .plan-side__value {
   margin: 0;
   display: flex;

@@ -1,8 +1,4 @@
-/* =========================================================
-   [6-2] 등록한 구성원 없을 때        — Figma 237:7084
-   [6-3] MY에서 등록한 구성원이 있을 때 — Figma 237:7122 / 237:7132
-   프레임 390 × 844. 바텀 네비게이션이 붙지 않는 화면입니다.
-   ========================================================= */
+/* 여행 구성원 선택 */
 
 .plan-members {
   position: relative;
@@ -12,14 +8,12 @@
   overflow: hidden;
 }
 
-/* Header (237:7085) — x0 y0 */
 .plan-members__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* heading (237:7086) — y54, w390. title_L 86 + subtitle 68 = 154 */
 .plan-members__heading {
   position: absolute;
   top: 54px;
@@ -30,9 +24,6 @@
   width: 390px;
 }
 
-/* 237:7127 — y228, w342, gap 20
-   높이는 하단 바(120) 위까지. 디자인에는 구성원이 2명뿐이라 넘칠 때가
-   그려져 있지 않아, 약관 전체보기와 같은 방식으로 세로 스크롤을 두었습니다. */
 .plan-members__list {
   position: absolute;
   top: 228px;

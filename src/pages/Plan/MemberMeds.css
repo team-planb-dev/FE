@@ -1,7 +1,4 @@
-/* =========================================================
-   [6-6] 복약 여부 — Figma 237:6654 / 237:6666 / 237:6678
-   프레임 390 × 844
-   ========================================================= */
+/* 복약 여부 선택 */
 
 .member-meds {
   position: relative;
@@ -11,14 +8,12 @@
   overflow: hidden;
 }
 
-/* Header / Variant3 (237:6655) — x0 y0 */
 .member-meds__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* heading (237:6662) — y54, title_L 86 + subtitle 68 = 154 */
 .member-meds__heading {
   position: absolute;
   top: 54px;
@@ -29,8 +24,6 @@
   width: 390px;
 }
 
-/* 237:6656 — x20 y228, w342
-   ⚠ 이 화면만 x20 입니다. 다른 [6-6] 화면은 24 또는 25 예요(확인 필요 문서 참고). */
 .member-meds__form {
   position: absolute;
   top: 228px;
@@ -41,7 +34,6 @@
   width: 342px;
 }
 
-/* 237:6659 — 칩 사이 8 */
 .member-meds__chips {
   display: flex;
   align-items: center;

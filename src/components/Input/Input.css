@@ -1,12 +1,4 @@
-/* =========================================================
-   Figma: Input (88:580) / Input_password (88:580)
-   공통: h54 · r10 · gap10 · 안쪽 여백 16
-   테두리 두께가 컴포넌트마다 다릅니다 (디자인 원본 그대로)
-     Input          : 항상 1.5px
-     Input_password : 기본 1px → focus 시 1.5px
-   Chrome은 border-width를 정수 px로 내림 처리해 1.5px가 1px로 그려지므로
-   테두리는 inset box-shadow로 그리고, padding에 두께를 더해 보정합니다.
-   ========================================================= */
+/* 입력 필드 공용 스타일 */
 
 .input {
   display: flex;
@@ -20,33 +12,25 @@
   flex-shrink: 0;
 }
 
-/* ---- Input (88:580) ---- */
 .input--text {
   box-shadow: inset 0 0 0 1.5px var(--neutral-200);
   padding: 6px 17.5px;
 }
 
-/* focus / typing — Figma 237:5649 */
 .input--text:focus-within {
   box-shadow: inset 0 0 0 1.5px var(--brand-solid);
 }
 
-/* ---- Input_password (88:580) ---- */
 .input--password {
   box-shadow: inset 0 0 0 1px var(--neutral-200);
   padding: 6px 17px;
 }
 
-/* focus / typing — Figma 237:5670 : 테두리가 1.5px로 두꺼워짐 */
 .input--password:focus-within {
   box-shadow: inset 0 0 0 1.5px var(--brand-solid);
   padding: 6px 17.5px;
 }
 
-/* ---- 상태 테두리 (237:5711 / 237:5909 / 237:5923) ----
-   negative · positive 모두 1.5px 이며 focus 보다 우선합니다.
-   border: none 이 필요한 이유 — Input_password 는 기본 테두리가 실제 1px border 라
-   box-shadow 만 얹으면 바깥에 회색 1px, 안쪽에 상태색 1.5px 이 겹쳐 보입니다. */
 .input--negative,
 .input--negative:focus-within,
 .input--positive,
@@ -65,7 +49,6 @@
   box-shadow: inset 0 0 0 1.5px var(--status-positive);
 }
 
-/* ---- slot (204:1613 / 148:790) — h24, 남는 폭 전부 ---- */
 .input__control {
   flex: 1 0 0;
   min-width: 0;
@@ -77,9 +60,9 @@
   font-family: Pretendard, sans-serif;
   font-size: 16px;
   font-weight: 400;
-  line-height: 1.5; /* 24px */
+  line-height: 1.5;
   letter-spacing: -0.24px;
-  color: var(--neutral-800); /* 입력값 #262626 */
+  color: var(--neutral-800);
 }
 
 .input__control::placeholder {
@@ -88,12 +71,9 @@
   font-weight: 400;
   line-height: 1.5;
   letter-spacing: -0.24px;
-  color: var(--neutral-400); /* placeholder #A3A3A3 */
+  color: var(--neutral-400);
 }
 
-/* ---- 우측 아이콘 버튼 ----
-   icn_eye (148:769) / icn_empty_s Variant8 (119:784)
-   둘 다 20×20 프레임으로 export된 SVG를 그대로 사용 */
 .input__icon-btn {
   display: block;
   flex-shrink: 0;

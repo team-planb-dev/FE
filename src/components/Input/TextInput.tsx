@@ -11,17 +11,13 @@ type TextInputProps = {
   placeholder?: string;
   type?: "text" | "email" | "tel";
   autoComplete?: string;
-  /** 포커스 상태에서 값이 있을 때 오른쪽에 지우기(x) 버튼 노출 — Figma 237:5649 */
   clearable?: boolean;
-  /** 상태 테두리 — negative: 오류(237:5711, 237:5909) / positive: 사용 가능(237:5923) */
   status?: "negative" | "positive";
-  /** 인풋 왼쪽 아이콘 (20x20) — Figma Input 206:3496 의 돋보기 */
   leadingIcon?: string;
-  /** 페이지에서 폭을 잡을 때 쓰는 추가 클래스 */
   className?: string;
 };
 
-/** Figma: Input (88:580) — h54, 테두리 1.5px, focus 시 Brand/Solid */
+/** 텍스트 입력 */
 export default function TextInput({
   id,
   value,
@@ -36,8 +32,6 @@ export default function TextInput({
 }: TextInputProps) {
   const [focused, setFocused] = useState(false);
 
-  // 237:5645(포커스+입력중)에만 x 버튼이 있고
-  // 237:5660(값은 있지만 포커스 해제)에는 없습니다.
   const showClear = clearable && focused && value.length > 0;
 
   return (
@@ -65,7 +59,7 @@ export default function TextInput({
           type="button"
           className="input__icon-btn"
           aria-label="입력 지우기"
-          onMouseDown={(e) => e.preventDefault()} /* 클릭해도 포커스 유지 */
+          onMouseDown={(e) => e.preventDefault()}
           onClick={() => onChange("")}
         >
           <img className="input__icon" src={clearIcon} alt="" />

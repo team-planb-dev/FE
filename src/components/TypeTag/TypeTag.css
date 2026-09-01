@@ -1,7 +1,4 @@
-/* =========================================================
-   Figma: Chips_XL/type tag (344:9740) — 90 × 28
-   padding 4/8, r200, Brand/bg-weak 배경, 12px Medium 글자 + ⊗ 20×20
-   ========================================================= */
+/* 장소 분류 태그 */
 
 .type-tag {
   display: inline-flex;
@@ -14,7 +11,6 @@
   background: var(--brand-bg-weak);
 }
 
-/* 344:9736 — 12px Medium / 1.5 / -0.24px / Brand/pressed */
 .type-tag__label {
   flex-shrink: 0;
   font-family: Pretendard, sans-serif;
@@ -26,7 +22,6 @@
   white-space: nowrap;
 }
 
-/* icn_empty_s / Variant8 (119:784) — 20×20 ⊗ */
 .type-tag__remove {
   display: block;
   flex-shrink: 0;

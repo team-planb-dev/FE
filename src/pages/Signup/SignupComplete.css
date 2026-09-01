@@ -1,8 +1,4 @@
-/* =========================================================
-   [3-7] 회원가입 완료  —  Figma 237:5816
-   프레임 390 × 844
-   ⚠ 이용약관 화면과 같이 문구는 x24, 버튼은 x20 입니다.
-   ========================================================= */
+/* 회원가입 완료 */
 
 .signup-complete {
   position: relative;
@@ -12,21 +8,18 @@
   overflow: hidden;
 }
 
-/* Header (237:5817) — x0 y0 */
 .signup-complete__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* 237:5818 — x24 y74, 두 줄 62px */
 .signup-complete__message {
   position: absolute;
   top: 74px;
   left: 24px;
 }
 
-/* 22px SemiBold / 1.4 / -0.22px / neutral-900 */
 .signup-complete__line {
   margin: 0;
   font-family: Pretendard, sans-serif;
@@ -39,7 +32,6 @@
   word-break: break-word;
 }
 
-/* Btn (237:5819) — x20 y756, 350×54 */
 .btn.signup-complete__cta {
   position: absolute;
   top: 756px;

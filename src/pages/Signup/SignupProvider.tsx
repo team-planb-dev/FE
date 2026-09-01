@@ -8,7 +8,7 @@ import {
 } from "./signupContext";
 import type { SignupContextValue, SignupForm, TermKey } from "./signupContext";
 
-/** 회원가입 플로우 전체를 감싸 단계 간 입력값을 공유합니다. */
+/** 회원가입 단계의 입력값을 공유합니다 */
 export default function SignupProvider({ children }: { children: ReactNode }) {
   const [form, setForm] = useState<SignupForm>(EMPTY_FORM);
   const [agreed, setAgreedState] =

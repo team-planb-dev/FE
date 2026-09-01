@@ -1,6 +1,4 @@
-/* =========================================================
-   [11-2] 여행 구성원 관리 (237:7336) — 390 × 844
-   ========================================================= */
+/* 여행 구성원 관리. 카드에서 수정·삭제 */
 
 .my-members {
   position: relative;
@@ -10,14 +8,12 @@
   overflow: hidden;
 }
 
-/* Header (237:7337) — x0 y0 */
 .my-members__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* 237:7338 — y74, w342, 세로 gap 20 */
 .my-members__list {
   position: absolute;
   top: 74px;

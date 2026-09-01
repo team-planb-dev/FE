@@ -1,7 +1,4 @@
-/* =========================================================
-   [6-6] 관리 질환 + 걷기 정도 — Figma 237:6856 / 237:6875
-   프레임 390 × 844
-   ========================================================= */
+/* 관리 질환과 걷기 정도 선택 */
 
 .member-health {
   position: relative;
@@ -11,21 +8,18 @@
   overflow: hidden;
 }
 
-/* Header / Variant3 (237:6857) — x0 y0 */
 .member-health__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* title_L (237:6873) — y54, 86. 이 화면에는 subtitle 이 없습니다. */
 .member-health__title {
   position: absolute;
   top: 54px;
   left: 0;
 }
 
-/* 237:6858 — x24 y176, w342, gap 40 */
 .member-health__form {
   position: absolute;
   top: 176px;
@@ -37,14 +31,12 @@
   width: 342px;
 }
 
-/* 237:6862 — 가로 배치, gap 8 */
 .member-health__chips-row {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* 237:6869 — 세로 배치, gap 12, w251 */
 .member-health__chips-col {
   display: flex;
   flex-direction: column;

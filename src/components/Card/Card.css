@@ -1,12 +1,10 @@
-/* =========================================================
-   Card — Figma 237:7433 / 280×247
-   ========================================================= */
+/* 홈 화면 여행 카드 */
 
 .card {
   width: 280px;
   flex-shrink: 0;
   border-radius: 10px;
-  /* drop-shadow 0 2px 5px rgba(0,0,0,0.02) */
+
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.02));
 }
 
@@ -24,7 +22,6 @@
   text-align: left;
 }
 
-/* Frame 140 (87:3891) — 280×160 */
 .card__thumbnail {
   position: relative;
   width: 280px;
@@ -41,7 +38,6 @@
   object-fit: cover;
 }
 
-/* Frame 139 (87:3892) — 280×87, padding 16 */
 .card__body {
   display: flex;
   flex-direction: column;
@@ -54,7 +50,6 @@
   border-radius: 0 0 10px 10px;
 }
 
-/* Frame 1707482543 (393:9254) — 248×24 */
 .card__row {
   display: flex;
   align-items: center;
@@ -64,7 +59,6 @@
   flex-shrink: 0;
 }
 
-/* 87:3894 — 16px SemiBold / 1.5 / -0.24px / neutral-800 */
 .card__title {
   margin: 0;
   flex-shrink: 0;

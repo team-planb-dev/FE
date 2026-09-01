@@ -1,7 +1,4 @@
-/* =========================================================
-   [S4] 이메일 찾기 — Figma 237:7456 외
-   프레임 390 × 844
-   ========================================================= */
+/* 이메일 찾기 */
 
 .find-email {
   position: relative;
@@ -11,14 +8,12 @@
   overflow: hidden;
 }
 
-/* Header (237:7457) — x0 y0 */
 .find-email__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* Frame 1707482519 (237:7458) — top 54, w390, gap 40 */
 .find-email__content {
   position: absolute;
   top: 54px;
@@ -30,18 +25,15 @@
   width: 390px;
 }
 
-/* title_L (237:7459) — 390×86 */
 .find-email__title {
   flex-shrink: 0;
 }
 
-/* Frame 1707482517 / 1707482518 — 342×90 (라벨 36 + 인풋 54) */
 .field.find-email__field {
   width: 342px;
   flex-shrink: 0;
 }
 
-/* Snackbar (237:7519) — x24 y670, 342×54 */
 .find-email__snackbar {
   position: absolute;
   top: 670px;

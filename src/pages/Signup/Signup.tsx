@@ -19,25 +19,10 @@ import { PATHS } from "../../routes/paths";
 
 import searchIcon from "../../assets/icn_search.svg";
 
-/**
- * Figma: [S3] 회원가입 — 입력 폼 (237:5876 외)
- * 디자인 노트
- *  1. 헤더 왼쪽 화살표 → [S2] 로그인 복귀
- *  2. 닉네임 / 이메일은 중복 확인 후 status 메시지 표시
- *  3. 비밀번호 · 비밀번호 확인 일치 검증
- *  4. 필수 필드 미입력 시 버튼 disabled
- *  5. 계정 복구 질문 8종
- */
-
 const PASSWORD_HINT = "영문, 숫자, 특문 중 2개 조합 8자 이상";
 
-/** 중복 확인 결과 — Figma 237:5909(불가) / 237:5923(가능) */
 type CheckResult = "idle" | "taken" | "available";
 
-/**
- * ⚠ 피그마 이메일 필드의 안내 문구가 "닉네임"으로 되어 있습니다(237:5953, 237:5967).
- *   닉네임 필드에서 복사하며 안 고친 것으로 보여 이메일로 바로잡았습니다.
- */
 const CHECK_MESSAGE = {
   nickname: {
     taken: "사용할 수 없는 닉네임입니다.",
@@ -51,6 +36,7 @@ const CHECK_MESSAGE = {
 
 const CHECK_TONE = { taken: "negative", available: "positive" } as const;
 
+/** 회원가입 정보 입력 */
 export default function Signup() {
   const navigate = useNavigate();
   const { form, setField } = useSignup();
@@ -66,16 +52,11 @@ export default function Signup() {
   const [nicknameCheck, setNicknameCheck] = useState<CheckResult>("idle");
   const [emailCheck, setEmailCheck] = useState<CheckResult>("idle");
 
-  // TODO(api): 중복 확인 API로 교체하세요.
-  // 지금은 서버가 없어 임시로 동작합니다 — 처음 누르면 "사용 가능",
-  // 한 번 더 누르면 "사용 불가"가 되어 두 상태를 모두 확인할 수 있습니다.
   const toggleCheck = (
     current: CheckResult,
     set: (next: CheckResult) => void,
   ) => set(current === "available" ? "taken" : "available");
 
-  // 디자인 노트 4 — 필수 필드가 모두 채워져야 활성화
-  // 이메일·비밀번호 규칙은 Figma 정책 문서(65:340) 기준입니다.
   const canSubmit =
     nickname.trim().length > 0 &&
     isValidEmail(email.trim()) &&
@@ -101,9 +82,7 @@ export default function Signup() {
             가입에 필요한 정보를 입력해주세요
           </TitleL>
 
-          {/* Frame 1707482514 (237:5880) — x24 y160, 342 폭, gap 12 */}
           <div className="signup-page__fields">
-            {/* 닉네임 — Frame 155 (237:5881) 342×123 */}
             <Field
               label="닉네임"
               htmlFor="signup-nickname"
@@ -144,7 +123,6 @@ export default function Signup() {
               </div>
             </Field>
 
-            {/* 이메일 — Frame 154 (237:5883) 342×123 */}
             <Field
               label="이메일"
               htmlFor="signup-email"
@@ -185,7 +163,6 @@ export default function Signup() {
               </div>
             </Field>
 
-            {/* 비밀번호 — Frame 152 (237:5884) 342×139 */}
             <Field
               label="비밀번호"
               htmlFor="signup-password"
@@ -202,7 +179,6 @@ export default function Signup() {
               />
             </Field>
 
-            {/* 비밀번호 확인 — Frame 154 (237:5885) 342×106 */}
             <Field
               label="비밀번호 확인"
               htmlFor="signup-password-confirm"
@@ -218,7 +194,6 @@ export default function Signup() {
               />
             </Field>
 
-            {/* 계정 분실 질문 — Frame 132 (237:5887) 342×114 */}
             <Field
               label="계정 분실 시 복구 질문을 선택해주세요"
               htmlFor="signup-question"
@@ -232,7 +207,6 @@ export default function Signup() {
               />
             </Field>
 
-            {/* 질문 답변 — Frame 132 (237:5888) 342×114 */}
             <Field
               label="질문의 답변을 작성해주세요."
               htmlFor="signup-answer"
@@ -249,7 +223,6 @@ export default function Signup() {
         </div>
       </div>
 
-      {/* bottom (237:5889) — 390×120 하단 고정 */}
       <BottomBar>
         <Btn
           variant={canSubmit ? "primary" : "muted"}

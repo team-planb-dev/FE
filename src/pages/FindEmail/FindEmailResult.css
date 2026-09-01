@@ -1,7 +1,4 @@
-/* =========================================================
-   [4-3] 이메일 찾기 성공 — Figma 237:7520
-   프레임 390 × 844
-   ========================================================= */
+/* 이메일 찾기 결과 */
 
 .find-email-result {
   position: relative;
@@ -11,22 +8,18 @@
   overflow: hidden;
 }
 
-/* Header (237:7521) — x0 y0 */
 .find-email-result__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* title_L (237:7522) — x0 y54, 한 줄이라 높이 55 */
 .find-email-result__title {
   position: absolute;
   top: 54px;
   left: 0;
 }
 
-/* Frame 130 (237:7524) — x24 y149, 342×36, padding 10/0
-   16px Medium / 1 / -0.16px / neutral-900 */
 .find-email-result__email {
   position: absolute;
   top: 149px;

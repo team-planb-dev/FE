@@ -1,7 +1,4 @@
-/* =========================================================
-   Figma: Card (393:10452 위 / 393:10453 아래) — 240 × 247, r10
-     그림자 drop-shadow 0 2px 5px rgba(0,0,0,0.02)
-   ========================================================= */
+/* 일정 수정 전후 비교 카드 */
 
 .compare-card {
   display: flex;
@@ -14,7 +11,6 @@
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.02));
 }
 
-/* 393:10452 — 높이 160, padding 16, 사진이 배경 */
 .compare-card__media {
   position: relative;
   display: flex;
@@ -38,8 +34,6 @@
   pointer-events: none;
 }
 
-/* 393:10463 — padding 4/12, r200, neutral-900 배경
-   393:10464 — 12px Medium / 1.5 / -0.24px / neutral-0 */
 .compare-card__badge {
   position: relative;
   display: inline-flex;
@@ -58,7 +52,6 @@
   white-space: nowrap;
 }
 
-/* 393:10453 — 흰 배경, padding 16, 아래 모서리만 r10 */
 .compare-card__body {
   display: flex;
   flex-direction: column;
@@ -72,7 +65,6 @@
   overflow: hidden;
 }
 
-/* 393:10455 — 제목과 더보기를 양끝으로 */
 .compare-card__row {
   display: flex;
   align-items: center;
@@ -80,7 +72,6 @@
   width: 100%;
 }
 
-/* 393:10456 — 16px SemiBold / 1.5 / -0.24px / neutral-800 */
 .compare-card__title {
   margin: 0;
   flex-shrink: 0;
@@ -93,7 +84,6 @@
   white-space: nowrap;
 }
 
-/* 393:10457 */
 .compare-card__more {
   display: flex;
   align-items: center;
@@ -103,7 +93,6 @@
   background: transparent;
 }
 
-/* 393:10458 — 12px Regular / 1.5 / -0.24px / neutral-500 */
 .compare-card__more-text {
   font-family: Pretendard, sans-serif;
   font-size: 12px;
@@ -114,9 +103,6 @@
   white-space: nowrap;
 }
 
-/* 393:10459 — 20×20 상자.
-   ⚠ 받은 에셋이 프레임이 아니라 셰브론 벡터(7×12)라 상자 가운데에 놓았습니다
-     (확인 필요 문서 참고). */
 .compare-card__more-icon {
   display: flex;
   align-items: center;

@@ -4,22 +4,15 @@ import "./ChatBubble.css";
 
 import loaderIcon from "../../assets/icn_loader.svg";
 
-/**
- * Figma: chat_ai 변형
- *  "ai"      Default  (393:8344) Brand/Solid 배경, 흰 글자
- *  "user"    Variant2 (393:8513) 흰 배경 + neutral-100 테두리, neutral-900 글자, 오른쪽 정렬
- *  "loading" Variant3 (393:8517) Default 와 같은데 왼쪽에 16×16 스피너 + gap 4
- */
 type ChatBubbleVariant = "ai" | "user" | "loading";
 
 type ChatBubbleProps = {
   variant?: ChatBubbleVariant;
   children: ReactNode;
-  /** 페이지에서 폭·정렬을 잡을 때 쓰는 추가 클래스 */
   className?: string;
 };
 
-/** Figma: chat_ai — r10, padding 12, 14px Medium / 1.5 / -0.28px */
+/** AI 수정 대화 말풍선. ai / user / loading */
 export default function ChatBubble({
   variant = "ai",
   children,
@@ -32,7 +25,6 @@ export default function ChatBubble({
   if (variant === "loading") {
     return (
       <p className={rootClass}>
-        {/* lucide/loader-circle (I393:8526;286:9275) — 16×16 */}
         <img className="chat-bubble__spinner" src={loaderIcon} alt="" />
         <span>{children}</span>
       </p>

@@ -1,4 +1,5 @@
-/* Figma: Frame 132 / 152 / 154 / 155 — 라벨 행 + 컨트롤 + 보조 텍스트 */
+/* 라벨 + 입력 + 보조 문구 묶음 */
+
 .field {
   display: flex;
   flex-direction: column;
@@ -7,31 +8,26 @@
   flex-shrink: 0;
 }
 
-/* Frame 132 (88:579+88:580) — padding 8/0, gap 8 */
 .field--default {
   padding: 8px 0;
   gap: 8px;
 }
 
-/* Frame 152 / Frame 154 (206:4615) — padding 8/0, gap 0 */
 .field--no-gap {
   padding: 8px 0;
   gap: 0;
 }
 
-/* Frame 155 / Frame 154 (206:3495) — padding 0, gap 0 */
 .field--none {
   padding: 0;
   gap: 0;
 }
 
-/* Frame 1707482488 (237:6615) — padding 0, gap 8 — [6-6] 칩 질문 */
 .field--gap {
   padding: 0;
   gap: 8px;
 }
 
-/* Figma: 88:579 / Frame 130 (73:646, 182:1429) — padding 10/0, 높이 36 */
 .field__label-row {
   display: flex;
   align-items: center;
@@ -41,7 +37,6 @@
   flex-shrink: 0;
 }
 
-/* Figma: 73:639 / 182:1430 — 16px Medium / 1 / -0.16px / neutral-900 */
 .field__label,
 .field__required {
   flex-shrink: 0;
@@ -54,7 +49,6 @@
   white-space: nowrap;
 }
 
-/* Figma: subtext_field (206:3513 / 206:4610) — h33, padding 8/0 */
 .field__subtext {
   display: flex;
   align-items: center;
@@ -64,7 +58,6 @@
   flex-shrink: 0;
 }
 
-/* Figma: 206:3510 — 12px Regular / 1.4 / -0.12px / neutral-600 */
 .field__subtext-text {
   margin: 0;
   flex-shrink: 0;
@@ -76,17 +69,14 @@
   white-space: nowrap;
 }
 
-/* 206:3510 기본 — neutral-600 */
 .field__subtext-text--default {
   color: var(--neutral-600);
 }
 
-/* 237:5909 — Status/Negative_solid */
 .field__subtext-text--negative {
   color: var(--status-negative-solid);
 }
 
-/* 237:5923 — Status/Positive */
 .field__subtext-text--positive {
   color: var(--status-positive);
 }

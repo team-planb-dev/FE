@@ -45,6 +45,17 @@
   color: var(--neutral-0);
 }
 
+/* Btn (393:11061 / 393:11062) — [9-2] 대화 속 선택지.
+   알약 모양이고 폭이 글자만큼입니다. padding 은 15/16. */
+.btn--accent {
+  width: auto;
+  padding: 15px 16px;
+  border: none;
+  border-radius: 200px;
+  background: var(--brand-accent);
+  color: var(--neutral-0);
+}
+
 /* 크기 — 기본 54, 모달만 48 */
 .btn--lg {
   height: 54px;

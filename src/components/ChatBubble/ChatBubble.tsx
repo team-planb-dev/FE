@@ -2,23 +2,42 @@ import type { ReactNode } from "react";
 
 import "./ChatBubble.css";
 
+import loaderIcon from "../../assets/icn_loader.svg";
+
+/**
+ * Figma: chat_ai 변형
+ *  "ai"      Default  (393:8344) Brand/Solid 배경, 흰 글자
+ *  "user"    Variant2 (393:8513) 흰 배경 + neutral-100 테두리, neutral-900 글자, 오른쪽 정렬
+ *  "loading" Variant3 (393:8517) Default 와 같은데 왼쪽에 16×16 스피너 + gap 4
+ */
+type ChatBubbleVariant = "ai" | "user" | "loading";
+
 type ChatBubbleProps = {
+  variant?: ChatBubbleVariant;
   children: ReactNode;
-  /** 페이지에서 폭을 잡을 때 쓰는 추가 클래스 */
+  /** 페이지에서 폭·정렬을 잡을 때 쓰는 추가 클래스 */
   className?: string;
 };
 
-/**
- * Figma: chat_ai / Default (393:8344) — AI 말풍선
- *  r10, padding 12, 배경 Brand/Solid, 14px Medium / 1.5 / -0.28px / 흰색.
- *
- * ⚠ [9-2]·[9-3] 에는 오른쪽에 붙는 사용자 말풍선도 같은 컴포넌트의 다른 변형으로
- *   들어갑니다. [9-1] 에는 Default 만 나와서 지금은 이 변형만 만들었습니다.
- */
-export default function ChatBubble({ children, className }: ChatBubbleProps) {
-  return (
-    <p className={`chat-bubble${className ? ` ${className}` : ""}`}>
-      {children}
-    </p>
-  );
+/** Figma: chat_ai — r10, padding 12, 14px Medium / 1.5 / -0.28px */
+export default function ChatBubble({
+  variant = "ai",
+  children,
+  className,
+}: ChatBubbleProps) {
+  const rootClass = `chat-bubble chat-bubble--${variant}${
+    className ? ` ${className}` : ""
+  }`;
+
+  if (variant === "loading") {
+    return (
+      <p className={rootClass}>
+        {/* lucide/loader-circle (I393:8526;286:9275) — 16×16 */}
+        <img className="chat-bubble__spinner" src={loaderIcon} alt="" />
+        <span>{children}</span>
+      </p>
+    );
+  }
+
+  return <p className={rootClass}>{children}</p>;
 }

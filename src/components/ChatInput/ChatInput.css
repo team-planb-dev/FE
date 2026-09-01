@@ -1,0 +1,74 @@
+/* =========================================================
+   Figma: chat (393:8410) — 390 × 120
+     흰 배경, 위쪽 모서리만 r20, padding 16/20
+     그림자 0 -2px 20px rgba(0,0,0,0.05)
+   ========================================================= */
+
+.chat-input {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-sizing: border-box;
+  width: 390px;
+  padding: 16px 20px;
+  border-radius: 20px 20px 0 0;
+  background: var(--neutral-0);
+  box-shadow: 0 -2px 20px 0 rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* 393:8409 — 가로 gap 10, 아래 정렬 (300 + 10 + 40 = 350) */
+.chat-input__row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Textarea (120:1143) — 300×88, r10, padding 16, 배경 neutral-50
+   120:1144 — 14px Regular / 1.5 / -0.28px, placeholder neutral-400 */
+.chat-input__field {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: 300px;
+  height: 88px;
+  padding: 16px;
+  border: none;
+  border-radius: 10px;
+  background: var(--neutral-50);
+  resize: none;
+  outline: none;
+  font-family: Pretendard, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.28px;
+  color: var(--neutral-900);
+}
+
+.chat-input__field::placeholder {
+  color: var(--neutral-400);
+}
+
+/* 393:8293 / Enabled — 40×40, r2000, 배경 Brand/Accent */
+.chat-input__send {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 2000px;
+  background: var(--brand-accent);
+  overflow: hidden;
+}
+
+/* 393:8402 — 20×20, 가운데 정렬 */
+.chat-input__send-icon {
+  display: block;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}

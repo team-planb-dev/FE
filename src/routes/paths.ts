@@ -64,6 +64,9 @@ export const PATHS = {
   tripSaved: "/trip/saved",
   /** [10-2] 공유되는 화면 — 링크로 들어온 사람이 봅니다 */
   tripShared: "/trip/shared",
+
+  /** [9-1] AI 수정 — [8-1]에서 [수정하기] 를 누르면 들어옵니다 */
+  tripEdit: "/trip/edit",
 } as const;
 
 export const termsDetailPath = (termKey: string) => `/signup/terms/${termKey}`;

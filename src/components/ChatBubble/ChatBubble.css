@@ -1,0 +1,22 @@
+/* =========================================================
+   Figma: chat_ai / Default (393:8344) — AI 말풍선
+     r10, padding 12, 배경 Brand/Solid(#00513F)
+     393:8339 — 14px Medium / 1.5 / -0.28px / neutral-0
+   ========================================================= */
+
+.chat-bubble {
+  margin: 0;
+  flex-shrink: 0;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--brand-solid);
+  overflow: hidden;
+  font-family: Pretendard, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.28px;
+  color: var(--neutral-0);
+  /* 첫 말풍선은 디자인에서 두 줄로 끊겨 있어 줄바꿈을 그대로 살립니다 */
+  white-space: pre-line;
+}

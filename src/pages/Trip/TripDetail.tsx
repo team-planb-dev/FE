@@ -210,8 +210,8 @@ export default function TripDetail({
       {/* bottom (344:11243) — 저장 후에는 사라집니다([8-3] 개발 노트 1) */}
       {!saved && (
         <BottomBar>
-          {/* TODO(route): [S9] 일정 수정 화면이 생기면 연결해주세요. */}
-          <Btn variant="outline" onClick={() => undefined}>
+          {/* 개발 노트 4 — [수정하기] → [S9] */}
+          <Btn variant="outline" onClick={() => navigate(PATHS.tripEdit)}>
             수정하기
           </Btn>
           <Btn variant="primary" onClick={() => navigate(PATHS.tripSaved)}>

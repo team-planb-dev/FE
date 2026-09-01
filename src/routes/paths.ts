@@ -67,6 +67,11 @@ export const PATHS = {
 
   /** [9-1] AI 수정 — [8-1]에서 [수정하기] 를 누르면 들어옵니다 */
   tripEdit: "/trip/edit",
+
+  /** [11-1] 마이페이지 — 바텀 네비 [프로필] */
+  myPage: "/mypage",
+  /** [11-2] 여행 구성원 관리 */
+  myMembers: "/mypage/members",
 } as const;
 
 export const termsDetailPath = (termKey: string) => `/signup/terms/${termKey}`;

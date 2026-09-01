@@ -7,6 +7,7 @@ import Header from "../../components/Header/Header";
 import TitleL from "../../components/TitleL/TitleL";
 import Subtitle from "../../components/Subtitle/Subtitle";
 import MemberSelectCard from "../../components/MemberSelectCard/MemberSelectCard";
+import MemberAddCard from "../../components/MemberAddCard/MemberAddCard";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 import Modal from "../../components/Modal/Modal";
@@ -130,19 +131,8 @@ export default function PlanMembers() {
           />
         ))}
 
-        {/* Frame 156 (148:1572) — 342×114, r10, neutral-100 */}
-        <button
-          type="button"
-          className="plan-members__add"
-          onClick={() => navigate(PATHS.memberNew)}
-        >
-          {/* icn_empty_s / Variant7 (88:1049) — 20×20, y33
-              TODO(asset): icn_plus.svg 는 임시본입니다. Variant7 을 20×20 프레임째
-              export 하면 이 자리와 바텀 네비 가운데 버튼이 함께 해결됩니다. */}
-          <span className="plan-members__add-icon" aria-hidden="true" />
-          {/* 148:1529 — y63, 16px Medium / 1.5 / -0.32px / neutral-500 */}
-          <span className="plan-members__add-label">구성원 추가하기</span>
-        </button>
+        {/* Frame 156 (148:1572) — [11-2]와 같이 쓰는 컴포넌트로 뺐습니다 */}
+        <MemberAddCard onClick={() => navigate(PATHS.memberNew)} />
       </div>
 
       {/* bottom (237:7090) — y724, 390×120 */}

@@ -114,7 +114,9 @@
   white-space: nowrap;
 }
 
-/* 393:10459 — 20×20. 에셋이 없어 셰브론(12×7)을 -90° 돌려 가운데 놓습니다 */
+/* 393:10459 — 20×20 상자.
+   ⚠ 받은 에셋이 프레임이 아니라 셰브론 벡터(7×12)라 상자 가운데에 놓았습니다
+     (확인 필요 문서 참고). */
 .compare-card__more-icon {
   display: flex;
   align-items: center;
@@ -126,7 +128,6 @@
 
 .compare-card__more-icon img {
   display: block;
-  width: 12px;
-  height: 7px;
-  transform: rotate(-90deg);
+  width: 7px;
+  height: 12px;
 }

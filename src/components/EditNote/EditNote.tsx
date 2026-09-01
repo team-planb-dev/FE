@@ -1,5 +1,7 @@
 import "./EditNote.css";
 
+import checkIcon from "../../assets/icn_check.svg";
+
 type EditNoteProps = {
   /** 393:9064 / 393:9069 — 바뀐 내용 한 줄씩 */
   items: string[];
@@ -24,9 +26,10 @@ export default function EditNote({ items }: EditNoteProps) {
       <ul className="edit-note__list">
         {items.map((item) => (
           <li className="edit-note__item" key={item}>
-            {/* icn (393:9051) — 20×20 체크.
-                TODO(asset): 에셋이 없어 자리만 잡았습니다. */}
-            <span className="edit-note__icon" aria-hidden="true" />
+            {/* icn (393:9051) — 20×20 상자 안에 8×7 체크 */}
+            <span className="edit-note__icon" aria-hidden="true">
+              <img src={checkIcon} alt="" />
+            </span>
             <span className="edit-note__text">{item}</span>
           </li>
         ))}

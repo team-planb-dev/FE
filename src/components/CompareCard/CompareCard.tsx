@@ -1,7 +1,7 @@
 import "./CompareCard.css";
 
 import Tag from "../Tag/Tag";
-import chevronIcon from "../../assets/icn_chevron_down.svg";
+import chevronIcon from "../../assets/icn_chevron_right.svg";
 
 type CompareCardProps = {
   /** 393:10464 — "Before" · "After" */
@@ -50,8 +50,7 @@ export default function CompareCard({
             onClick={onMore}
           >
             <span className="compare-card__more-text">{MORE_LABEL}</span>
-            {/* icn_empty_s (393:10459) — 20×20.
-                TODO(asset): 에셋이 없어 셰브론을 돌려 씁니다. */}
+            {/* icn_empty_s (393:10459) — 20×20 상자 안에 7×12 셰브론 */}
             <span className="compare-card__more-icon">
               <img src={chevronIcon} alt="" />
             </span>

@@ -46,9 +46,25 @@
 }
 
 /* lucide/loader-circle (I393:8526;286:9275) — 16×16.
-   ⚠ 에셋이 없어 자리만 잡았습니다(확인 필요 문서 참고). */
+   ⚠ 디자인은 정지 그림입니다. 끊긴 원이라 멈춰 있으면 깨진 것처럼 보여
+     회전을 넣었습니다(확인 필요 문서 참고). 속도는 임의입니다. */
 .chat-bubble__spinner {
+  display: block;
   flex-shrink: 0;
   width: 16px;
   height: 16px;
+  animation: chat-bubble-spin 1s linear infinite;
+}
+
+@keyframes chat-bubble-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 애니메이션을 줄이도록 설정한 기기에서는 멈춥니다 */
+@media (prefers-reduced-motion: reduce) {
+  .chat-bubble__spinner {
+    animation: none;
+  }
 }

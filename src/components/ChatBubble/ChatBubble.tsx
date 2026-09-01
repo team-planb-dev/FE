@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 
 import "./ChatBubble.css";
 
+import loaderIcon from "../../assets/icn_loader.svg";
+
 /**
  * Figma: chat_ai 변형
  *  "ai"      Default  (393:8344) Brand/Solid 배경, 흰 글자
@@ -30,9 +32,8 @@ export default function ChatBubble({
   if (variant === "loading") {
     return (
       <p className={rootClass}>
-        {/* lucide/loader-circle (I393:8526;286:9275) — 16×16.
-            TODO(asset): 에셋이 없어 자리만 잡았습니다. */}
-        <span className="chat-bubble__spinner" aria-hidden="true" />
+        {/* lucide/loader-circle (I393:8526;286:9275) — 16×16 */}
+        <img className="chat-bubble__spinner" src={loaderIcon} alt="" />
         <span>{children}</span>
       </p>
     );

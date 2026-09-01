@@ -8,8 +8,9 @@ import "./Btn.css";
  *  - "muted"   → Btn / Variant2 (73:844)  bg #F5F5F5, 글자 #A3A3A3
  *  - "outline" → Btn / Default  (73:685)  bg #FFFFFF, 테두리 #E5E5E5, 글자 #0A0A0A
  *  - "danger"  → Modal Btn      (235:3334) bg #FA5852, 글자 #FFFFFF
+ *  - "accent"  → Btn            (393:11061) bg #35A68E, r200 알약, 글자 폭만큼 — [9-2] 대화 속 선택지
  */
-type BtnVariant = "primary" | "muted" | "outline" | "danger";
+type BtnVariant = "primary" | "muted" | "outline" | "danger" | "accent";
 
 /**
  * "lg" (54) 가 기본입니다. "md" (48) 는 모달 버튼(235:3334 / 235:3337) 전용입니다.

@@ -1,0 +1,74 @@
+/* =========================================================
+   Figma: edit_note (393:9071) — r10, padding 12, 세로 gap 20
+     그림자 0 2px 20px rgba(0,0,0,0.04)
+   ========================================================= */
+
+.edit-note {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  gap: 20px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--neutral-0);
+  box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+/* 393:9063 — 14px Medium / 1.5 / -0.28px / Brand/pressed */
+.edit-note__title {
+  margin: 0;
+  flex-shrink: 0;
+  width: 100%;
+  font-family: Pretendard, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.28px;
+  color: var(--brand-pressed);
+}
+
+/* 393:9070 — 세로 gap 8 */
+.edit-note__list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-shrink: 0;
+  gap: 8px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 393:9065 — 가로 gap 4, 위 정렬 */
+.edit-note__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+}
+
+/* icn (393:9051) — 20×20.
+   ⚠ 에셋이 없어 자리만 잡았습니다(확인 필요 문서 참고). */
+.edit-note__icon {
+  display: block;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+/* 393:9064 — 12px Regular / 1.5 / -0.24px / Brand/pressed */
+.edit-note__text {
+  flex: 1 0 0;
+  min-width: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.24px;
+  color: var(--brand-pressed);
+}

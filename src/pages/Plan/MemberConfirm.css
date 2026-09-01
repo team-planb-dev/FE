@@ -1,7 +1,4 @@
-/* =========================================================
-   [6-6] 여행 구성원 확정 — Figma 237:6589
-   프레임 390 × 844. 제목 한 줄 + 버튼 하나뿐입니다.
-   ========================================================= */
+/* 여행 구성원 확정 */
 
 .member-confirm {
   position: relative;
@@ -11,14 +8,12 @@
   overflow: hidden;
 }
 
-/* Header / Variant5 (237:6590) — x0 y0, 빈 헤더 */
 .member-confirm__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* title_L (237:6592) — y54. 한 줄이라 12+30.8+12 = 55 */
 .member-confirm__title {
   position: absolute;
   top: 54px;

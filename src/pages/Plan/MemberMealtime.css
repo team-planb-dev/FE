@@ -1,7 +1,4 @@
-/* =========================================================
-   [6-6] 식사시간 — Figma 237:6894 / 237:6914 / 237:6904
-   프레임 390 × 844
-   ========================================================= */
+/* 식사 시간 입력 */
 
 .member-mealtime {
   position: relative;
@@ -11,22 +8,18 @@
   overflow: hidden;
 }
 
-/* Header / Variant3 (237:6895) — x0 y0 */
 .member-mealtime__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* title_L (237:6902) — y54, 86. subtitle 이 없습니다. */
 .member-mealtime__title {
   position: absolute;
   top: 54px;
   left: 0;
 }
 
-/* 237:6896 / 237:6916 — x24 y160, w342, gap 40
-   앞 화면들(y206 / y228)과 달리 y160 에서 시작합니다. */
 .member-mealtime__form {
   position: absolute;
   top: 160px;
@@ -46,14 +39,12 @@
   display: none;
 }
 
-/* 237:6899 — 칩 사이 8 */
 .member-mealtime__chips {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* 237:6926 — 끼니 3줄, 줄 사이 8 */
 .meal-times {
   display: flex;
   flex-direction: column;
@@ -62,8 +53,6 @@
   width: 100%;
 }
 
-/* 237:6927 — h54, 체크 블록과 시간 사이 10
-   ⚠ 2단계 식사 기준 매트릭스(237:6766)는 같은 자리에서 간격이 20 입니다. */
 .meal-times__row {
   display: flex;
   align-items: center;
@@ -72,7 +61,6 @@
   width: 100%;
 }
 
-/* 237:6928 — 체크박스 20 + gap 10 */
 .meal-times__check {
   display: flex;
   align-items: center;
@@ -80,7 +68,6 @@
   flex-shrink: 0;
 }
 
-/* 237:6930 — 16px Regular / 1.5 / -0.24px / neutral-600 */
 .meal-times__label {
   flex-shrink: 0;
   font-family: Pretendard, sans-serif;

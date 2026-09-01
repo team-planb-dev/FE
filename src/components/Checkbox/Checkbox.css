@@ -1,4 +1,5 @@
-/* Figma: Checkbox (73:804 / 73:806) — 20×20, radius 4 */
+/* 체크박스 */
+
 .checkbox {
   position: relative;
   display: block;
@@ -7,7 +8,6 @@
   flex-shrink: 0;
 }
 
-/* 네이티브 인풋을 겹쳐 두어 키보드 조작·스크린리더 지원을 유지합니다. */
 .checkbox__input {
   position: absolute;
   inset: 0;
@@ -25,7 +25,6 @@
   pointer-events: none;
 }
 
-/* 키보드 포커스 표시 */
 .checkbox__input:focus-visible + .checkbox__icon {
   outline: 2px solid var(--brand-solid);
   outline-offset: 2px;

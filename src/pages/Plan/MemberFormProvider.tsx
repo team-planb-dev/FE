@@ -10,7 +10,7 @@ import type {
   MemberFormContextValue,
 } from "./memberFormContext";
 
-/** [6-6] 신규 구성원 등록 전체를 감싸 단계 간 입력값을 공유합니다. */
+/** 구성원 등록 단계의 입력값을 공유합니다 */
 export default function MemberFormProvider({
   children,
 }: {

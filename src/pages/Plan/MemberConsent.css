@@ -1,7 +1,4 @@
-/* =========================================================
-   [6-6] 민감정보 수집·이용 동의 전체보기 — Figma 237:6649
-   프레임 390 × 844
-   ========================================================= */
+/* 민감정보 수집·이용 동의 전문 */
 
 .member-consent {
   position: relative;
@@ -11,7 +8,6 @@
   overflow: hidden;
 }
 
-/* Header / Variant3 (237:6650) — x0 y0 */
 .member-consent__header {
   position: absolute;
   top: 0;
@@ -19,8 +15,6 @@
   z-index: 1;
 }
 
-/* 237:6652 — y74, w342, 16px Medium / 1.7 / -0.32px / neutral-800
-   피그마 x 는 25 인데 바로 아래 본문이 24 입니다. 24 로 맞췄습니다. */
 .member-consent__title {
   position: absolute;
   top: 74px;
@@ -36,8 +30,6 @@
   word-break: break-word;
 }
 
-/* 237:6651 — x24 y125, w342, 14px Medium / 1.7 / -0.28px / neutral-600
-   본문이 720px 이라 프레임을 넘어갑니다. 하단 바(120) 위까지 두고 스크롤합니다. */
 .member-consent__body {
   position: absolute;
   top: 125px;
@@ -64,7 +56,6 @@
   white-space: pre-wrap;
 }
 
-/* 불릿 들여쓰기 21px — Figma 목록 항목 */
 .member-consent__list {
   margin: 0;
   padding: 0;

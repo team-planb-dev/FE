@@ -1,4 +1,5 @@
-/* Figma: subtitle (187:1402) — w390, padding 12/24 */
+/* 화면 부제 */
+
 .subtitle {
   display: flex;
   align-items: center;
@@ -6,7 +7,6 @@
   padding: 12px 24px;
 }
 
-/* Figma: 187:1400 — 14px Medium / 1.6 / -0.28px / neutral-700 */
 .subtitle__text {
   margin: 0;
   flex-shrink: 0;

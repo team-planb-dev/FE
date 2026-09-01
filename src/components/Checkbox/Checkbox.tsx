@@ -9,12 +9,7 @@ type CheckboxProps = {
   onChange: (checked: boolean) => void;
 };
 
-/**
- * Figma: Checkbox — 20×20, r4
- *  - Default  (73:804) 배경 neutral-100, 체크 회색
- *  - Variant2 (73:806) 배경 Brand/Solid, 체크 흰색
- * 배경과 체크 색이 함께 바뀌어 20×20 아이콘 두 벌을 그대로 사용합니다.
- */
+/** 체크박스 */
 export default function Checkbox({ id, checked, onChange }: CheckboxProps) {
   return (
     <span className="checkbox">

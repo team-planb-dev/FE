@@ -1,4 +1,5 @@
-/* Figma: title_L (187:1401) — w390, padding 12/24 */
+/* 화면 제목 */
+
 .title-l {
   display: flex;
   align-items: center;
@@ -6,7 +7,6 @@
   padding: 12px 24px;
 }
 
-/* Figma: 187:1397 — 22px SemiBold / 1.4 / -0.22px / neutral-900 */
 .title-l__text {
   margin: 0;
   flex-shrink: 0;

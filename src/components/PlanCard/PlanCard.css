@@ -1,12 +1,4 @@
-/* =========================================================
-   Figma: card — [8-1] 일정 타임라인의 장소 카드
-     Variant3 (344:11149) 식당  — Orange, 추천메뉴 줄 있음, 높이 177
-     Variant2 (344:10686) 관광지 — Purple, 추천메뉴 없음, 높이 144
-
-   ⚠ 두 인스턴스의 폭이 340 / 342 로 다릅니다(컨테이너는 342).
-     컴포넌트 선언은 340 인데 관광지 인스턴스만 342 로 늘어나 있어
-     둘 다 컨테이너 폭(342)에 맞췄습니다(확인 필요 문서 참고).
-   ========================================================= */
+/* 일정 타임라인의 장소 카드 */
 
 .plan-card {
   display: flex;
@@ -16,7 +8,6 @@
   width: 100%;
 }
 
-/* title (344:10491 / 344:10513) — w225, 가로 gap 8 */
 .plan-card__title {
   display: flex;
   align-items: center;
@@ -28,7 +19,6 @@
   width: 225px;
 }
 
-/* 344:10492 — 12×12 원. 색이 카테고리를 나타냅니다 */
 .plan-card__dot {
   flex-shrink: 0;
   width: 12px;
@@ -46,7 +36,6 @@
   background: var(--purple-solid);
 }
 
-/* 344:10493 — 이름 + 시간, 가로 gap 8 */
 .plan-card__title-texts {
   display: flex;
   align-items: center;
@@ -55,7 +44,6 @@
   white-space: nowrap;
 }
 
-/* 344:10494 — 16px Medium / 1.5 / -0.24px / neutral-900 */
 .plan-card__title-name {
   font-family: Pretendard, sans-serif;
   font-size: 16px;
@@ -65,7 +53,6 @@
   color: var(--neutral-900);
 }
 
-/* 344:10495 — 14px Regular / 1.5 / -0.28px / neutral-400 */
 .plan-card__title-time {
   font-family: Pretendard, sans-serif;
   font-size: 14px;
@@ -75,8 +62,6 @@
   color: var(--neutral-400);
 }
 
-/* icn_empty_s / Variant12 (217:2257) — 20×20.
-   ⚠ 에셋이 없어 12×7 셰브론을 가운데 놓았습니다(확인 필요 문서 참고). */
 .plan-card__toggle-icon {
   display: flex;
   align-items: center;
@@ -86,7 +71,6 @@
   height: 20px;
 }
 
-/* 원본은 펼쳐진 상태라 화살표가 위(∧)를 봅니다 */
 .plan-card__toggle-icon img {
   display: block;
   width: 12px;
@@ -94,7 +78,6 @@
   transform: rotate(180deg);
 }
 
-/* cardwithline (344:11151 / 344:10688) — 왼쪽 여백 6, 가로 gap 12 */
 .plan-card__body {
   display: flex;
   align-items: stretch;
@@ -103,14 +86,12 @@
   width: 100%;
 }
 
-/* line (220:3119) — 2px, r200, 세로로 늘어남 */
 .plan-card__line {
   flex-shrink: 0;
   width: 2px;
   border-radius: 200px;
 }
 
-/* card_plan (344:10471) — 흰 배경, r12, padding 12, 세로 gap 10 */
 .plan-card__plan {
   display: flex;
   flex: 1 0 0;
@@ -124,7 +105,6 @@
   overflow: hidden;
 }
 
-/* 344:11116 / 344:10398 — 썸네일 + 정보, 가로 gap 12 */
 .plan-card__row {
   display: flex;
   align-items: center;
@@ -132,7 +112,6 @@
   width: 100%;
 }
 
-/* thumbnail (344:10236) — 88×88, r6 */
 .plan-card__thumb {
   display: block;
   flex-shrink: 0;
@@ -152,14 +131,12 @@
   gap: 12px;
 }
 
-/* 관광지(344:10400)는 높이 88 에 위아래로 붙입니다 */
 .plan-card--sight .plan-card__info {
   height: 88px;
   gap: 0;
   justify-content: space-between;
 }
 
-/* 392:4367 / 344:10401 — 이름 + 분류, 세로 gap 4 */
 .plan-card__names {
   display: flex;
   flex-direction: column;
@@ -175,7 +152,6 @@
   width: 100%;
 }
 
-/* 344:11120 — 16px SemiBold / 1.5 / -0.24px / neutral-800 */
 .plan-card__name {
   margin: 0;
   font-family: Pretendard, sans-serif;
@@ -187,7 +163,6 @@
   white-space: nowrap;
 }
 
-/* 392:7369 — "상세 보기 >" */
 .plan-card__more {
   display: flex;
   align-items: center;
@@ -197,7 +172,6 @@
   background: transparent;
 }
 
-/* 392:4355 — 12px Regular / 1.5 / -0.24px / neutral-500 */
 .plan-card__more-text {
   font-family: Pretendard, sans-serif;
   font-size: 12px;
@@ -208,7 +182,6 @@
   white-space: nowrap;
 }
 
-/* 392:7360 — 16×16. 위와 같은 이유로 셰브론을 돌려 씁니다. */
 .plan-card__more-icon {
   display: flex;
   align-items: center;
@@ -225,7 +198,6 @@
   transform: rotate(-90deg);
 }
 
-/* 392:4363 / 344:10403 — 12px Regular / 1.5 / -0.24px / neutral-400 */
 .plan-card__category {
   margin: 0;
   width: 100%;
@@ -237,7 +209,6 @@
   color: var(--neutral-400);
 }
 
-/* 344:11122 / 344:10412 — 태그 줄. 개발 노트 2: 카드보다 길면 스크롤, 3개까지 */
 .plan-card__tags {
   position: relative;
   display: flex;
@@ -252,7 +223,6 @@
   display: none;
 }
 
-/* Tag (344:10231) — padding 4/8, r200, 10px Medium / 1.5 / -0.2px */
 .plan-card__tag {
   display: inline-flex;
   align-items: center;
@@ -278,7 +248,6 @@
   color: var(--purple-solid);
 }
 
-/* 344:11126 — 오른쪽 끝 흰색 그라데이션 16px (더 있다는 표시) */
 .plan-card__tags-fade {
   position: absolute;
   right: 0;
@@ -289,7 +258,6 @@
   pointer-events: none;
 }
 
-/* 393:7798 — 추천메뉴 줄. 개발 노트: 식당 카드에서 1개까지만 */
 .plan-card__recommend {
   display: flex;
   align-items: center;
@@ -308,7 +276,6 @@
   white-space: nowrap;
 }
 
-/* 393:7801 — 8px 세로 구분선 */
 .plan-card__recommend-divider {
   flex-shrink: 0;
   width: 1px;

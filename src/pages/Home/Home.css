@@ -1,7 +1,4 @@
-/* =========================================================
-   [5-1] 메인 홈 — Figma 237:7435(empty) / 237:7427(일정 있음)
-   프레임 390 × 844, 하단 90은 바텀 네비 영역
-   ========================================================= */
+/* 메인 홈 */
 
 .home {
   position: relative;
@@ -11,18 +8,12 @@
   overflow: hidden;
 }
 
-/* Header Variant4 (237:7436) — x0 y0 */
 .home__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* ---------------------------------------------------------
-   [5-1] 홈-empty (237:7435)
-   --------------------------------------------------------- */
-
-/* character (344:11132) — x95 y127, 200×200 (가운데 정렬) */
 .home__character {
   position: absolute;
   top: 127px;
@@ -33,11 +24,10 @@
   height: 200px;
 }
 
-/* 344:11130 — y339, 16px Medium / 1.4 / -0.16px / neutral-400 */
 .home__empty-text {
   position: absolute;
   top: 339px;
-  /* 피그마 중심이 195.5 — 한 줄 텍스트 폭 계산 차이로 0.5px 어긋나 있습니다 */
+
   left: calc(50% + 0.5px);
   transform: translateX(-50%);
   margin: 0;
@@ -51,7 +41,6 @@
   white-space: nowrap;
 }
 
-/* Btn (344:11131) — x112 y422, 160×54 */
 .btn.home__empty-btn {
   position: absolute;
   top: 422px;
@@ -59,12 +48,6 @@
   width: 160px;
 }
 
-/* ---------------------------------------------------------
-   [5-1] 일정이 있는 상태 (237:7427)
-   --------------------------------------------------------- */
-
-/* 237:7429 x24 y80(59×43) / 237:7431 x91 y80(97×42)
-   두 탭 사이 간격 8 = 91 - (24 + 59) */
 .home__tabs {
   position: absolute;
   top: 80px;
@@ -74,14 +57,12 @@
   gap: 8px;
 }
 
-/* padding 6/12, 20px SemiBold / 1.5 / -0.4px */
 .home__tab {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 6px 12px;
-  /* 선택된 탭에만 밑줄이 붙어 높이가 42 / 43 으로 갈립니다(피그마 그대로).
-     위쪽 정렬이라 글자 위치는 두 탭이 같습니다. */
+
   border: none;
   background: transparent;
   font-family: Pretendard, sans-serif;
@@ -94,15 +75,11 @@
   cursor: pointer;
 }
 
-/* 선택된 탭 — neutral-950 글자 + 밑줄 (237:7429) */
 .home__tab--active {
   border-bottom: 1px solid var(--neutral-950);
   color: var(--neutral-950);
 }
 
-/* Card (237:7433) — x24 y149
-   ⚠ 디자인에 카드가 1개뿐이라 여러 개일 때의 배치가 미정입니다.
-     카드 폭 280 < 화면 390 이라 가로 스크롤로 두었고 간격 12는 임시값입니다. */
 .home__cards {
   position: absolute;
   top: 149px;

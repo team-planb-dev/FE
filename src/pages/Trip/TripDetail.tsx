@@ -16,55 +16,19 @@ import { MOCK_PLAN_DAYS, dayTabLabels } from "./planData";
 import { useTripForm } from "./tripFormContext";
 import { PATHS } from "../../routes/paths";
 
-/** YYYY-MM-DD → 2026.08.01 */
 const dot = (key: string) => key.replaceAll("-", ".");
 
-/**
- * Figma: [8-1] 여행 조건 생성 (344:9908) · [8-3] 일정 저장 완료 (344:11271)
- * 같은 화면의 저장 전 / 저장 후 상태입니다.
- *
- * 개발 노트
- *  1 (344:11009) [AI 조건 생성] — {조건 A} 여행 스타일(3중1), {조건 B} 여행 테마(4중1),
- *    {조건 C} 구성원 중 복약/알레르기 고려가 있으면 {복약 시간}·{알레르기}.
- *    해당 조건이 없으면 조건 C 는 표시하지 않습니다.
- *  2 (344:11029) [장소 태그] — 카드보다 길어지면 스크롤, 태그 3개까지.
- *  3 (344:11021) [식사/복약시간 고려] — 식사시간을 고려하면 그 시간에 식당 코스를,
- *    복약시간을 고려하면 지정시간 또는 식전/식후로 복약 시간을 배치합니다.
- *  4 (344:11267) [바텀 네비게이션] — [수정하기] → [S9], [저장] → (아래 ⚠ 참고)
- *
- * ⚠ 개발 노트가 서로 어긋납니다. [8-1] 노트 4 는 "[저장]을 누를 경우 **[8-2]로**" 인데
- *   [8-3] 노트 1 은 "[8-1]에서 [저장하기]를 누르면 ... **[8-3] 화면으로**" 입니다.
- *   [8-2]는 식당 상세 페이지라 [8-3]이 맞다고 보고 그렇게 구현했습니다.
- *
- * [S10] 여행 일정 공유하기도 같은 화면입니다.
- *  [10-1] 공유하기 (396:4987) — 저장 후 화면에서 공유 아이콘을 누르면 링크 복사 + Snackbar
- *  [10-2] 공유되는 화면 (396:5148) — 링크로 들어온 사람이 보는 화면
- *
- * [S10] 개발 노트 1 (237:6291) [링크 공유] —
- *   **한 페이지만 공유. 페이지 이동 불가. 확인만 가능, 수정 불가.**
- *   그래서 shared 모드에서는 `상세 보기`도 열지 않습니다.
- *
- * ⚠ [8-3](344:11272) 헤더에는 공유 아이콘이 없는데 [10-1](396:4988)에는 있습니다.
- *   [8-3] 노트가 "저장 후 헤더 우측에 공유 옵션이 생깁니다" 라고 하니 [10-1]이 맞다고 보고
- *   저장 후 화면에 아이콘을 넣었습니다(확인 필요 문서 참고).
- */
 type TripDetailMode = "edit" | "saved" | "shared";
 
-/** 237:6206 — Snackbar 문구 */
 const COPIED_TEXT = "링크가 클립보드에 복사되었습니다.";
 
-/**
- * 헤더 타이틀이 화면마다 다릅니다.
- *  [8-1] 344:9909  "여행 일정 생성"
- *  [8-3] 344:11272 "내 일정"        ← 화살표도 여기에만 있습니다
- *  [10-2] 396:5149 "여행 일정 생성"
- */
 const HEADER_TITLE: Record<TripDetailMode, string> = {
   edit: "여행 일정 생성",
   saved: "내 일정",
   shared: "여행 일정 생성",
 };
 
+/** 생성된 여행 일정. mode 로 저장 전 / 저장 후 / 공유받은 화면을 구분합니다 */
 export default function TripDetail({
   mode = "edit",
 }: {
@@ -78,15 +42,12 @@ export default function TripDetail({
   const [dayIndex, setDayIndex] = useState(0);
   const [copied, setCopied] = useState(false);
 
-  // TODO(api): 공유 링크는 서버가 만들어 줍니다. 지금은 현재 주소를 복사합니다.
   const share = () => {
     void navigator.clipboard?.writeText(window.location.href);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 2000);
   };
 
-  // 개발 노트 1 — 조건 C 는 해당하는 구성원이 있을 때만 들어갑니다.
-  // TODO(api): 구성원의 복약·알레르기 정보를 받아 조건 C 를 채우세요.
   const conditions = [form.style, form.theme].filter(Boolean) as string[];
 
   const nightsLabel = form.nights === 0 ? "당일치기" : `${form.nights}박 ${form.nights + 1}일`;
@@ -101,11 +62,6 @@ export default function TripDetail({
 
   return (
     <div className={`trip-detail${saved ? " trip-detail--saved" : ""}`}>
-      {/* Header — 16:26 가운데 타이틀형.
-          [8-3] 개발 노트 1 대로 화살표는 홈으로, 공유 아이콘은 링크 복사([S10])입니다.
-          ⚠ 화살표는 [8-3](344:11272)에만 있고 [10-1]·[10-2]에는 없습니다.
-            [10-2]는 링크로 들어온 사람이 보는 화면이라 홈으로 보낼 곳이 없어
-            디자인 그대로 화살표를 두지 않았습니다(확인 필요 문서 참고). */}
       <Header
         className="trip-detail__header"
         variant="title"
@@ -114,13 +70,9 @@ export default function TripDetail({
         action={saved ? { label: "일정 공유하기", onClick: share } : undefined}
       />
 
-      {/* top (344:10582) — y54 */}
       <div className="trip-detail__top">
         <div className="trip-detail__heading">
-          {/* TODO(api): 실제 일정 이름. [7-1]에서 받은 값을 씁니다. */}
           <TitleL>{form.name || "{일정 이름}"}</TitleL>
-
-          {/* date (344:10192) */}
           <div className="trip-detail__dates">
             <p className="trip-detail__dates-text">
               {form.startDate ? (
@@ -131,7 +83,6 @@ export default function TripDetail({
                   <span>({nightsLabel})</span>
                 </>
               ) : (
-                /* 앞 단계를 안 거치고 들어온 경우 — 디자인의 예시 값 그대로 */
                 <>
                   <span>2026.08.01</span>
                   <span>-</span>
@@ -143,11 +94,8 @@ export default function TripDetail({
           </div>
         </div>
 
-        {/* 344:10069 — AI 조건 배너 */}
         <div className="trip-detail__ai">
           <div className="trip-detail__ai-inner">
-            {/* Avatar / Variant2 (344:10074) — 24×24.
-                TODO(asset): 에셋이 없어 자리만 잡았습니다. */}
             <span className="trip-detail__ai-avatar" aria-hidden="true" />
             <p className="trip-detail__ai-text">
               AI가{" "}
@@ -163,7 +111,6 @@ export default function TripDetail({
           </div>
         </div>
 
-        {/* date (344:10199) — 날짜 탭 */}
         <div className="trip-detail__days">
           {dayTabLabels(days.length).map((label, i) => (
             <Chips
@@ -177,15 +124,12 @@ export default function TripDetail({
         </div>
       </div>
 
-      {/* Frame 1707482582 (344:10800) — 일정 목록 */}
       <div className="trip-detail__list">
         {days[dayIndex].map((item) =>
           item.type === "stop" ? (
             <PlanCard
               key={item.stop.id}
               stop={item.stop}
-              /* TODO(route): [8-2] 식당 상세 화면이 생기면 연결해주세요. */
-              /* [S10] 노트 1 — 공유된 화면에서는 페이지 이동이 안 됩니다 */
               onDetail={
                 item.stop.kind === "food" && mode !== "shared"
                   ? () => undefined
@@ -198,19 +142,14 @@ export default function TripDetail({
         )}
       </div>
 
-      {/* Snackbar (237:6206) — 링크를 복사하면 나타납니다.
-          ⚠ 화면 안 위치가 디자인에 없습니다(프레임 밖에 주석처럼 그려져 있습니다).
-            [S2]·[S4]와 같은 x24 y670 에 두었습니다. */}
       {copied && (
         <Snackbar className="trip-detail__snackbar" withIcon={false}>
           {COPIED_TEXT}
         </Snackbar>
       )}
 
-      {/* bottom (344:11243) — 저장 후에는 사라집니다([8-3] 개발 노트 1) */}
       {!saved && (
         <BottomBar>
-          {/* 개발 노트 4 — [수정하기] → [S9] */}
           <Btn variant="outline" onClick={() => navigate(PATHS.tripEdit)}>
             수정하기
           </Btn>

@@ -1,7 +1,4 @@
-/* =========================================================
-   [6-6] 약 이름 + 복약 시점 — Figma 237:6690 / 237:6704 / 237:6717
-   프레임 390 × 844
-   ========================================================= */
+/* 약 이름과 복약 시점 입력 */
 
 .member-meds-detail {
   position: relative;
@@ -11,14 +8,12 @@
   overflow: hidden;
 }
 
-/* Header / Variant3 (237:6691) — x0 y0 */
 .member-meds-detail__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* heading (237:6700) — y54, title_L 86 + subtitle 68 = 154 */
 .member-meds-detail__heading {
   position: absolute;
   top: 54px;
@@ -29,11 +24,6 @@
   width: 390px;
 }
 
-/* 237:6692 — x24 y228, w342, gap 40
-   시점을 고르면 블록이 더 붙어 844를 넘습니다(237:6753 은 h1019).
-   개발 노트대로 하단 버튼은 고정이고 이 영역만 스크롤합니다(237:6804).
-   ⚠ 상세 옵션이 붙은 프레임은 피그마상 x25 w345 입니다. 앞 단계와 이어지는 화면이라
-     x24 w342 로 맞췄습니다(확인 필요 문서 참고). */
 .member-meds-detail__form {
   position: absolute;
   top: 228px;
@@ -53,10 +43,6 @@
   display: none;
 }
 
-/* ---------------------------------------------------------
-   237:6763 — 식사 기준 복약 시간
-   --------------------------------------------------------- */
-
 .meal-meds {
   display: flex;
   flex-direction: column;
@@ -65,7 +51,6 @@
   width: 100%;
 }
 
-/* 237:6766 — h54, 체크 블록과 칩 그룹 사이 20 */
 .meal-meds__row {
   display: flex;
   align-items: center;
@@ -74,7 +59,6 @@
   width: 100%;
 }
 
-/* 237:6768 — 체크박스 20 + gap 10 */
 .meal-meds__check {
   display: flex;
   align-items: center;
@@ -82,7 +66,6 @@
   flex-shrink: 0;
 }
 
-/* 237:6770 — 16px Regular / 1.5 / -0.24px / neutral-600 */
 .meal-meds__label {
   flex-shrink: 0;
   font-family: Pretendard, sans-serif;
@@ -95,7 +78,6 @@
   cursor: pointer;
 }
 
-/* 237:6771 — 칩 4개, gap 4 */
 .meal-meds__relations {
   display: flex;
   align-items: center;
@@ -103,22 +85,16 @@
   flex-shrink: 0;
 }
 
-/* ---------------------------------------------------------
-   237:6796 — 정확한 간격 (선택)
-   --------------------------------------------------------- */
-
 .meds-interval {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* 237:6799 — 79 */
 .meds-interval__select {
   width: 79px;
 }
 
-/* 237:6800 — 16px Regular / 1.5 / -0.24px / neutral-600 */
 .meds-interval__unit {
   flex-shrink: 0;
   font-family: Pretendard, sans-serif;
@@ -130,7 +106,6 @@
   white-space: nowrap;
 }
 
-/* 237:6696 — 세로 배치, gap 12, w203 */
 .member-meds-detail__chips {
   display: flex;
   flex-direction: column;

@@ -1,4 +1,5 @@
-/* Figma: 237:7231 — 화면 전체를 덮는 딤 */
+/* 확인 모달 */
+
 .modal-dim {
   position: absolute;
   top: 0;
@@ -8,9 +9,6 @@
   background: rgba(0, 0, 0, 0.6);
 }
 
-/* Figma: Modal (235:3342) — 340×196, r20, padding 20/0
-   x25 = (390 - 340) / 2 로 가로 중앙입니다.
-   y282 는 세로 중앙(324)보다 42 위 — 디자인 그대로 두었습니다. */
 .modal {
   position: absolute;
   top: 282px;
@@ -27,7 +25,6 @@
   overflow: hidden;
 }
 
-/* 235:3368 */
 .modal__texts {
   display: flex;
   flex-direction: column;
@@ -36,7 +33,6 @@
   width: 100%;
 }
 
-/* 235:3340 — 8 + 28 + 8 = 44 */
 .modal__title-row {
   display: flex;
   align-items: center;
@@ -44,7 +40,6 @@
   padding: 8px 16px;
 }
 
-/* 235:3332 — 20px SemiBold / 1.4 / -0.2px / neutral-900 */
 .modal__title {
   margin: 0;
   flex-shrink: 0;
@@ -57,7 +52,6 @@
   white-space: nowrap;
 }
 
-/* 235:3341 — 8 + 21 + 8 = 37 */
 .modal__desc-row {
   display: flex;
   align-items: center;
@@ -65,7 +59,6 @@
   padding: 8px 16px;
 }
 
-/* 235:3333 — 14px Medium / 1.5 / -0.28px / neutral-500 */
 .modal__desc {
   margin: 0;
   flex-shrink: 0;
@@ -78,7 +71,6 @@
   white-space: nowrap;
 }
 
-/* 235:3362 — w308, 양끝 정렬 (150 + 8 + 150) */
 .modal__actions {
   display: flex;
   align-items: center;
@@ -91,8 +83,6 @@
   width: 150px;
 }
 
-/* 235:3337 — 모달의 취소 버튼만 글자색이 neutral-700 입니다.
-   기존 outline(73:685)은 neutral-950 이라 여기서만 덮어씁니다(확인 필요 문서 참고). */
 .modal__actions .btn--outline {
   color: var(--neutral-700);
 }

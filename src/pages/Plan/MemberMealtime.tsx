@@ -16,21 +16,15 @@ import { MEALS, useMemberForm } from "./memberFormContext";
 import ExitRegistrationModal from "./ExitRegistrationModal";
 import { PATHS } from "../../routes/paths";
 
-/**
- * Figma: [6-6] 식사시간
- *  237:6894 초기 · 237:6914 '네'(끼니별 시간) · 237:6904 '아니오'
- *
- * 이 화면부터는 subtitle 이 없고 title_L 만 있습니다.
- */
+/** 식사 시간 입력 */
 export default function MemberMealtime() {
   const navigate = useNavigate();
-  /** [6-7] 등록 중 이탈 확인 모달 (237:7248) */
+
   const [exitOpen, setExitOpen] = useState(false);
   const { form, setField } = useMemberForm();
 
   const reflects = form.reflectMealtime === "yes";
 
-  // '네' 면 끼니를 하나 이상 골라야 넘어갑니다.
   const canSubmit =
     form.reflectMealtime !== null &&
     (!reflects || MEALS.some((m) => form.mealTimes[m].checked));
@@ -46,7 +40,6 @@ export default function MemberMealtime() {
 
   return (
     <div className="member-mealtime">
-      {/* Header / Variant3 (237:6895) */}
       <Header
         className="member-mealtime__header"
         variant="close"
@@ -54,14 +47,12 @@ export default function MemberMealtime() {
         onBack={() => setExitOpen(true)}
       />
 
-      {/* title_L (237:6902) — y54, 86 */}
       <TitleL className="member-mealtime__title">
         {form.name || "{구성원 이름}"} 님의
         <br />
         식사 시간을 알려주세요
       </TitleL>
 
-      {/* 237:6896 / 237:6916 — x24 y160, w342, gap 40 */}
       <div className="member-mealtime__form">
         <Field
           label="평소 식사시간을 여행 일정에 반영할까요?"
@@ -85,7 +76,6 @@ export default function MemberMealtime() {
           </div>
         </Field>
 
-        {/* 237:6923 — '네' 일 때만 나타납니다 */}
         {reflects && (
           <Field
             label="어떤 시간을 반영할까요?"
@@ -121,7 +111,6 @@ export default function MemberMealtime() {
         )}
       </div>
 
-      {/* bottom (237:6903) — 이전으로 / 다음으로 */}
       <BottomBar>
         <Btn
           variant="outline"
@@ -138,7 +127,6 @@ export default function MemberMealtime() {
         </Btn>
       </BottomBar>
 
-      {/* [6-7] 등록 중 이탈 (237:7248) — 딤이 하단 바까지 덮도록 맨 뒤에 둡니다 */}
       <ExitRegistrationModal open={exitOpen} onCancel={() => setExitOpen(false)} />
     </div>
   );

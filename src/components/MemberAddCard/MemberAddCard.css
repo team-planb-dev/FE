@@ -1,4 +1,5 @@
-/* Figma: Frame 156 (148:1572) — 342×114, r10, neutral-100 */
+/* 구성원 추가하기 카드 */
+
 .member-add {
   position: relative;
   flex-shrink: 0;
@@ -11,10 +12,6 @@
   overflow: hidden;
 }
 
-/* icn_empty_s / Variant7 (88:1049) — x160 y33, 20×20
-   임시본 icn_plus.svg 는 흰색 선이 박혀 있어 mask 로 칠합니다
-   (바텀 네비 아이콘과 같은 방식). 색은 라벨과 맞춰 neutral-500 으로 두었고,
-   확정 애셋이 오면 <img> 로 바꾸면서 이 규칙을 걷어낼 수 있습니다. */
 .member-add__icon {
   position: absolute;
   top: 33px;
@@ -29,7 +26,6 @@
   mask-size: 20px 20px;
 }
 
-/* 148:1529 — x120 y63, 16px Medium / 1.5 / -0.32px / neutral-500 */
 .member-add__label {
   position: absolute;
   top: 63px;

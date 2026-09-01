@@ -1,7 +1,4 @@
-/* =========================================================
-   [6-1] 여행 생성 — Figma 237:7019
-   프레임 390 × 844. 바텀 네비게이션이 붙지 않는 화면입니다.
-   ========================================================= */
+/* 여행 생성 시작 */
 
 .plan-start {
   position: relative;
@@ -11,14 +8,12 @@
   overflow: hidden;
 }
 
-/* Header (237:7020) — x0 y0 */
 .plan-start__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* 237:7021 — x24 y74, 22px SemiBold / 1.4 / -0.22px / neutral-900 */
 .plan-start__title {
   position: absolute;
   top: 74px;
@@ -32,9 +27,6 @@
   white-space: nowrap;
 }
 
-/* 237:7024 — y156, 14px Medium / 1.5 / -0.28px / neutral-800
-   피그마 x 는 23 인데 바로 위 제목이 24 입니다. 1px 어긋난 것으로 보여
-   제목에 맞춰 24 로 두었습니다(확인 필요 문서 참고). */
 .plan-start__subtext {
   position: absolute;
   top: 156px;
@@ -48,7 +40,6 @@
   white-space: nowrap;
 }
 
-/* Btn (237:7023) — x20 y756, 350×54 */
 .plan-start__cta {
   position: absolute;
   top: 756px;

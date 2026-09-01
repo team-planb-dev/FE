@@ -1,12 +1,4 @@
-/* =========================================================
-   Figma: Date Picker (237:6361) — 343 × 326
-   헤더 32 + gap 16 + 그리드 278
-
-   ⚠ 이 컴포넌트만 디자인 시스템이 다릅니다(확인 필요 문서 참고).
-     · 글꼴이 Geist 입니다. 앱 전체는 Pretendard 라 Pretendard 로 그렸습니다.
-     · 요일과 월 표기가 영어(Su·Mo·… / May 2025)입니다. 원본 그대로 두었습니다.
-     · 자간이 0 이고 줄간격이 px 고정(16 / 20)이라 다른 화면과 규칙이 다릅니다.
-   ========================================================= */
+/* 달력. 시작일과 박수로 구간을 칠합니다 */
 
 .date-picker {
   display: flex;
@@ -16,7 +8,6 @@
   width: 343px;
 }
 
-/* .Calendar / Header (237:6362) — 343×32 */
 .date-picker__header {
   display: flex;
   align-items: center;
@@ -24,13 +15,12 @@
   width: 100%;
 }
 
-/* Icon Button (22:7587) — 32×32, r8, 테두리 neutral-200, 그림자 sm */
 .date-picker__nav {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  /* 테두리 1px 이 32 안에 들어가야 합니다(Figma stroke inside) */
+
   box-sizing: border-box;
   width: 32px;
   height: 32px;
@@ -49,7 +39,6 @@
   height: 16px;
 }
 
-/* 22:7588 — 14px Medium / 20px / 자간 0 / neutral-800 */
 .date-picker__month {
   margin: 0;
   flex-shrink: 0;
@@ -62,7 +51,6 @@
   white-space: nowrap;
 }
 
-/* Grid (237:6363) — 줄 사이 1px */
 .date-picker__grid {
   display: flex;
   flex-direction: column;
@@ -77,7 +65,6 @@
   width: 100%;
 }
 
-/* .Calendar / Weekday Name (22:7442) — 12px Regular / 16px / neutral-400 */
 .date-picker__weekday {
   display: flex;
   flex: 1 0 0;
@@ -95,7 +82,6 @@
   color: var(--neutral-400);
 }
 
-/* .Date Picker / Day (237:6373) — 높이 48, 패딩 8, 안쪽 글자 상자 32×32 */
 .date-picker__day {
   display: flex;
   flex: 1 0 0;
@@ -116,19 +102,15 @@
   color: var(--neutral-800);
 }
 
-/* 마지막 줄만 49 입니다 (237:6432) */
 .date-picker__row:last-child .date-picker__day {
   height: 49px;
 }
 
-/* 이번 달이 아닌 날 (237:6373) — 투명도 50%.
-   프레임 이름이 "Calendar with disabled days" 라 누를 수 없게 했습니다. */
 .date-picker__day--outside {
   opacity: 0.5;
   cursor: default;
 }
 
-/* 선택된 날 (237:6396) — Brand/bg-weak 배경 + Brand/pressed 글자 */
 .date-picker__day--on {
   background: var(--brand-bg-weak);
   color: var(--brand-pressed);

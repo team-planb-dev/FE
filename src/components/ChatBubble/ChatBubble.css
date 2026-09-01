@@ -1,9 +1,4 @@
-/* =========================================================
-   Figma: chat_ai — r10, padding 12
-     Default  393:8344 / 393:8339 — 14px Medium / 1.5 / -0.28px / neutral-0
-     Variant2 393:8513 / 393:8514 — 흰 배경 + neutral-100 테두리, neutral-900, 오른쪽
-     Variant3 393:8517 / 393:8530 — Default + 16×16 스피너, gap 4
-   ========================================================= */
+/* AI 수정 대화 말풍선. ai / user / loading */
 
 .chat-bubble {
   margin: 0;
@@ -16,17 +11,15 @@
   font-weight: 500;
   line-height: 1.5;
   letter-spacing: -0.28px;
-  /* 첫 말풍선은 디자인에서 두 줄로 끊겨 있어 줄바꿈을 그대로 살립니다 */
+
   white-space: pre-line;
 }
 
-/* Default (393:8344) */
 .chat-bubble--ai {
   background: var(--brand-solid);
   color: var(--neutral-0);
 }
 
-/* Variant2 (393:8513) — 테두리가 안쪽이라 padding 11 + border 1 로 나눕니다 */
 .chat-bubble--user {
   align-self: flex-end;
   padding: 11px;
@@ -36,7 +29,6 @@
   text-align: right;
 }
 
-/* Variant3 (393:8517) — 스피너 + 글자, gap 4 */
 .chat-bubble--loading {
   display: flex;
   align-items: center;
@@ -45,9 +37,6 @@
   color: var(--neutral-0);
 }
 
-/* lucide/loader-circle (I393:8526;286:9275) — 16×16.
-   ⚠ 디자인은 정지 그림입니다. 끊긴 원이라 멈춰 있으면 깨진 것처럼 보여
-     회전을 넣었습니다(확인 필요 문서 참고). 속도는 임의입니다. */
 .chat-bubble__spinner {
   display: block;
   flex-shrink: 0;
@@ -62,7 +51,6 @@
   }
 }
 
-/* 애니메이션을 줄이도록 설정한 기기에서는 멈춥니다 */
 @media (prefers-reduced-motion: reduce) {
   .chat-bubble__spinner {
     animation: none;

@@ -1,7 +1,4 @@
-/* =========================================================
-   [6-6] 기피 음식 및 알레르기 — Figma 237:6962
-   프레임 390 × 844
-   ========================================================= */
+/* 기피 음식 및 알레르기 입력 */
 
 .member-food {
   position: relative;
@@ -11,21 +8,18 @@
   overflow: hidden;
 }
 
-/* Header / Variant3 (237:6963) — x0 y0 */
 .member-food__header {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* title_L (237:6964) — y54, 86 */
 .member-food__title {
   position: absolute;
   top: 54px;
   left: 0;
 }
 
-/* 237:6965 — x24 y160, w342, gap 40. 네 블록이 다 열리면 516 이라 스크롤합니다. */
 .member-food__form {
   position: absolute;
   top: 160px;
@@ -45,7 +39,6 @@
   display: none;
 }
 
-/* 237:6969 / 237:6975 — 칩 사이 8 */
 .member-food__chips {
   display: flex;
   align-items: center;

@@ -1,11 +1,11 @@
-/* Figma: Component 1 (120:1291 닫힘 / 217:3060 열림) */
+/* 드롭다운 선택 */
+
 .select {
   position: relative;
   width: 100%;
   flex-shrink: 0;
 }
 
-/* 트리거 — h54, r8 (인풋의 10과 다른 값), 테두리 1px */
 .select__trigger {
   display: flex;
   align-items: center;
@@ -18,12 +18,10 @@
   background: var(--neutral-0);
 }
 
-/* 열림 — 217:2219 : 테두리 Brand/Solid */
 .select__trigger--open {
   border-color: var(--brand-solid);
 }
 
-/* 120:1292 — 16px Regular / 1.5 / -0.24px */
 .select__value {
   flex: 1 0 0;
   min-width: 0;
@@ -43,7 +41,6 @@
   color: var(--neutral-800);
 }
 
-/* icn_empty_s / chevron_down — 20×20 프레임 안에 10×5 글리프가 (5,8) 위치 */
 .select__icon {
   position: relative;
   display: block;
@@ -53,8 +50,6 @@
   overflow: hidden;
 }
 
-/* export된 SVG는 12×7 캔버스에 stroke 여백 0.625px.
-   (5 - 0.625, 8 - 0.625) 에 놓으면 글리프가 정확히 (5,8)-(15,13) 에 옵니다. */
 .select__icon-glyph {
   position: absolute;
   left: 4.375px;
@@ -63,14 +58,10 @@
   height: 7px;
 }
 
-/* 열리면 20×20 박스째 180도 회전 → 글리프가 (5,7)-(15,12) 로,
-   피그마 열림 상태의 top-[7px] 와 일치합니다. */
 .select__trigger--open .select__icon {
   transform: rotate(180deg);
 }
 
-/* content (217:2220) — r10, padding 16/0, drop-shadow 0 2px 10px rgba(0,0,0,0.04)
-   레이아웃을 밀지 않는 오버레이. 트리거 아래 8px. */
 .select__panel {
   position: absolute;
   top: calc(100% + 8px);
@@ -93,7 +84,6 @@
   width: 100%;
 }
 
-/* dropdown_item (217:2166) — padding 12/16, 높이 48 */
 .select__option {
   display: flex;
   align-items: center;
@@ -111,7 +101,6 @@
   white-space: nowrap;
 }
 
-/* 217:2221 — 선택/호버 항목 배경 neutral-50 */
 .select__option--selected,
 .select__option:hover {
   background: var(--neutral-50);

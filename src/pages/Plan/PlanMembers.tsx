@@ -14,52 +14,24 @@ import Modal from "../../components/Modal/Modal";
 
 import { PATHS, memberEditPath } from "../../routes/paths";
 
-/**
- * Figma: [6-2] 등록한 구성원 없을 때 (237:7084)
- *        [6-3] MY에서 등록한 구성원이 있을 때 (237:7122 미선택 / 237:7132 1개 선택)
- *        [6-5] 구성원 삭제 (237:7204 목록 → 237:7222 확인 모달 → 237:7213 삭제 후)
- * 한 화면의 여러 상태입니다.
- *
- * 개발 노트
- *  [6-2] 1 — 구성원은 여행에 묶이지 않고 여행과 별도로 등록·수정됩니다.
- *  [6-2] 2 — 헤더 ← 와 [그만두기] 모두 메인으로 나갑니다.
- *  [6-2] 3 — 구성원이 없으면 [등록하기]가 활성화되지 않습니다.
- *  [6-3] 1 — 터치 영역은 체크박스가 아니라 카드 전체이고,
- *            카드가 하나 이상 선택되어야 [등록하기]가 활성화됩니다.
- *
- * [6-5]는 마지막 구성원을 지우면 [6-2] 빈 상태로 돌아갑니다(237:7213).
- */
-
 type Member = {
   id: string;
   name: string;
   tags: string[];
 };
 
-/**
- * TODO(api): MY에 등록된 구성원 목록 조회 API로 교체하세요.
- * 서버가 없어 목업으로 둡니다.
- */
 const MOCK_MEMBERS: Member[] = [
   { id: "1", name: "김하늘", tags: ["알레르기 주의", "복약", "당뇨"] },
   { id: "2", name: "박서준", tags: ["알레르기 주의", "복약", "당뇨"] },
 ];
 
-/**
- * 미리보기용 스위치 — true 로 바꾸면 [6-2] 구성원이 없는 상태를 볼 수 있습니다.
- * API 를 붙이면 이 줄과 함께 지우고, 조회 결과가 비었는지로 판단하면 됩니다.
- */
 const PREVIEW_EMPTY = false;
 
+/** 여행 구성원 선택 */
 export default function PlanMembers() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  /**
-   * [6-6] 등록을 마치고 돌아온 경우 (237:6569 / 237:6579).
-   * 방금 등록한 구성원이 선택된 채로 목록에 들어가고, CTA 가 [완료]로 바뀝니다.
-   * TODO(api): 목록 조회 API 가 붙으면 이 라우터 state 대신 서버 응답을 쓰면 됩니다.
-   */
   const registered = location.state as
     | { justRegistered?: boolean; newMember?: Member }
     | null;
@@ -72,7 +44,7 @@ export default function PlanMembers() {
   const [selectedIds, setSelectedIds] = useState<string[]>(
     registered?.newMember ? [registered.newMember.id] : [],
   );
-  /** [6-5] 삭제 확인 모달 — 지울 구성원. null 이면 닫힌 상태입니다. */
+
   const [pendingDelete, setPendingDelete] = useState<Member | null>(null);
 
   const toggle = (id: string) =>
@@ -80,7 +52,6 @@ export default function PlanMembers() {
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
 
-  // TODO(api): 구성원 삭제 API로 교체하세요.
   const confirmDelete = () => {
     if (!pendingDelete) return;
     const { id } = pendingDelete;
@@ -89,18 +60,13 @@ export default function PlanMembers() {
     setPendingDelete(null);
   };
 
-  // 개발 노트 [6-2] 3 / [6-3] 1 — 하나 이상 선택되어야 활성화됩니다.
   const canSubmit = selectedIds.length > 0;
 
-  // 개발 노트 [6-2] 2 — 헤더 ← 와 [그만두기] 모두 메인으로.
   const leave = () => navigate(PATHS.home);
 
   return (
     <div className="plan-members">
-      {/* Header (237:7085) — x0 y0 */}
       <Header className="plan-members__header" onBack={leave} />
-
-      {/* heading (237:7086) — y54, w390 */}
       <div className="plan-members__heading">
         <TitleL>
           이번 여행을 떠나는
@@ -114,9 +80,6 @@ export default function PlanMembers() {
         </Subtitle>
       </div>
 
-      {/* 237:7127 — y228, w342, gap 20
-          ⚠ 피그마 x 는 21 이라 좌우가 21/27 로 비대칭입니다.
-            [6-2]의 같은 카드가 24 이므로 24 로 맞췄습니다(확인 필요 문서 참고). */}
       <div className="plan-members__list">
         {members.map((member) => (
           <MemberSelectCard
@@ -131,20 +94,14 @@ export default function PlanMembers() {
           />
         ))}
 
-        {/* Frame 156 (148:1572) — [11-2]와 같이 쓰는 컴포넌트로 뺐습니다 */}
         <MemberAddCard onClick={() => navigate(PATHS.memberNew)} />
       </div>
 
-      {/* bottom (237:7090) — y724, 390×120 */}
       <BottomBar>
         <Btn variant="outline" onClick={leave}>
           그만두기
         </Btn>
-        {/* [6-6] 등록 직후에는 [완료]입니다 (237:6569 / 237:6579).
-            ⚠ 그 프레임의 하단은 x20 y760 w350·버튼 171·그라데이션 없음이라
-              [6-3]의 bottom(342 / 167 / 그라데이션)과 구조가 다릅니다.
-              같은 화면에서 버튼이 튀지 않도록 기존 BottomBar 를 유지했습니다
-              (확인 필요 문서 참고). */}
+
         <Btn
           variant={canSubmit ? "primary" : "muted"}
           onClick={() =>
@@ -156,7 +113,6 @@ export default function PlanMembers() {
         </Btn>
       </BottomBar>
 
-      {/* [6-5] 삭제 확인 (237:7222) */}
       {pendingDelete && (
         <Modal
           title={`${pendingDelete.name}을 삭제하시겠어요?`}

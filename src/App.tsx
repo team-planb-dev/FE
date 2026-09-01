@@ -40,6 +40,7 @@ import TripFood from "./pages/Trip/TripFood";
 import TripConfirm from "./pages/Trip/TripConfirm";
 import TripLoading from "./pages/Trip/TripLoading";
 import TripDetail from "./pages/Trip/TripDetail";
+import TripEdit from "./pages/Trip/TripEdit";
 import TripFormProvider from "./pages/Trip/TripFormProvider";
 
 import SignupProvider from "./pages/Signup/SignupProvider";
@@ -159,6 +160,8 @@ function App() {
               TODO(api): 실제로는 링크로 들어오는 화면이라 서버에서 일정을 받아야 합니다.
               지금은 목업이라 다른 [S7]·[S8] 화면과 같은 Provider 안에 둡니다. */}
           <Route path={PATHS.tripShared} element={<TripDetail mode="shared" />} />
+          {/* [S9] 여행 일정 수정 — [9-1] AI 수정 */}
+          <Route path={PATHS.tripEdit} element={<TripEdit />} />
         </Route>
 
         <Route path="*" element={<Navigate to={PATHS.login} replace />} />

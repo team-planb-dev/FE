@@ -1,0 +1,104 @@
+/* =========================================================
+   [9-1] AI 수정 (393:10977) — 390 × 844
+   ========================================================= */
+
+.trip-edit {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  background: var(--neutral-0);
+  overflow: hidden;
+}
+
+/* Rectangle 12 (393:10978) — 390×320, 위에서 아래로 옅어지는 초록 */
+.trip-edit__glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 390px;
+  height: 320px;
+  background: linear-gradient(
+    180deg,
+    rgba(87, 227, 133, 0.2) 0%,
+    rgba(87, 227, 133, 0) 100%
+  );
+}
+
+/* Header (393:10979) — x0 y0. 배경이 비쳐야 해서 흰 배경을 지웁니다 */
+.trip-edit__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: transparent;
+}
+
+/* 393:10980 — x24 y94, w216, 세로 gap 20 */
+.trip-edit__intro {
+  position: absolute;
+  top: 94px;
+  left: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  width: 216px;
+}
+
+/* 393:10982 — 세로 gap 12 */
+.trip-edit__bubbles {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+}
+
+/* 393:10983 — 첫 말풍선만 폭을 꽉 채웁니다(216). 둘째(393:10984)는 글자만큼 */
+.trip-edit__bubble--wide {
+  width: 100%;
+}
+
+/* 393:10985 — x0 y583, w390, 세로 gap 20 */
+.trip-edit__bottom {
+  position: absolute;
+  top: 583px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 390px;
+  gap: 20px;
+}
+
+/* 393:10986 — padding 0/24, 세로 gap 12 */
+.trip-edit__suggest {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-sizing: border-box;
+  gap: 12px;
+  width: 100%;
+  padding: 0 24px;
+}
+
+/* 393:10987 — 14px Medium / 1.5 / -0.28px / neutral-900 */
+.trip-edit__suggest-title {
+  margin: 0;
+  width: 100%;
+  font-family: Pretendard, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.28px;
+  color: var(--neutral-900);
+}
+
+/* 393:10988 — 가로 gap 8, 넘치면 다음 줄 (120 + 8 + 194 = 322 → 342 안) */
+.trip-edit__suggest-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  gap: 8px;
+  width: 100%;
+}

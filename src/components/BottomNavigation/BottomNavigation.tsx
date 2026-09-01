@@ -43,8 +43,7 @@ const TABS: Tab[] = [
    * 계획 생성 전용 아이콘이 나오면 icon 을 넣고 좌표를 다시 맞춰야 합니다.
    */
   { key: "plan", label: "계획 생성", to: PATHS.planStart },
-  // TODO(route): 프로필 화면이 생기면 to: PATHS.profile 을 넣어주세요.
-  { key: "profile", label: "프로필", icon: profileIcon },
+  { key: "profile", label: "프로필", icon: profileIcon, to: PATHS.myPage },
 ];
 
 type BottomNavigationProps = {

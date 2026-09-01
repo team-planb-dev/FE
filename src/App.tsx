@@ -41,6 +41,8 @@ import TripConfirm from "./pages/Trip/TripConfirm";
 import TripLoading from "./pages/Trip/TripLoading";
 import TripDetail from "./pages/Trip/TripDetail";
 import TripEdit from "./pages/Trip/TripEdit";
+import MyPage from "./pages/MyPage/MyPage";
+import MyMembers from "./pages/MyPage/MyMembers";
 import TripFormProvider from "./pages/Trip/TripFormProvider";
 
 import SignupProvider from "./pages/Signup/SignupProvider";
@@ -140,6 +142,10 @@ function App() {
 
         {/* [6-4] 구성원 수정 — 건강정보 확인 */}
         <Route path={PATHS.memberEdit} element={<MemberEdit />} />
+
+        {/* [S11] 마이페이지 */}
+        <Route path={PATHS.myPage} element={<MyPage />} />
+        <Route path={PATHS.myMembers} element={<MyMembers />} />
 
         {/* [S7] 여행 일정 생성 — 단계 간 입력값을 Context 로 공유합니다 */}
         <Route element={<TripFormLayout />}>

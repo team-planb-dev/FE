@@ -1,0 +1,104 @@
+/* =========================================================
+   [11-1] 마이페이지 (237:7291) — 390 × 844
+   ========================================================= */
+
+.my-page {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  background: var(--neutral-0);
+  overflow: hidden;
+}
+
+/* Header / Variant4 (148:1834) — x0 y0 */
+.my-page__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* title_L (237:7330) — x0 y54, 390×55 */
+.my-page__title {
+  position: absolute;
+  top: 54px;
+  left: 0;
+}
+
+/* 237:7294 — y133, w342, 세로 gap 12 */
+.my-page__menu {
+  position: absolute;
+  top: 133px;
+  left: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  width: 342px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 237:7295 — padding 12/8, 양끝 정렬, 위 정렬.
+   화살표(24)가 글자(22)보다 커서 줄 높이가 48 이 됩니다. 로그아웃만 46 입니다. */
+.my-page__row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 342px;
+  padding: 12px 8px;
+  border: none;
+  background: transparent;
+  text-align: left;
+}
+
+/* 237:7296 — 14px Medium / 1.6 / -0.21px / neutral-700 */
+.my-page__row-label {
+  flex-shrink: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: -0.21px;
+  color: var(--neutral-700);
+  white-space: nowrap;
+}
+
+/* Icn_Arrow_24 (237:7297) — 24×24.
+   ⚠ 이 아이콘 에셋이 없어 셰브론(7×12)을 24 상자 가운데에 두었습니다
+     (확인 필요 문서 참고). */
+.my-page__row-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.my-page__row-arrow img {
+  display: block;
+  width: 7px;
+  height: 12px;
+}
+
+/* 237:7292 — x24 y668, 342×46, padding 12/8
+   237:7293 — 14px Medium / 1.6 / -0.21px / Status/Negative_solid */
+.my-page__withdraw {
+  position: absolute;
+  top: 668px;
+  left: 24px;
+  display: flex;
+  align-items: flex-start;
+  width: 342px;
+  padding: 12px 8px;
+  border: none;
+  background: transparent;
+  font-family: Pretendard, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: -0.21px;
+  color: var(--status-negative-solid);
+  white-space: nowrap;
+}

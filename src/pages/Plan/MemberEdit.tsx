@@ -56,7 +56,11 @@ export default function MemberEdit() {
                 type="button"
                 className="member-edit__edit"
                 aria-label={`${row.label} 수정`}
-                onClick={() => navigate(row.to)}
+                onClick={() =>
+                  navigate(row.to, {
+                    state: { edit: true, memberId, from },
+                  })
+                }
               >
                 <img
                   className="member-edit__edit-icon"

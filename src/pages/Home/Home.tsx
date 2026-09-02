@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import "./Home.css";
 
@@ -27,22 +27,21 @@ type Trip = {
 const MOCK_TRIPS: Record<TabKey, Trip[]> = {
   upcoming: [
     { id: "1", title: "여행 제목", theme: "여행 테마" },
-    { id: "2", title: "제주도 3박 4일", theme: "휴양" },
+    { id: "2", title: "여행 제목", theme: "여행 테마" },
   ],
 
-  past: [{ id: "3", title: "부산 2박 3일", theme: "맛집" }],
+  past: [{ id: "3", title: "여행 제목", theme: "여행 테마" }],
 };
-
-const PREVIEW_EMPTY = false;
 
 /** 메인 홈 */
 export default function Home() {
   const navigate = useNavigate();
+  const [params] = useSearchParams();
   const [tab, setTab] = useState<TabKey>("upcoming");
   const trips = MOCK_TRIPS[tab];
 
   const hasAnyTrip = Object.values(MOCK_TRIPS).some((list) => list.length > 0);
-  const isEmpty = PREVIEW_EMPTY || !hasAnyTrip;
+  const isEmpty = params.get("empty") === "1" || !hasAnyTrip;
 
   const handleCreate = () => navigate(PATHS.planStart);
 

@@ -56,7 +56,10 @@ export default function Login() {
 
   return (
     <div className="login-page">
-      <Header className="login-page__header" />
+      <Header
+        className="login-page__header"
+        onBack={() => navigate(PATHS.landing)}
+      />
       <TitleL className="login-page__title">
         건강한 여행 관리,
         <br />

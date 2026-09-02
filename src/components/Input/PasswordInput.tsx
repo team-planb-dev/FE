@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./Input.css";
 
 import eyeIcon from "../../assets/icn_eye.svg";
+import eyeOnIcon from "../../assets/icn_eye_on.svg";
 import clearIcon from "../../assets/icn_close.svg";
 
 type PasswordInputProps = {
@@ -52,7 +53,7 @@ export default function PasswordInput({
         onMouseDown={(e) => e.preventDefault()}
         onClick={() => setVisible((v) => !v)}
       >
-        <img className="input__icon" src={eyeIcon} alt="" />
+        <img className="input__icon" src={visible ? eyeOnIcon : eyeIcon} alt="" />
       </button>
 
       {showClear && (

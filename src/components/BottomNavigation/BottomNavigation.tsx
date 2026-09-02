@@ -5,7 +5,6 @@ import "./BottomNavigation.css";
 
 import homeIcon from "../../assets/icn_Home.svg";
 import profileIcon from "../../assets/icn_Profile.svg";
-import plusIcon from "../../assets/icn_plus.svg";
 
 import { PATHS } from "../../routes/paths";
 
@@ -71,7 +70,7 @@ export default function BottomNavigation({
         aria-label="일정 생성"
         onClick={onFabClick}
       >
-        <img className="bottom-nav__fab-icon" src={plusIcon} alt="" />
+        <span className="bottom-nav__fab-icon" aria-hidden="true" />
       </button>
     </nav>
   );

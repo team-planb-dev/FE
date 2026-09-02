@@ -13,6 +13,7 @@ import Btn from "../../components/Btn/Btn";
 
 import { useMemberForm } from "./memberFormContext";
 import ExitRegistrationModal from "./ExitRegistrationModal";
+import { useEditMode } from "./editMode";
 import { PATHS } from "../../routes/paths";
 
 /** 기피 음식 및 알레르기 입력 */
@@ -20,6 +21,7 @@ export default function MemberFood() {
   const navigate = useNavigate();
 
   const [exitOpen, setExitOpen] = useState(false);
+  const { editing, backToMember } = useEditMode();
   const { form, setField } = useMemberForm();
 
   const finish = () => {
@@ -46,8 +48,8 @@ export default function MemberFood() {
       <Header
         className="member-food__header"
         variant="close"
-        backLabel="구성원 등록 그만두기"
-        onBack={() => setExitOpen(true)}
+        backLabel={editing ? "수정 그만두기" : "구성원 등록 그만두기"}
+        onBack={() => (editing ? backToMember() : setExitOpen(true))}
       />
 
       <TitleL className="member-food__title">
@@ -133,20 +135,37 @@ export default function MemberFood() {
       </div>
 
       <BottomBar>
-        <Btn
-          variant="outline"
-          onClick={() => navigate(PATHS.memberNewMealtime)}
-        >
-          이전으로
-        </Btn>
+        {editing ? (
+          <>
+            <Btn variant="outline" onClick={backToMember}>
+              취소
+            </Btn>
+            <Btn
+              variant={canSubmit ? "primary" : "muted"}
+              disabled={!canSubmit}
+              onClick={() => canSubmit && backToMember()}
+            >
+              저장
+            </Btn>
+          </>
+        ) : (
+          <>
+            <Btn
+              variant="outline"
+              onClick={() => navigate(PATHS.memberNewMealtime)}
+            >
+              이전으로
+            </Btn>
 
-        <Btn
-          variant={canSubmit ? "primary" : "muted"}
-          disabled={!canSubmit}
-          onClick={() => canSubmit && finish()}
-        >
-          다음으로
-        </Btn>
+            <Btn
+              variant={canSubmit ? "primary" : "muted"}
+              disabled={!canSubmit}
+              onClick={() => canSubmit && finish()}
+            >
+              다음으로
+            </Btn>
+          </>
+        )}
       </BottomBar>
 
       <ExitRegistrationModal open={exitOpen} onCancel={() => setExitOpen(false)} />

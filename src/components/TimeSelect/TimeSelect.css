@@ -26,3 +26,9 @@
     radial-gradient(circle, var(--neutral-500) 1px, transparent 1px) 0 12px / 2px
       2px no-repeat;
 }
+
+/* 좁은 셀렉트라 글자를 줄이지 않고 그대로 둡니다 (디자인 폭이 곧 글자 폭) */
+.time-select .select__value {
+  flex: 0 0 auto;
+  overflow: visible;
+}

@@ -95,6 +95,12 @@
   width: 79px;
 }
 
+/* 좁은 셀렉트라 글자를 줄이지 않고 그대로 둡니다 (디자인 폭이 곧 글자 폭) */
+.meds-interval__select .select__value {
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
 .meds-interval__unit {
   flex-shrink: 0;
   font-family: Pretendard, sans-serif;

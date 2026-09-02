@@ -12,6 +12,7 @@ import Btn from "../../components/Btn/Btn";
 
 import { CONDITIONS, WALK_LEVELS, useMemberForm } from "./memberFormContext";
 import ExitRegistrationModal from "./ExitRegistrationModal";
+import { useEditMode } from "./editMode";
 import { PATHS } from "../../routes/paths";
 
 /** 관리 질환과 걷기 정도 선택 */
@@ -19,6 +20,7 @@ export default function MemberHealth() {
   const navigate = useNavigate();
 
   const [exitOpen, setExitOpen] = useState(false);
+  const { editing, backToMember } = useEditMode();
   const { form, setField, toggleCondition } = useMemberForm();
 
   const canSubmit = form.conditions.length > 0 && form.walkLevel !== null;
@@ -28,8 +30,8 @@ export default function MemberHealth() {
       <Header
         className="member-health__header"
         variant="close"
-        backLabel="구성원 등록 그만두기"
-        onBack={() => setExitOpen(true)}
+        backLabel={editing ? "수정 그만두기" : "구성원 등록 그만두기"}
+        onBack={() => (editing ? backToMember() : setExitOpen(true))}
       />
 
       <TitleL className="member-health__title">
@@ -79,16 +81,33 @@ export default function MemberHealth() {
       </div>
 
       <BottomBar>
-        <Btn variant="outline" onClick={() => navigate(PATHS.memberNew)}>
-          이전으로
-        </Btn>
-        <Btn
-          variant={canSubmit ? "primary" : "muted"}
-          disabled={!canSubmit}
-          onClick={() => canSubmit && navigate(PATHS.memberNewMeds)}
-        >
-          다음으로
-        </Btn>
+        {editing ? (
+          <>
+            <Btn variant="outline" onClick={backToMember}>
+              취소
+            </Btn>
+            <Btn
+              variant={canSubmit ? "primary" : "muted"}
+              disabled={!canSubmit}
+              onClick={() => canSubmit && backToMember()}
+            >
+              저장
+            </Btn>
+          </>
+        ) : (
+          <>
+            <Btn variant="outline" onClick={() => navigate(PATHS.memberNew)}>
+              이전으로
+            </Btn>
+            <Btn
+              variant={canSubmit ? "primary" : "muted"}
+              disabled={!canSubmit}
+              onClick={() => canSubmit && navigate(PATHS.memberNewMeds)}
+            >
+              다음으로
+            </Btn>
+          </>
+        )}
       </BottomBar>
 
       <ExitRegistrationModal open={exitOpen} onCancel={() => setExitOpen(false)} />

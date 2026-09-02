@@ -16,7 +16,7 @@ export default function SignupComplete() {
   if (!form.nickname) return <Navigate to={PATHS.signup} replace />;
 
   const handleGoHome = () => {
-    navigate(PATHS.login);
+    navigate(PATHS.home, { replace: true });
   };
 
   return (

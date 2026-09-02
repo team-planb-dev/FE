@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import "./PlanCard.css";
 
@@ -26,6 +26,13 @@ type PlanCardProps = {
 
 export default function PlanCard({ stop, onDetail }: PlanCardProps) {
   const [open, setOpen] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+  const tagsRef = useRef<HTMLDivElement>(null);
+
+  const onTagsScroll = () => {
+    const el = tagsRef.current;
+    if (el) setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 1);
+  };
 
   return (
     <div
@@ -80,13 +87,21 @@ export default function PlanCard({ stop, onDetail }: PlanCardProps) {
                 <p className="plan-card__category">{stop.category}</p>
               </div>
 
-              <div className="plan-card__tags">
-                {stop.tags.map((tag) => (
-                  <span className="plan-card__tag" key={tag}>
-                    {tag}
-                  </span>
-                ))}
-                <span className="plan-card__tags-fade" aria-hidden="true" />
+              <div className="plan-card__tags-wrap">
+                <div
+                  className="plan-card__tags"
+                  ref={tagsRef}
+                  onScroll={onTagsScroll}
+                >
+                  {stop.tags.map((tag) => (
+                    <span className="plan-card__tag" key={tag}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                {!atEnd && (
+                  <span className="plan-card__tags-fade" aria-hidden="true" />
+                )}
               </div>
             </div>
           </div>

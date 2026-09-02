@@ -50,7 +50,7 @@ export default function TripDate() {
       </div>
 
       <div className="trip-date__nights">
-        <p className="trip-date__nights-title">몇 일 일정인가요?</p>
+        <p className="trip-date__nights-title">며칠 일정인가요?</p>
         <div className="trip-date__nights-chips">
           {NIGHT_OPTIONS.map((option) => (
             <Chips

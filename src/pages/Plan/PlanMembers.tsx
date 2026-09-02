@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 import "./PlanMembers.css";
 
@@ -21,16 +21,15 @@ type Member = {
 };
 
 const MOCK_MEMBERS: Member[] = [
-  { id: "1", name: "김하늘", tags: ["알레르기 주의", "복약", "당뇨"] },
-  { id: "2", name: "박서준", tags: ["알레르기 주의", "복약", "당뇨"] },
+  { id: "1", name: "{구성원 이름}", tags: ["알레르기 주의", "복약", "당뇨"] },
+  { id: "2", name: "{구성원 이름}", tags: ["알레르기 주의", "복약", "당뇨"] },
 ];
-
-const PREVIEW_EMPTY = false;
 
 /** 여행 구성원 선택 */
 export default function PlanMembers() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [params] = useSearchParams();
 
   const registered = location.state as
     | { justRegistered?: boolean; newMember?: Member }
@@ -38,7 +37,7 @@ export default function PlanMembers() {
   const justRegistered = registered?.justRegistered === true;
 
   const [members, setMembers] = useState<Member[]>(() => {
-    const base = PREVIEW_EMPTY ? [] : MOCK_MEMBERS;
+    const base = params.get("empty") === "1" ? [] : MOCK_MEMBERS;
     return registered?.newMember ? [registered.newMember, ...base] : base;
   });
   const [selectedIds, setSelectedIds] = useState<string[]>(
@@ -104,9 +103,7 @@ export default function PlanMembers() {
 
         <Btn
           variant={canSubmit ? "primary" : "muted"}
-          onClick={() =>
-            canSubmit && justRegistered && navigate(PATHS.memberConfirm)
-          }
+          onClick={() => canSubmit && navigate(PATHS.memberConfirm)}
           disabled={!canSubmit}
         >
           {justRegistered ? "완료" : "등록하기"}

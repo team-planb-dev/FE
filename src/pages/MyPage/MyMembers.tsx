@@ -17,8 +17,8 @@ type Member = {
 };
 
 const MOCK_MEMBERS: Member[] = [
-  { id: "1", name: "김하늘", tags: ["알레르기 주의", "복약", "당뇨"] },
-  { id: "2", name: "박서준", tags: [] },
+  { id: "1", name: "{구성원 이름}", tags: ["알레르기 주의", "복약", "당뇨"] },
+  { id: "2", name: "{구성원 이름}", tags: [] },
 ];
 
 const DELETE_DESC = "한 번 삭제한 구성원은 다시 복구할 수 없어요.";

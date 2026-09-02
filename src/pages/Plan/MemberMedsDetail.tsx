@@ -23,15 +23,18 @@ import {
   useMemberForm,
 } from "./memberFormContext";
 import ExitRegistrationModal from "./ExitRegistrationModal";
+import { useEditMode } from "./editMode";
 import { PATHS } from "../../routes/paths";
 
-const INTERVALS = ["30", "60", "90", "120"];
+/* 79px 셀렉트라 두 자리까지만 들어갑니다 */
+const INTERVALS = ["30", "60", "90"];
 
 /** 약 이름과 복약 시점 입력 */
 export default function MemberMedsDetail() {
   const navigate = useNavigate();
 
   const [exitOpen, setExitOpen] = useState(false);
+  const { editing, backToMember } = useEditMode();
   const { form, setField, setMealMeds } = useMemberForm();
 
   const byTime = form.medsTiming === "특정 시간대에 먹어요";
@@ -51,8 +54,8 @@ export default function MemberMedsDetail() {
       <Header
         className="member-meds-detail__header"
         variant="close"
-        backLabel="구성원 등록 그만두기"
-        onBack={() => setExitOpen(true)}
+        backLabel={editing ? "수정 그만두기" : "구성원 등록 그만두기"}
+        onBack={() => (editing ? backToMember() : setExitOpen(true))}
       />
 
       <div className="member-meds-detail__heading">
@@ -180,16 +183,33 @@ export default function MemberMedsDetail() {
       </div>
 
       <BottomBar>
-        <Btn variant="outline" onClick={() => navigate(PATHS.memberNewMeds)}>
-          이전으로
-        </Btn>
-        <Btn
-          variant={canSubmit ? "primary" : "muted"}
-          disabled={!canSubmit}
-          onClick={() => canSubmit && navigate(PATHS.memberNewMealtime)}
-        >
-          다음으로
-        </Btn>
+        {editing ? (
+          <>
+            <Btn variant="outline" onClick={backToMember}>
+              취소
+            </Btn>
+            <Btn
+              variant={canSubmit ? "primary" : "muted"}
+              disabled={!canSubmit}
+              onClick={() => canSubmit && backToMember()}
+            >
+              저장
+            </Btn>
+          </>
+        ) : (
+          <>
+            <Btn variant="outline" onClick={() => navigate(PATHS.memberNewMeds)}>
+              이전으로
+            </Btn>
+            <Btn
+              variant={canSubmit ? "primary" : "muted"}
+              disabled={!canSubmit}
+              onClick={() => canSubmit && navigate(PATHS.memberNewMealtime)}
+            >
+              다음으로
+            </Btn>
+          </>
+        )}
       </BottomBar>
 
       <ExitRegistrationModal open={exitOpen} onCancel={() => setExitOpen(false)} />

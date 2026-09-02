@@ -43,6 +43,7 @@ import TripConfirm from "./pages/Trip/TripConfirm";
 import TripLoading from "./pages/Trip/TripLoading";
 import TripDetail from "./pages/Trip/TripDetail";
 import TripEdit from "./pages/Trip/TripEdit";
+import RestaurantDetail from "./pages/Trip/RestaurantDetail";
 import MyPage from "./pages/MyPage/MyPage";
 import MyMembers from "./pages/MyPage/MyMembers";
 import TripFormProvider from "./pages/Trip/TripFormProvider";
@@ -144,6 +145,10 @@ function App() {
           <Route path={PATHS.tripSaved} element={<TripDetail mode="saved" />} />
           <Route path={PATHS.tripShared} element={<TripDetail mode="shared" />} />
           <Route path={PATHS.tripEdit} element={<TripEdit />} />
+          <Route
+            path={PATHS.restaurantDetail}
+            element={<RestaurantDetail />}
+          />
         </Route>
 
         <Route path={PATHS.landing} element={<Landing />} />

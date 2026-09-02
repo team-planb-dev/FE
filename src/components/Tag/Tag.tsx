@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import "./Tag.css";
 
-type TagTone = "purple" | "neutral";
+type TagTone = "purple" | "neutral" | "orange";
 
 type TagProps = {
   tone?: TagTone;

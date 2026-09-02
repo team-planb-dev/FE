@@ -23,3 +23,8 @@
   background: var(--neutral-50);
   color: var(--neutral-600);
 }
+
+.tag--orange {
+  background: var(--orange-bg);
+  color: var(--orange-solid);
+}

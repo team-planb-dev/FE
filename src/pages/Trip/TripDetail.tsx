@@ -14,7 +14,7 @@ import Snackbar from "../../components/Snackbar/Snackbar";
 
 import { MOCK_PLAN_DAYS, dayTabLabels } from "./planData";
 import { useTripForm } from "./tripFormContext";
-import { PATHS } from "../../routes/paths";
+import { PATHS, restaurantDetailPath } from "../../routes/paths";
 
 const dot = (key: string) => key.replaceAll("-", ".");
 
@@ -132,7 +132,7 @@ export default function TripDetail({
               stop={item.stop}
               onDetail={
                 item.stop.kind === "food" && mode !== "shared"
-                  ? () => undefined
+                  ? () => navigate(restaurantDetailPath(item.stop.id))
                   : undefined
               }
             />

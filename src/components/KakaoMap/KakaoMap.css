@@ -1,0 +1,30 @@
+/* 카카오맵. 좌표 한 곳에 마커를 찍습니다 */
+
+.kakao-map {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  border-radius: 6px;
+  background: var(--neutral-100);
+  overflow: hidden;
+}
+
+.kakao-map__canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.kakao-map__fallback {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.28px;
+  color: var(--neutral-600);
+  white-space: nowrap;
+}

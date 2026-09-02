@@ -63,6 +63,8 @@ export const PATHS = {
 
   tripEdit: "/trip/edit",
 
+  restaurantDetail: "/trip/restaurant/:placeId",
+
   myPage: "/mypage",
 
   myMembers: "/mypage/members",
@@ -70,6 +72,9 @@ export const PATHS = {
 
 /** 앱 전체 경로 정의 */
 export const termsDetailPath = (termKey: string) => `/signup/terms/${termKey}`;
+
+export const restaurantDetailPath = (placeId: string) =>
+  `/trip/restaurant/${placeId}`;
 
 export const memberEditPath = (memberId: string) =>
   `/plan/members/${memberId}/edit`;

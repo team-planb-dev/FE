@@ -1,6 +1,9 @@
+import { useState } from "react";
+
 import "./PlanCard.css";
 
-import chevronIcon from "../../assets/icn_chevron_down.svg";
+import chevronUpIcon from "../../assets/icn_chevron_up.svg";
+import chevronRightIcon from "../../assets/icn_chevron_right.svg";
 
 /** 일정 타임라인의 장소 카드 */
 export type PlanCardKind = "food" | "sight";
@@ -22,8 +25,12 @@ type PlanCardProps = {
 };
 
 export default function PlanCard({ stop, onDetail }: PlanCardProps) {
+  const [open, setOpen] = useState(true);
+
   return (
-    <div className={`plan-card plan-card--${stop.kind}`}>
+    <div
+      className={`plan-card plan-card--${stop.kind}${open ? "" : " plan-card--closed"}`}
+    >
       <div className="plan-card__title">
         <span className="plan-card__dot" aria-hidden="true" />
         <span className="plan-card__title-texts">
@@ -31,9 +38,15 @@ export default function PlanCard({ stop, onDetail }: PlanCardProps) {
           <span className="plan-card__title-time">{stop.time}</span>
         </span>
 
-        <span className="plan-card__toggle-icon" aria-hidden="true">
-          <img src={chevronIcon} alt="" />
-        </span>
+        <button
+          type="button"
+          className="plan-card__toggle"
+          aria-label={open ? "일정 접기" : "일정 펴기"}
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <img src={chevronUpIcon} alt="" />
+        </button>
       </div>
 
       <div className="plan-card__body">
@@ -59,7 +72,7 @@ export default function PlanCard({ stop, onDetail }: PlanCardProps) {
                     >
                       <span className="plan-card__more-text">상세 보기</span>
                       <span className="plan-card__more-icon" aria-hidden="true">
-                        <img src={chevronIcon} alt="" />
+                        <img src={chevronRightIcon} alt="" />
                       </span>
                     </button>
                   )}

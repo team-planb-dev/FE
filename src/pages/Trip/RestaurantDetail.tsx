@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import "./RestaurantDetail.css";
 
@@ -8,13 +8,24 @@ import TitleL from "../../components/TitleL/TitleL";
 import Tag from "../../components/Tag/Tag";
 import KakaoMap from "../../components/KakaoMap/KakaoMap";
 
-import { MOCK_RESTAURANT, NUTRITION_NOTICE } from "./restaurantData";
+import { MOCK_RESTAURANT, NUTRITION_NOTICE, toRestaurant } from "./restaurantData";
+import type { ApiRestaurantDetail } from "../../api/planTypes";
 import { PATHS } from "../../routes/paths";
 
 /** 식당 상세. 대표 메뉴 · 영양 정보 · 식당 정보 · 지도 */
 export default function RestaurantDetail() {
   const navigate = useNavigate();
-  const place = MOCK_RESTAURANT;
+  const { placeId } = useParams();
+  const passed = useLocation().state as {
+    name?: string;
+    detail?: ApiRestaurantDetail | null;
+  } | null;
+
+  // 일정 화면에서 넘겨준 값이 있으면 그걸 쓰고, 직접 주소로 들어오면 목업을 보여줍니다
+  const place =
+    passed?.detail && placeId
+      ? toRestaurant(placeId, passed.name ?? "", passed.detail)
+      : MOCK_RESTAURANT;
 
   const nutritionRows = [
     { key: "carbohydrate", label: "탄수화물", value: place.nutrition.carbohydrate },

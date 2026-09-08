@@ -1,4 +1,6 @@
-/** 식당 상세 목업 데이터 */
+import type { ApiRestaurantDetail } from "../../api/planTypes";
+
+/** 식당 상세 화면이 쓰는 형태 */
 export type Nutrition = {
   carbohydrate: string;
   sodium: string;
@@ -36,6 +38,35 @@ export function nutritionTag(conditions: string[]): string {
   const items = conditions.flatMap((c) => TAG_BY_CONDITION[c] ?? []);
   const unique = [...new Set(items)];
   return unique.length > 0 ? `${unique.join(", ")} 참고` : "";
+}
+
+/** 일정 응답의 restaurantDetail 을 화면 형태로 바꿉니다 */
+export function toRestaurant(
+  id: string,
+  name: string,
+  detail: ApiRestaurantDetail,
+): Restaurant {
+  return {
+    id,
+    name,
+    image: detail.imageUrl ?? undefined,
+    representativeMenu: detail.menuName ?? "",
+    nutrition: {
+      carbohydrate: amount(detail.carbohydrate, "g"),
+      sodium: amount(detail.sodium, "mg"),
+      fat: amount(detail.fat, "g"),
+    },
+    openingHours: detail.openTime ?? "",
+    address: detail.address ?? "",
+    lat: Number(detail.latitude),
+    lng: Number(detail.longitude),
+    nutritionTag: MOCK_RESTAURANT.nutritionTag,
+  };
+}
+
+/** 값이 없으면 디자인의 자리표시자 그대로 둡니다 */
+function amount(value: number | null, unit: string): string {
+  return value === null ? `--(${unit})` : `${value}(${unit})`;
 }
 
 // 목업. 태그는 디자인의 예시 문구이고, 실제로는 nutritionTag(구성원 질환)로 만듭니다

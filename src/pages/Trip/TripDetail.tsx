@@ -12,7 +12,7 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 import Snackbar from "../../components/Snackbar/Snackbar";
 
-import { MOCK_PLAN_DAYS, dayTabLabels } from "./planData";
+import { MOCK_PLAN_DAYS, dayTabLabels, toPlanItems } from "./planData";
 import { useTripForm } from "./tripFormContext";
 import { PATHS, restaurantDetailPath } from "../../routes/paths";
 
@@ -40,6 +40,7 @@ export default function TripDetail({
   const saved = mode !== "edit";
   const days = MOCK_PLAN_DAYS;
   const [dayIndex, setDayIndex] = useState(0);
+  const items = toPlanItems(days[dayIndex]);
   const [copied, setCopied] = useState(false);
 
   const share = () => {
@@ -125,14 +126,20 @@ export default function TripDetail({
       </div>
 
       <div className="trip-detail__list">
-        {days[dayIndex].map((item) =>
+        {items.map((item) =>
           item.type === "stop" ? (
             <PlanCard
               key={item.stop.id}
               stop={item.stop}
               onDetail={
                 item.stop.kind === "food" && mode !== "shared"
-                  ? () => navigate(restaurantDetailPath(item.stop.id))
+                  ? () =>
+                      navigate(restaurantDetailPath(item.stop.id), {
+                        state: {
+                          name: item.stop.name,
+                          detail: item.schedule.restaurantDetail,
+                        },
+                      })
                   : undefined
               }
             />

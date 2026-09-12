@@ -59,7 +59,7 @@ export default function MyPage() {
 
   return (
     <div className="my-page">
-      <Header className="my-page__header" variant="logo" />
+      <Header className="my-page__header" variant="empty" />
       <TitleL className="my-page__title">{"{사용자 이름}"}</TitleL>
       <ul className="my-page__menu">
         {menus.map((menu) => (

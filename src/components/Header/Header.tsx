@@ -10,10 +10,10 @@ type HeaderProps = {
   backLabel?: string;
   title?: string;
   action?: { label: string; onClick: () => void };
-  variant?: "back" | "close" | "logo" | "empty" | "title";
+  variant?: "back" | "close" | "empty" | "title";
 };
 
-/** 상단 헤더. back / close / logo / empty / title */
+/** 상단 헤더. back / close / empty / title */
 export default function Header({
   className,
   onBack,
@@ -23,14 +23,6 @@ export default function Header({
   variant = "back",
 }: HeaderProps) {
   const rootClass = `header header--${variant}${className ? ` ${className}` : ""}`;
-
-  if (variant === "logo") {
-    return (
-      <header className={rootClass}>
-        <span className="header__logo">LOGO</span>
-      </header>
-    );
-  }
 
   if (variant === "empty") {
     return <header className={rootClass} />;

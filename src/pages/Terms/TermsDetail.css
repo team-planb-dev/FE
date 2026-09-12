@@ -18,8 +18,8 @@
 .terms-detail__title {
   position: absolute;
   top: 74px;
-  left: 25px;
-  width: 334px;
+  left: 24px;
+  width: 342px;
   margin: 0;
   font-family: Pretendard, sans-serif;
   font-size: 16px;
@@ -32,10 +32,10 @@
 
 .terms-detail__body {
   position: absolute;
-  top: 117px;
-  left: 25px;
-  width: 334px;
-  height: calc(844px - 117px - 120px);
+  top: 121px;
+  left: 24px;
+  width: 342px;
+  height: calc(844px - 121px - 120px);
   overflow-y: auto;
   font-family: Pretendard, sans-serif;
   font-size: 14px;

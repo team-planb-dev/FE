@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 import "./TermsDetail.css";
@@ -11,8 +10,6 @@ import { useSignup } from "../Signup/signupContext";
 import { findTerm } from "./termsData";
 import { PATHS } from "../../routes/paths";
 
-const TERMS_CONTENT: Partial<Record<string, ReactNode>> = {};
-
 /** 약관 전문 */
 export default function TermsDetail() {
   const navigate = useNavigate();
@@ -21,7 +18,7 @@ export default function TermsDetail() {
 
   const term = findTerm(termKey);
 
-  if (!term) return <Navigate to={PATHS.signupTerms} replace />;
+  if (!term?.content) return <Navigate to={PATHS.signupTerms} replace />;
 
   return (
     <div className="terms-detail">
@@ -32,7 +29,7 @@ export default function TermsDetail() {
       />
 
       <h1 className="terms-detail__title">{term.label}</h1>
-      <div className="terms-detail__body">{TERMS_CONTENT[term.key]}</div>
+      <div className="terms-detail__body">{term.content}</div>
       <BottomBar>
         <Btn variant="outline" onClick={() => navigate(-1)}>
           닫기

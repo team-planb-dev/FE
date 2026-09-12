@@ -7,15 +7,22 @@ import Checkbox from "../../components/Checkbox/Checkbox";
 import Btn from "../../components/Btn/Btn";
 
 import { useSignup } from "../Signup/signupContext";
-import { TERMS } from "./termsData";
+import { MARKETING_NOTICE, TERMS } from "./termsData";
 import { PATHS, termsDetailPath } from "../../routes/paths";
+
+const ALL_AGREE = "전체 동의하기";
 
 /** 약관 동의 */
 export default function Terms() {
   const navigate = useNavigate();
   const { agreed, setAgreed } = useSignup();
 
+  // 하단 버튼은 [필수] 항목이 모두 체크되어야 활성화됩니다
+  const canSubmit = TERMS.every((term) => !term.required || agreed[term.key]);
   const allAgreed = TERMS.every((term) => agreed[term.key]);
+
+  const toggleAll = (checked: boolean) =>
+    TERMS.forEach((term) => setAgreed(term.key, checked));
 
   return (
     <div className="terms-page">
@@ -40,7 +47,7 @@ export default function Terms() {
                 </label>
               </span>
 
-              {term.hasDetail && (
+              {term.content && (
                 <button
                   type="button"
                   className="terms-page__detail"
@@ -52,12 +59,21 @@ export default function Terms() {
             </li>
           ))}
         </ul>
+
+        <p className="terms-page__notice">{MARKETING_NOTICE}</p>
+      </div>
+
+      <div className="terms-page__all">
+        <Checkbox id="terms-all" checked={allAgreed} onChange={toggleAll} />
+        <label className="terms-page__label" htmlFor="terms-all">
+          {ALL_AGREE}
+        </label>
       </div>
 
       <Btn
-        variant={allAgreed ? "primary" : "muted"}
+        variant={canSubmit ? "primary" : "muted"}
         className="terms-page__confirm"
-        onClick={() => allAgreed && navigate(PATHS.signupComplete)}
+        onClick={() => canSubmit && navigate(PATHS.signupComplete)}
       >
         확인
       </Btn>

@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 
 /** 회원가입 폼 컨텍스트 */
-export type TermKey = "age" | "service" | "privacy";
+export type TermKey = "age" | "service" | "privacy" | "marketing";
 
 export type SignupForm = {
   nickname: string;
@@ -25,6 +25,7 @@ export const EMPTY_AGREED: Record<TermKey, boolean> = {
   age: false,
   service: false,
   privacy: false,
+  marketing: false,
 };
 
 export type SignupContextValue = {

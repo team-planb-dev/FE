@@ -20,6 +20,7 @@ import { PATHS } from "../../routes/paths";
 import searchIcon from "../../assets/icn_search.svg";
 
 const PASSWORD_HINT = "영문, 숫자, 특문 중 2개 조합 8자 이상";
+const PASSWORD_MISMATCH = "비밀번호가 일치하지 않습니다.";
 
 type CheckResult = "idle" | "taken" | "available";
 
@@ -48,6 +49,10 @@ export default function Signup() {
   const setPasswordConfirm = (v: string) => setField("passwordConfirm", v);
   const setQuestion = (v: string) => setField("question", v);
   const setAnswer = (v: string) => setField("answer", v);
+
+  // 확인란을 입력하기 시작한 뒤부터 다를 때만 알립니다
+  const passwordMismatch =
+    passwordConfirm.length > 0 && password !== passwordConfirm;
 
   const [nicknameCheck, setNicknameCheck] = useState<CheckResult>("idle");
   const [emailCheck, setEmailCheck] = useState<CheckResult>("idle");
@@ -184,6 +189,8 @@ export default function Signup() {
               htmlFor="signup-password-confirm"
               required
               spacing="no-gap"
+              subtext={passwordMismatch ? PASSWORD_MISMATCH : undefined}
+              subtextTone="negative"
             >
               <PasswordInput
                 id="signup-password-confirm"
@@ -191,6 +198,7 @@ export default function Signup() {
                 onChange={setPasswordConfirm}
                 placeholder="password"
                 autoComplete="new-password"
+                status={passwordMismatch ? "negative" : undefined}
               />
             </Field>
 

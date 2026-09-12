@@ -50,7 +50,7 @@ export default function Home() {
 
   return (
     <div className="home">
-      <Header className="home__header" variant="logo" />
+      <Header className="home__header" variant="empty" />
       {isEmpty ? (
         <>
           <img className="home__character" src={characterImage} alt="" />

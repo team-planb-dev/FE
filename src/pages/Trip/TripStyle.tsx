@@ -10,6 +10,7 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 
 import { TRIP_STYLES, useTripForm } from "./tripFormContext";
+import { CHIP_ICONS } from "./chipIcons";
 import { PATHS } from "../../routes/paths";
 
 /** 여행 스타일 선택 */
@@ -34,6 +35,7 @@ export default function TripStyle() {
           <ChipsXL
             key={style}
             label={style}
+            icon={CHIP_ICONS[style]}
             selected={form.style === style}
             onClick={() => setField("style", style)}
           />

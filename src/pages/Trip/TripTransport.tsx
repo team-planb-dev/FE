@@ -9,6 +9,7 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 
 import { TRANSPORTS, useTripForm } from "./tripFormContext";
+import { CHIP_ICONS } from "./chipIcons";
 import { PATHS } from "../../routes/paths";
 
 /** 이동수단 선택 */
@@ -29,6 +30,7 @@ export default function TripTransport() {
           <ChipsXL
             key={transport}
             label={transport}
+            icon={CHIP_ICONS[transport]}
             selected={form.transport === transport}
             onClick={() => setField("transport", transport)}
           />

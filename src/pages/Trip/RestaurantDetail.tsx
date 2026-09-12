@@ -7,6 +7,10 @@ import Header from "../../components/Header/Header";
 import TitleL from "../../components/TitleL/TitleL";
 import Tag from "../../components/Tag/Tag";
 import KakaoMap from "../../components/KakaoMap/KakaoMap";
+import {
+  onThumbnailError,
+  thumbnailSrc,
+} from "../../components/common/defaultThumbnail";
 
 import { MOCK_RESTAURANT, NUTRITION_NOTICE, toRestaurant } from "./restaurantData";
 import type { ApiRestaurantDetail } from "../../api/planTypes";
@@ -49,7 +53,11 @@ export default function RestaurantDetail() {
 
       <div className="restaurant-detail__body">
         <div className="restaurant-detail__img">
-          {place.image ? <img src={place.image} alt="" /> : null}
+          <img
+            src={thumbnailSrc(place.image, "food", "wide")}
+            onError={onThumbnailError("food", "wide")}
+            alt=""
+          />
         </div>
 
         <div className="restaurant-detail__content">

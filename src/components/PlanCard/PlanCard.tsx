@@ -5,6 +5,8 @@ import "./PlanCard.css";
 import chevronUpIcon from "../../assets/icn_chevron_up.svg";
 import chevronRightIcon from "../../assets/icn_chevron_right.svg";
 
+import { onThumbnailError, thumbnailSrc } from "../common/defaultThumbnail";
+
 /** 일정 타임라인의 장소 카드 */
 export type PlanCardKind = "food" | "sight";
 
@@ -62,7 +64,15 @@ export default function PlanCard({ stop, onDetail }: PlanCardProps) {
           <div className="plan-card__row">
             <img
               className="plan-card__thumb"
-              src={stop.thumbnail}
+              src={thumbnailSrc(
+                stop.thumbnail,
+                stop.kind === "food" ? "food" : "place",
+                "square",
+              )}
+              onError={onThumbnailError(
+                stop.kind === "food" ? "food" : "place",
+                "square",
+              )}
               alt=""
               aria-hidden="true"
             />

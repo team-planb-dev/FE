@@ -6,6 +6,7 @@ import "./Home.css";
 import Header from "../../components/Header/Header";
 import Btn from "../../components/Btn/Btn";
 import Card from "../../components/Card/Card";
+import type { ThumbnailKind } from "../../components/common/defaultThumbnail";
 
 import characterImage from "../../assets/character.svg";
 import { PATHS } from "../../routes/paths";
@@ -21,7 +22,9 @@ type Trip = {
   id: string;
   title: string;
   theme: string;
+  // TODO(api): 일정의 첫 번째 장소 썸네일과 장소 종류를 받아 넣습니다
   thumbnail?: string;
+  thumbnailKind?: ThumbnailKind;
 };
 
 const MOCK_TRIPS: Record<TabKey, Trip[]> = {
@@ -89,6 +92,7 @@ export default function Home() {
                 title={trip.title}
                 theme={trip.theme}
                 thumbnail={trip.thumbnail}
+                thumbnailKind={trip.thumbnailKind}
                 onClick={() => {}}
               />
             ))}

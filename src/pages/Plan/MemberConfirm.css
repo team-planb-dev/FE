@@ -19,3 +19,15 @@
   top: 54px;
   left: 0;
 }
+
+.member-confirm__list {
+  position: absolute;
+  top: 149px;
+  left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 342px;
+  max-height: calc(724px - 149px);
+  overflow-y: auto;
+}

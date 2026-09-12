@@ -6,6 +6,7 @@ import Header from "../../components/Header/Header";
 import Btn from "../../components/Btn/Btn";
 
 import editIcon from "../../assets/icn_edit.svg";
+import type { MemberNavState } from "./memberData";
 import { PATHS } from "../../routes/paths";
 
 const MOCK_ROWS = [
@@ -26,7 +27,9 @@ export default function MemberEdit() {
   const location = useLocation();
   const { memberId } = useParams();
 
-  const from = (location.state as { from?: string } | null)?.from;
+  const state = location.state as MemberNavState | null;
+  const from = state?.from;
+  const members = state?.members;
   const backTo = from ?? PATHS.planMembers;
 
   return (
@@ -58,7 +61,7 @@ export default function MemberEdit() {
                 aria-label={`${row.label} 수정`}
                 onClick={() =>
                   navigate(row.to, {
-                    state: { edit: true, memberId, from },
+                    state: { edit: true, memberId, from, members },
                   })
                 }
               >
@@ -78,7 +81,7 @@ export default function MemberEdit() {
         <Btn
           variant="primary"
           className="member-edit__submit"
-          onClick={() => navigate(backTo)}
+          onClick={() => navigate(backTo, { state: { members } })}
         >
           {SUBMIT_LABEL}
         </Btn>

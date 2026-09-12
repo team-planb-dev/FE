@@ -12,6 +12,8 @@ type MemberSelectCardProps = {
   name: string;
   tags: string[];
   selectable?: boolean;
+  /** icon 이면 연필 아이콘 하나만 보여줍니다 */
+  editStyle?: "button" | "icon";
   selected?: boolean;
   onToggle?: () => void;
   onEdit?: () => void;
@@ -24,6 +26,7 @@ export default function MemberSelectCard({
   name,
   tags,
   selectable = true,
+  editStyle = "button",
   selected = false,
   onToggle,
   onEdit,
@@ -51,14 +54,29 @@ export default function MemberSelectCard({
         )}
 
         <p className="member-card__name">{name}</p>
-        <div
-          className="member-card__actions"
-          onClick={(e) => e.stopPropagation()}
-        >
-
-          <BtnWithIcon icon={editIcon} label="수정" onClick={onEdit} />
-          <BtnWithIcon icon={trashIcon} label="삭제" onClick={onDelete} />
-        </div>
+        {editStyle === "icon"
+          ? onEdit && (
+              <button
+                type="button"
+                className="member-card__edit"
+                aria-label={`${name} 건강정보 수정`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit();
+                }}
+              >
+                <img src={editIcon} alt="" aria-hidden="true" />
+              </button>
+            )
+          : (onEdit || onDelete) && (
+              <div
+                className="member-card__actions"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <BtnWithIcon icon={editIcon} label="수정" onClick={onEdit} />
+                <BtnWithIcon icon={trashIcon} label="삭제" onClick={onDelete} />
+              </div>
+            )}
       </div>
 
       {tags.length > 0 && (

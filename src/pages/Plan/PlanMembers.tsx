@@ -12,18 +12,8 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 import Modal from "../../components/Modal/Modal";
 
+import { MOCK_MEMBERS, type Member } from "./memberData";
 import { PATHS, memberEditPath } from "../../routes/paths";
-
-type Member = {
-  id: string;
-  name: string;
-  tags: string[];
-};
-
-const MOCK_MEMBERS: Member[] = [
-  { id: "1", name: "{구성원 이름}", tags: ["알레르기 주의", "복약", "당뇨"] },
-  { id: "2", name: "{구성원 이름}", tags: ["알레르기 주의", "복약", "당뇨"] },
-];
 
 /** 여행 구성원 선택 */
 export default function PlanMembers() {
@@ -103,7 +93,12 @@ export default function PlanMembers() {
 
         <Btn
           variant={canSubmit ? "primary" : "muted"}
-          onClick={() => canSubmit && navigate(PATHS.memberConfirm)}
+          onClick={() =>
+            canSubmit &&
+            navigate(PATHS.memberConfirm, {
+              state: { members: members.filter((m) => selectedIds.includes(m.id)) },
+            })
+          }
           disabled={!canSubmit}
         >
           {justRegistered ? "완료" : "등록하기"}

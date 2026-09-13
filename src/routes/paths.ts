@@ -68,10 +68,14 @@ export const PATHS = {
   myPage: "/mypage",
 
   myMembers: "/mypage/members",
+
+  myTermsDetail: "/mypage/terms/:termKey",
 } as const;
 
 /** 앱 전체 경로 정의 */
 export const termsDetailPath = (termKey: string) => `/signup/terms/${termKey}`;
+
+export const myTermsDetailPath = (termKey: string) => `/mypage/terms/${termKey}`;
 
 export const restaurantDetailPath = (placeId: string) =>
   `/trip/restaurant/${placeId}`;

@@ -10,7 +10,7 @@ import Modal from "../../components/Modal/Modal";
 
 import arrowIcon from "../../assets/icn_chevron_right.svg";
 
-import { PATHS } from "../../routes/paths";
+import { PATHS, myTermsDetailPath } from "../../routes/paths";
 
 const WITHDRAW = "회원탈퇴";
 
@@ -40,8 +40,14 @@ export default function MyPage() {
       label: "여행 구성원 관리",
       onClick: () => navigate(PATHS.myMembers),
     },
-    { label: "이용약관", onClick: () => undefined },
-    { label: "개인정보처리방침", onClick: () => undefined },
+    {
+      label: "서비스 이용약관",
+      onClick: () => navigate(myTermsDetailPath("service")),
+    },
+    {
+      label: "개인정보 수집·이용 동의",
+      onClick: () => navigate(myTermsDetailPath("privacy")),
+    },
     { label: "로그아웃", onClick: () => setLogoutOpen(true), arrow: false },
   ];
 

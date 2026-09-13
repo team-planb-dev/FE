@@ -18,6 +18,7 @@ import FindEmailResult from "./pages/FindEmail/FindEmailResult";
 import FindPassword from "./pages/FindPassword/FindPassword";
 import FindPasswordResult from "./pages/FindPassword/FindPasswordResult";
 import TermsDetail from "./pages/Terms/TermsDetail";
+import TermsView from "./pages/Terms/TermsView";
 import Home from "./pages/Home/Home";
 import PlanStart from "./pages/Plan/PlanStart";
 import PlanMembers from "./pages/Plan/PlanMembers";
@@ -130,6 +131,7 @@ function App() {
         <Route path={PATHS.memberEdit} element={<MemberEdit />} />
         <Route path={PATHS.myPage} element={<MyPage />} />
         <Route path={PATHS.myMembers} element={<MyMembers />} />
+        <Route path={PATHS.myTermsDetail} element={<TermsView />} />
         <Route element={<TripFormLayout />}>
           <Route path={PATHS.tripName} element={<TripName />} />
           <Route path={PATHS.tripRegion} element={<TripRegion />} />

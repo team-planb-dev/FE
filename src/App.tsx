@@ -130,10 +130,12 @@ function App() {
           />
           <Route path={PATHS.memberNewMealtime} element={<MemberMealtime />} />
           <Route path={PATHS.memberNewFood} element={<MemberFood />} />
+
+          {/* 수정 화면에서 단계 화면을 다녀와도 입력값이 유지되도록 같은 Provider 안에 둡니다 */}
+          <Route path={PATHS.memberEdit} element={<MemberEdit />} />
         </Route>
 
         <Route path={PATHS.memberConfirm} element={<MemberConfirm />} />
-        <Route path={PATHS.memberEdit} element={<MemberEdit />} />
         <Route path={PATHS.myPage} element={<MyPage />} />
         <Route path={PATHS.myMembers} element={<MyMembers />} />
         <Route path={PATHS.myTermsDetail} element={<TermsView />} />

@@ -44,3 +44,11 @@
   align-items: center;
   gap: 8px;
 }
+
+/* 등록 실패 안내. 하단 버튼(top 770) 위에 둡니다 */
+.member-food__snackbar {
+  position: absolute;
+  top: 700px;
+  left: 24px;
+  width: 342px;
+}

@@ -12,9 +12,11 @@ import Chips from "../../components/Chips/Chips";
 import Checkbox from "../../components/Checkbox/Checkbox";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
+import Snackbar from "../../components/Snackbar/Snackbar";
 
 import searchIcon from "../../assets/icn_search.svg";
 import { useMemberForm } from "./memberFormContext";
+import { useMemberSubmit } from "./useMemberSubmit";
 import ExitRegistrationModal from "./ExitRegistrationModal";
 import { PATHS } from "../../routes/paths";
 
@@ -26,6 +28,7 @@ export default function MemberNew() {
 
   const [exitOpen, setExitOpen] = useState(false);
   const { form, setField } = useMemberForm();
+  const { register, submitting, error } = useMemberSubmit();
 
   const considersHealth = form.considerHealth === "yes";
 
@@ -35,13 +38,15 @@ export default function MemberNew() {
     (!considersHealth || form.sensitiveAgreed);
 
   const handleSubmit = () => {
-    if (!canSubmit) return;
+    if (!canSubmit || submitting) return;
+
     if (considersHealth) {
       navigate(PATHS.memberNewHealth);
       return;
     }
 
-    navigate(PATHS.planMembers);
+    // 건강조건을 고려하지 않으면 더 물어볼 것이 없어 여기서 바로 등록합니다
+    void register();
   };
 
   return (
@@ -133,21 +138,27 @@ export default function MemberNew() {
         </div>
       )}
 
+      {error && <Snackbar className="member-new__snackbar">{error}</Snackbar>}
+
       <BottomBar>
         <Btn variant="outline" onClick={() => navigate(PATHS.planMembers)}>
           그만두기
         </Btn>
         <Btn
-          variant={canSubmit ? "primary" : "muted"}
-          disabled={!canSubmit}
+          variant={canSubmit && !submitting ? "primary" : "muted"}
+          disabled={!canSubmit || submitting}
           onClick={handleSubmit}
         >
-
-          {form.considerHealth === "no" ? "등록하기" : "다음으로"}
+          {nextLabel(form.considerHealth === "no", submitting)}
         </Btn>
       </BottomBar>
 
       <ExitRegistrationModal open={exitOpen} onCancel={() => setExitOpen(false)} />
     </div>
   );
+}
+
+function nextLabel(registersHere: boolean, submitting: boolean): string {
+  if (!registersHere) return "다음으로";
+  return submitting ? "등록 중" : "등록하기";
 }

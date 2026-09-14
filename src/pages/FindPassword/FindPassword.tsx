@@ -11,9 +11,12 @@ import TextInput from "../../components/Input/TextInput";
 import PasswordInput from "../../components/Input/PasswordInput";
 import Btn from "../../components/Btn/Btn";
 import BottomBar from "../../components/BottomBar/BottomBar";
+import Snackbar from "../../components/Snackbar/Snackbar";
 
+import { recoveryErrorMessage } from "../../api/recoveryError";
+import { checkUsernameDuplication, resetPassword } from "../../api/user";
+import { useRecoveryQuestions } from "../../api/useRecoveryQuestions";
 import { isValidEmail, isValidPassword } from "../../utils/validation";
-import { RECOVERY_QUESTIONS } from "../../constants/recoveryQuestions";
 import { PATHS } from "../../routes/paths";
 
 import searchIcon from "../../assets/icn_search.svg";
@@ -23,41 +26,88 @@ const EMAIL_CHECK_MESSAGE = {
   found: "가입된 이메일입니다.",
 } as const;
 
-type EmailCheck = "idle" | "notFound" | "found";
+/**
+ * idle 아직 안 눌렀음 · found 가입됨 · notFound 가입 안 됨
+ * unknown 서버에 물어보지 못함 — 중복 확인 API 가 GET 인데 본문을 요구해서
+ *         브라우저에서 호출할 수 없습니다. 규격이 바뀌면 이 상태는 사라집니다.
+ */
+type EmailCheck = "idle" | "notFound" | "found" | "unknown";
 
 const EMAIL_CHECK_TONE = { notFound: "negative", found: "positive" } as const;
 
 /** 비밀번호 찾기 */
 export default function FindPassword() {
   const navigate = useNavigate();
+  const { options, codeOf } = useRecoveryQuestions();
 
   const [email, setEmail] = useState("");
   const [emailCheck, setEmailCheck] = useState<EmailCheck>("idle");
+  const [checking, setChecking] = useState(false);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleEmailCheck = () => {
+  const checkEmail = async () => {
+    if (checking) return;
+
     if (!isValidEmail(email.trim())) {
       setEmailCheck("notFound");
       return;
     }
-    setEmailCheck((prev) => (prev === "found" ? "notFound" : "found"));
+
+    setChecking(true);
+    try {
+      const data = await checkUsernameDuplication(email.trim());
+      // 가입된 이메일이면 duplicate 가 true 입니다
+      setEmailCheck(data?.duplicate ? "found" : "notFound");
+    } catch {
+      // 규격 문제로 호출이 안 되는 상태라 막지 않고 넘어갑니다.
+      // 실제 검증은 아래 재설정 요청에서 서버가 합니다.
+      setEmailCheck("unknown");
+    } finally {
+      setChecking(false);
+    }
   };
 
   const canSubmit =
-    emailCheck === "found" &&
+    (emailCheck === "found" || emailCheck === "unknown") &&
+    isValidEmail(email.trim()) &&
     question.length > 0 &&
     answer.trim().length > 0 &&
     isValidPassword(password) &&
     password === passwordConfirm;
 
-  const handleSubmit = () => {
-    if (!canSubmit) return;
+  const submit = async () => {
+    if (!canSubmit || submitting) return;
 
-    navigate(PATHS.findPasswordResult, { replace: true, state: { done: true } });
+    const code = codeOf(question);
+    if (!code) return;
+
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      await resetPassword({
+        username: email.trim(),
+        recoveryQuestion: code,
+        recoveryAnswer: answer.trim(),
+        newPassword: password,
+      });
+
+      navigate(PATHS.findPasswordResult, {
+        replace: true,
+        state: { done: true },
+      });
+    } catch (caught) {
+      setError(recoveryErrorMessage(caught));
+      setSubmitting(false);
+    }
   };
+
+  const showEmailCheck = emailCheck === "found" || emailCheck === "notFound";
 
   return (
     <div className="find-password">
@@ -81,12 +131,14 @@ export default function FindPassword() {
             spacing="none"
             reserveSubtext
             subtext={
-              emailCheck === "idle"
-                ? undefined
-                : EMAIL_CHECK_MESSAGE[emailCheck]
+              showEmailCheck
+                ? EMAIL_CHECK_MESSAGE[emailCheck as "found" | "notFound"]
+                : undefined
             }
             subtextTone={
-              emailCheck === "idle" ? "default" : EMAIL_CHECK_TONE[emailCheck]
+              showEmailCheck
+                ? EMAIL_CHECK_TONE[emailCheck as "found" | "notFound"]
+                : "default"
             }
           >
             <div className="find-password__check-row">
@@ -98,18 +150,22 @@ export default function FindPassword() {
                 onChange={(v) => {
                   setEmail(v);
                   setEmailCheck("idle");
+                  setError(null);
                 }}
                 placeholder="example@email.com"
                 autoComplete="email"
                 leadingIcon={email ? undefined : searchIcon}
                 status={
-                  emailCheck === "idle" ? undefined : EMAIL_CHECK_TONE[emailCheck]
+                  showEmailCheck
+                    ? EMAIL_CHECK_TONE[emailCheck as "found" | "notFound"]
+                    : undefined
                 }
               />
               <Btn
                 variant="outline"
                 className="find-password__check-btn"
-                onClick={handleEmailCheck}
+                disabled={checking}
+                onClick={() => void checkEmail()}
               >
                 확인
               </Btn>
@@ -125,8 +181,11 @@ export default function FindPassword() {
             <Select
               id="find-password-question"
               value={question}
-              onChange={setQuestion}
-              options={RECOVERY_QUESTIONS}
+              onChange={(v) => {
+                setQuestion(v);
+                setError(null);
+              }}
+              options={options}
               placeholder="계정 복구 질문을 선택해주세요."
             />
           </Field>
@@ -140,7 +199,10 @@ export default function FindPassword() {
             <TextInput
               id="find-password-answer"
               value={answer}
-              onChange={setAnswer}
+              onChange={(v) => {
+                setAnswer(v);
+                setError(null);
+              }}
               placeholder="placeholder"
               leadingIcon={searchIcon}
             />
@@ -181,10 +243,16 @@ export default function FindPassword() {
       </div>
 
       <BottomBar>
-        <Btn variant={canSubmit ? "primary" : "muted"} onClick={handleSubmit}>
-          확인
+        <Btn
+          variant={canSubmit && !submitting ? "primary" : "muted"}
+          disabled={!canSubmit || submitting}
+          onClick={() => void submit()}
+        >
+          {submitting ? "확인 중" : "확인"}
         </Btn>
       </BottomBar>
+
+      {error && <Snackbar className="find-password__snackbar">{error}</Snackbar>}
     </div>
   );
 }

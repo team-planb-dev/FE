@@ -1,5 +1,3 @@
-/** 백엔드 AI 일정 응답 타입. 노션 "AI 응답 결과" 문서의 실제 응답 기준 */
-
 /** 백엔드가 코드와 표시 문구를 함께 내려줍니다 */
 export type CodeValue = {
   code: string;

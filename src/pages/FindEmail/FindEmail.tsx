@@ -12,30 +12,57 @@ import Btn from "../../components/Btn/Btn";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import Snackbar from "../../components/Snackbar/Snackbar";
 
-import { RECOVERY_QUESTIONS } from "../../constants/recoveryQuestions";
+import {
+  NOT_MATCHED_MESSAGE,
+  recoveryErrorMessage,
+} from "../../api/recoveryError";
+import { findUsername } from "../../api/user";
+import { useRecoveryQuestions } from "../../api/useRecoveryQuestions";
 import { PATHS } from "../../routes/paths";
 
 import searchIcon from "../../assets/icn_search.svg";
 
-const NOT_MATCHED_MESSAGE = "답변이 일치하지 않아요.";
-
 /** 이메일 찾기 */
 export default function FindEmail() {
   const navigate = useNavigate();
+  const { options, codeOf } = useRecoveryQuestions();
+
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
-  const [notMatched, setNotMatched] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const canSubmit = question.length > 0 && answer.trim().length > 0;
 
-  const handleSubmit = () => {
-    if (!canSubmit) return;
+  const submit = async () => {
+    if (!canSubmit || submitting) return;
 
-    if (!notMatched) {
-      setNotMatched(true);
-      return;
+    const code = codeOf(question);
+    if (!code) return;
+
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      const data = await findUsername({
+        recoveryQuestion: code,
+        recoveryAnswer: answer.trim(),
+      });
+
+      // 일치하는 계정이 없으면 빈 값으로 올 수 있습니다
+      if (!data?.maskedUsername) {
+        setError(NOT_MATCHED_MESSAGE);
+        setSubmitting(false);
+        return;
+      }
+
+      navigate(PATHS.findEmailResult, {
+        state: { email: data.maskedUsername },
+      });
+    } catch (caught) {
+      setError(recoveryErrorMessage(caught));
+      setSubmitting(false);
     }
-    navigate(PATHS.findEmailResult, { state: { email: "ye***@gmail.com" } });
   };
 
   return (
@@ -59,9 +86,9 @@ export default function FindEmail() {
             value={question}
             onChange={(v) => {
               setQuestion(v);
-              setNotMatched(false);
+              setError(null);
             }}
-            options={RECOVERY_QUESTIONS}
+            options={options}
             placeholder="계정 복구 질문을 선택해주세요."
           />
         </Field>
@@ -77,7 +104,7 @@ export default function FindEmail() {
             value={answer}
             onChange={(v) => {
               setAnswer(v);
-              setNotMatched(false);
+              setError(null);
             }}
             placeholder="placeholder"
             leadingIcon={searchIcon}
@@ -86,16 +113,16 @@ export default function FindEmail() {
       </div>
 
       <BottomBar>
-        <Btn variant={canSubmit ? "primary" : "muted"} onClick={handleSubmit}>
-          확인
+        <Btn
+          variant={canSubmit && !submitting ? "primary" : "muted"}
+          disabled={!canSubmit || submitting}
+          onClick={() => void submit()}
+        >
+          {submitting ? "확인 중" : "확인"}
         </Btn>
       </BottomBar>
 
-      {notMatched && (
-        <Snackbar className="find-email__snackbar">
-          {NOT_MATCHED_MESSAGE}
-        </Snackbar>
-      )}
+      {error && <Snackbar className="find-email__snackbar">{error}</Snackbar>}
     </div>
   );
 }

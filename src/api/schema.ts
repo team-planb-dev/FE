@@ -153,6 +153,7 @@ export type ReissueStatus =
 export const ERROR_CODE = {
   authFailed: "AUTH_FAILED",
   validation: "BASE.EXCEPTION.EXCEPTION_VALIDATION",
+  recoveryAnswerMismatch: "BASE.EXCEPTION.RECOVERY_ANSWER_MISMATCH",
   issued: "BASE.EXCEPTION.EXCEPTION_ISSUED",
   refreshExpired: "BASE.EXCEPTION.REFRESH_TOKEN_EXPIRED",
   refreshNotFound: "BASE.EXCEPTION.REFRESH_TOKEN_NOT_FOUND",

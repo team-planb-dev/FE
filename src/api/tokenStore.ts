@@ -33,17 +33,23 @@ export function subscribeToken(listener: Listener): () => void {
 }
 
 /**
- * 응답 헤더에서 Access Token 을 꺼냅니다.
- * 로그인 응답은 body 가 아니라 `Authorization` 헤더로 토큰을 내려줍니다.
+ * 응답 헤더에서 Access Token 을 꺼냅니다. 로그인 응답은 body 가 아니라 헤더로 줍니다.
  *
- * ⚠ 백엔드 CORS 에 `exposedHeaders: Authorization` 이 없으면 여기서 항상 null 이 나옵니다.
+ * 서버는 `Authorization: Bearer ...` 로 내려줍니다.
+ * 2026-09-14 이전에는 CORS 노출 이름이 `AccessToken` 으로 엇갈려 있어 읽히지 않았고,
+ * 지금은 `Authorization` 으로 고쳐졌습니다. 옛 이름도 폴백으로 남겨둡니다.
  */
-export function readTokenFromHeaders(headers: Headers): string | null {
-  const raw = headers.get("Authorization") ?? headers.get("authorization");
-  if (!raw) return null;
+const TOKEN_HEADER_NAMES = ["Authorization", "AccessToken"];
 
-  const trimmed = raw.trim();
-  return trimmed.toLowerCase().startsWith("bearer ")
-    ? trimmed.slice(7).trim()
-    : trimmed;
+export function readTokenFromHeaders(headers: Headers): string | null {
+  for (const name of TOKEN_HEADER_NAMES) {
+    const raw = headers.get(name)?.trim();
+    if (!raw) continue;
+
+    return raw.toLowerCase().startsWith("bearer ")
+      ? raw.slice(7).trim()
+      : raw;
+  }
+
+  return null;
 }

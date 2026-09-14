@@ -154,6 +154,12 @@ export const ERROR_CODE = {
   authFailed: "AUTH_FAILED",
   validation: "BASE.EXCEPTION.EXCEPTION_VALIDATION",
   recoveryAnswerMismatch: "BASE.EXCEPTION.RECOVERY_ANSWER_MISMATCH",
+  /* 2026-09-14 추가분. Swagger 에는 아직 안 올라와 있습니다 */
+  duplicateUsername: "DUPLICATE_USERNAME",
+  duplicateNickname: "DUPLICATE_NICKNAME",
+  /** 다른 기기에서 로그인해 이 세션이 끊긴 경우 */
+  sessionExpired: "SESSION_EXPIRED",
+  logoutCredentialNotFound: "LOGOUT_CREDENTIAL_NOT_FOUND",
   issued: "BASE.EXCEPTION.EXCEPTION_ISSUED",
   refreshExpired: "BASE.EXCEPTION.REFRESH_TOKEN_EXPIRED",
   refreshNotFound: "BASE.EXCEPTION.REFRESH_TOKEN_NOT_FOUND",
@@ -238,6 +244,8 @@ export type RecoveryQuestionResponse = {
 };
 
 export type FindUsernameRequest = {
+  /** 2026-09-14 추가. 같은 답변을 쓴 계정이 여럿이면 못 찾아서 함께 받습니다 */
+  nickname: string;
   recoveryQuestion: RecoveryQuestionCode;
   recoveryAnswer: string;
 };

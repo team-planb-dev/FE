@@ -3,7 +3,8 @@
  */
 
 import type { ApiResult } from "./schema";
-import { getAccessToken } from "./tokenStore";
+import { ERROR_CODE } from "./schema";
+import { clearAccessToken, getAccessToken } from "./tokenStore";
 
 const BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/+$/, "");
 
@@ -111,6 +112,12 @@ function unwrap<T>(response: Response, payload: unknown): T {
 
   if (envelope) {
     if (envelope.success) return envelope.data as T;
+
+    // 다른 기기에서 로그인해 이 세션이 끊긴 경우입니다. 재발급도 안 되므로 바로 비웁니다
+    if (envelope.error?.errorCode === ERROR_CODE.sessionExpired) {
+      clearAccessToken();
+    }
+
     throw new ApiRequestError(
       envelope.error?.message ?? "요청을 처리하지 못했어요.",
       response.status,

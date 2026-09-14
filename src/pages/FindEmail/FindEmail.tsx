@@ -27,12 +27,16 @@ export default function FindEmail() {
   const navigate = useNavigate();
   const { options, codeOf } = useRecoveryQuestions();
 
+  const [nickname, setNickname] = useState("");
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const canSubmit = question.length > 0 && answer.trim().length > 0;
+  const canSubmit =
+    nickname.trim().length > 0 &&
+    question.length > 0 &&
+    answer.trim().length > 0;
 
   const submit = async () => {
     if (!canSubmit || submitting) return;
@@ -45,6 +49,7 @@ export default function FindEmail() {
 
     try {
       const data = await findUsername({
+        nickname: nickname.trim(),
         recoveryQuestion: code,
         recoveryAnswer: answer.trim(),
       });
@@ -74,6 +79,24 @@ export default function FindEmail() {
           <br />
           가입 시에 작성한 질문에 답해주세요.
         </TitleL>
+
+        <Field
+          className="find-email__field"
+          label="가입 시 사용한 닉네임을 입력해주세요."
+          htmlFor="find-email-nickname"
+          spacing="none"
+        >
+          <TextInput
+            id="find-email-nickname"
+            value={nickname}
+            onChange={(v) => {
+              setNickname(v);
+              setError(null);
+            }}
+            placeholder="국·영문 8자 이하"
+            leadingIcon={nickname ? undefined : searchIcon}
+          />
+        </Field>
 
         <Field
           className="find-email__field"

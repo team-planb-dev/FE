@@ -12,9 +12,13 @@ import Select from "../../components/Select/Select";
 import Btn from "../../components/Btn/Btn";
 import BottomBar from "../../components/BottomBar/BottomBar";
 
+import {
+  checkNicknameDuplication,
+  checkUsernameDuplication,
+} from "../../api/user";
+import { useRecoveryQuestions } from "../../api/useRecoveryQuestions";
 import { isValidEmail, isValidPassword } from "../../utils/validation";
 import { useSignup } from "./signupContext";
-import { RECOVERY_QUESTIONS } from "../../constants/recoveryQuestions";
 import { PATHS } from "../../routes/paths";
 
 import searchIcon from "../../assets/icn_search.svg";
@@ -22,7 +26,12 @@ import searchIcon from "../../assets/icn_search.svg";
 const PASSWORD_HINT = "영문, 숫자, 특문 중 2개 조합 8자 이상";
 const PASSWORD_MISMATCH = "비밀번호가 일치하지 않습니다.";
 
-type CheckResult = "idle" | "taken" | "available";
+/**
+ * idle 아직 안 눌렀음 · taken 사용 불가 · available 사용 가능
+ * unknown 서버에 물어보지 못함 — 중복 확인 API 가 GET 인데 본문을 요구해서
+ *         브라우저에서 호출할 수 없습니다. 규격이 바뀌면 이 상태는 사라집니다.
+ */
+type CheckResult = "idle" | "taken" | "available" | "unknown";
 
 const CHECK_MESSAGE = {
   nickname: {
@@ -37,18 +46,33 @@ const CHECK_MESSAGE = {
 
 const CHECK_TONE = { taken: "negative", available: "positive" } as const;
 
+type Decided = "taken" | "available";
+
+const isDecided = (result: CheckResult): result is Decided =>
+  result === "taken" || result === "available";
+
+/** 중복 확인을 통과했거나, 물어보지 못한 경우 */
+const passesCheck = (result: CheckResult) =>
+  result === "available" || result === "unknown";
+
 /** 회원가입 정보 입력 */
 export default function Signup() {
   const navigate = useNavigate();
   const { form, setField } = useSignup();
   const { nickname, email, password, passwordConfirm, question, answer } = form;
+  const { options, codeOf } = useRecoveryQuestions();
 
   const setNickname = (v: string) => setField("nickname", v);
   const setEmail = (v: string) => setField("email", v);
   const setPassword = (v: string) => setField("password", v);
   const setPasswordConfirm = (v: string) => setField("passwordConfirm", v);
-  const setQuestion = (v: string) => setField("question", v);
   const setAnswer = (v: string) => setField("answer", v);
+
+  // 화면에는 문구를, 서버에는 코드를 보냅니다
+  const setQuestion = (v: string) => {
+    setField("question", v);
+    setField("questionCode", codeOf(v) ?? "");
+  };
 
   // 확인란을 입력하기 시작한 뒤부터 다를 때만 알립니다
   const passwordMismatch =
@@ -56,11 +80,37 @@ export default function Signup() {
 
   const [nicknameCheck, setNicknameCheck] = useState<CheckResult>("idle");
   const [emailCheck, setEmailCheck] = useState<CheckResult>("idle");
+  const [checking, setChecking] = useState(false);
 
-  const toggleCheck = (
-    current: CheckResult,
-    set: (next: CheckResult) => void,
-  ) => set(current === "available" ? "taken" : "available");
+  const checkNickname = async () => {
+    if (checking || nickname.trim().length === 0) return;
+
+    setChecking(true);
+    try {
+      const data = await checkNicknameDuplication(nickname.trim());
+      setNicknameCheck(data?.duplicate ? "taken" : "available");
+    } catch {
+      // 규격 문제로 호출이 안 되는 상태라 막지 않고 넘어갑니다.
+      // 실제 검증은 가입 요청에서 서버가 합니다.
+      setNicknameCheck("unknown");
+    } finally {
+      setChecking(false);
+    }
+  };
+
+  const checkEmail = async () => {
+    if (checking || !isValidEmail(email.trim())) return;
+
+    setChecking(true);
+    try {
+      const data = await checkUsernameDuplication(email.trim());
+      setEmailCheck(data?.duplicate ? "taken" : "available");
+    } catch {
+      setEmailCheck("unknown");
+    } finally {
+      setChecking(false);
+    }
+  };
 
   const canSubmit =
     nickname.trim().length > 0 &&
@@ -69,8 +119,8 @@ export default function Signup() {
     password === passwordConfirm &&
     question.length > 0 &&
     answer.trim().length > 0 &&
-    nicknameCheck === "available" &&
-    emailCheck === "available";
+    passesCheck(nicknameCheck) &&
+    passesCheck(emailCheck);
 
   return (
     <div className="signup-page">
@@ -95,12 +145,12 @@ export default function Signup() {
               spacing="none"
               reserveSubtext
               subtext={
-                nicknameCheck === "idle"
-                  ? undefined
-                  : CHECK_MESSAGE.nickname[nicknameCheck]
+                isDecided(nicknameCheck)
+                  ? CHECK_MESSAGE.nickname[nicknameCheck]
+                  : undefined
               }
               subtextTone={
-                nicknameCheck === "idle" ? "default" : CHECK_TONE[nicknameCheck]
+                isDecided(nicknameCheck) ? CHECK_TONE[nicknameCheck] : "default"
               }
             >
               <div className="signup-page__check-row">
@@ -115,13 +165,16 @@ export default function Signup() {
                   placeholder="국·영문 8자 이하"
                   leadingIcon={nickname ? undefined : searchIcon}
                   status={
-                    nicknameCheck === "idle" ? undefined : CHECK_TONE[nicknameCheck]
+                    isDecided(nicknameCheck)
+                      ? CHECK_TONE[nicknameCheck]
+                      : undefined
                   }
                 />
                 <Btn
                   variant="outline"
                   className="signup-page__check-btn"
-                  onClick={() => toggleCheck(nicknameCheck, setNicknameCheck)}
+                  disabled={checking}
+                  onClick={() => void checkNickname()}
                 >
                   중복 확인
                 </Btn>
@@ -135,12 +188,12 @@ export default function Signup() {
               spacing="none"
               reserveSubtext
               subtext={
-                emailCheck === "idle"
-                  ? undefined
-                  : CHECK_MESSAGE.email[emailCheck]
+                isDecided(emailCheck)
+                  ? CHECK_MESSAGE.email[emailCheck]
+                  : undefined
               }
               subtextTone={
-                emailCheck === "idle" ? "default" : CHECK_TONE[emailCheck]
+                isDecided(emailCheck) ? CHECK_TONE[emailCheck] : "default"
               }
             >
               <div className="signup-page__check-row">
@@ -156,12 +209,15 @@ export default function Signup() {
                   placeholder="example@email.com"
                   leadingIcon={email ? undefined : searchIcon}
                   autoComplete="email"
-                  status={emailCheck === "idle" ? undefined : CHECK_TONE[emailCheck]}
+                  status={
+                    isDecided(emailCheck) ? CHECK_TONE[emailCheck] : undefined
+                  }
                 />
                 <Btn
                   variant="outline"
                   className="signup-page__check-btn"
-                  onClick={() => toggleCheck(emailCheck, setEmailCheck)}
+                  disabled={checking}
+                  onClick={() => void checkEmail()}
                 >
                   중복 확인
                 </Btn>
@@ -211,7 +267,7 @@ export default function Signup() {
                 id="signup-question"
                 value={question}
                 onChange={setQuestion}
-                options={RECOVERY_QUESTIONS}
+                options={options}
               />
             </Field>
 
@@ -234,7 +290,8 @@ export default function Signup() {
       <BottomBar>
         <Btn
           variant={canSubmit ? "primary" : "muted"}
-          onClick={() => canSubmit && navigate(PATHS.signupTerms)}
+          disabled={!canSubmit}
+          onClick={() => navigate(PATHS.signupTerms)}
         >
           가입하기
         </Btn>

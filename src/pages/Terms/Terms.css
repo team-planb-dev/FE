@@ -139,3 +139,12 @@
   left: 20px;
   width: 350px;
 }
+
+/* 가입 실패 안내. 전체 동의(top 710) 위에 둡니다 */
+.terms-page__snackbar {
+  position: absolute;
+  top: 640px;
+  left: 24px;
+  width: 342px;
+  z-index: 2;
+}

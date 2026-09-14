@@ -8,7 +8,10 @@ export type SignupForm = {
   email: string;
   password: string;
   passwordConfirm: string;
+  /** 화면에 보이는 질문 문구 */
   question: string;
+  /** 서버로 보낼 질문 코드 (FIRST_PET 등) */
+  questionCode: string;
   answer: string;
 };
 
@@ -18,6 +21,7 @@ export const EMPTY_FORM: SignupForm = {
   password: "",
   passwordConfirm: "",
   question: "",
+  questionCode: "",
   answer: "",
 };
 

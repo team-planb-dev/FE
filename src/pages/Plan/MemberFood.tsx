@@ -10,11 +10,19 @@ import TextInput from "../../components/Input/TextInput";
 import Chips from "../../components/Chips/Chips";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
+import Snackbar from "../../components/Snackbar/Snackbar";
 
 import { useMemberForm } from "./memberFormContext";
+import { useMemberSubmit } from "./useMemberSubmit";
 import ExitRegistrationModal from "./ExitRegistrationModal";
 import { useEditMode } from "./editMode";
 import { PATHS } from "../../routes/paths";
+
+/**
+ * ⚠ 디자인에 문구가 아직 없습니다.
+ *   여러 개를 입력하면 쉼표로 나눠 서버에 보내는데, 그 안내가 필요합니다
+ */
+const FOOD_PLACEHOLDER = "placeholder";
 
 /** 기피 음식 및 알레르기 입력 */
 export default function MemberFood() {
@@ -23,24 +31,8 @@ export default function MemberFood() {
   const [exitOpen, setExitOpen] = useState(false);
   const { editing, backToMember } = useEditMode();
   const { form, setField } = useMemberForm();
+  const { register, submitting, error } = useMemberSubmit();
 
-  const finish = () => {
-    const tags: string[] = [];
-    if (form.hasAllergy === "yes") tags.push("알레르기 주의");
-    if (form.takesMeds === "yes") tags.push("복약");
-    tags.push(...form.conditions);
-
-    navigate(PATHS.planMembers, {
-      state: {
-        justRegistered: true,
-        newMember: {
-          id: `new-${Date.now()}`,
-          name: form.name || "{구성원 이름}",
-          tags,
-        },
-      },
-    });
-  };
   const canSubmit = form.hasAllergy !== null && form.hasDislikedFood !== null;
 
   return (
@@ -91,7 +83,7 @@ export default function MemberFood() {
               id="allergy-text"
               value={form.allergyText}
               onChange={(v) => setField("allergyText", v)}
-              placeholder="placeholder"
+              placeholder={FOOD_PLACEHOLDER}
             />
           </Field>
         )}
@@ -128,11 +120,13 @@ export default function MemberFood() {
               id="disliked-text"
               value={form.dislikedFoodText}
               onChange={(v) => setField("dislikedFoodText", v)}
-              placeholder="placeholder"
+              placeholder={FOOD_PLACEHOLDER}
             />
           </Field>
         )}
       </div>
+
+      {error && <Snackbar className="member-food__snackbar">{error}</Snackbar>}
 
       <BottomBar>
         {editing ? (
@@ -158,11 +152,11 @@ export default function MemberFood() {
             </Btn>
 
             <Btn
-              variant={canSubmit ? "primary" : "muted"}
-              disabled={!canSubmit}
-              onClick={() => canSubmit && finish()}
+              variant={canSubmit && !submitting ? "primary" : "muted"}
+              disabled={!canSubmit || submitting}
+              onClick={() => canSubmit && void register()}
             >
-              다음으로
+              {submitting ? "등록 중" : "다음으로"}
             </Btn>
           </>
         )}

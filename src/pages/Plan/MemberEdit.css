@@ -120,3 +120,25 @@
 .member-edit__submit {
   height: 58px;
 }
+
+/* 건강정보를 불러오는 동안 보여줄 안내 */
+.member-edit__status {
+  position: absolute;
+  top: 241px;
+  left: 24px;
+  margin: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.32px;
+  color: #636363;
+}
+
+/* 불러오기·저장 실패 안내. 확인 버튼(top 756) 위에 둡니다 */
+.member-edit__snackbar {
+  position: absolute;
+  top: 686px;
+  left: 24px;
+  width: 342px;
+}

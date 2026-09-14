@@ -87,9 +87,19 @@ export const EMPTY_MEMBER_FORM: MemberForm = {
 
 export type MemberFormContextValue = {
   form: MemberForm;
+  /**
+   * 폼에 채워 넣은 구성원의 healthId.
+   *
+   * [6-4] 에서 항목을 고치러 단계 화면을 다녀오면 이 화면이 다시 마운트되는데,
+   * 그때 서버 값을 또 불러오면 방금 고친 내용이 지워집니다. 그래서 누구를
+   * 불러왔는지 기억해 두고 같은 사람이면 다시 불러오지 않습니다
+   */
+  loadedId: string | null;
   setField: <K extends keyof MemberForm>(key: K, value: MemberForm[K]) => void;
   toggleCondition: (condition: Condition) => void;
   setMealMeds: (meal: Meal, patch: Partial<MealMedsSetting>) => void;
+  /** 서버에서 불러온 값으로 폼 전체를 채웁니다 */
+  hydrate: (next: MemberForm, memberId: string) => void;
   reset: () => void;
 };
 

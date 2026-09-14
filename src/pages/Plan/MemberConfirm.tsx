@@ -8,7 +8,7 @@ import MemberSelectCard from "../../components/MemberSelectCard/MemberSelectCard
 import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 
-import { MOCK_MEMBERS, type Member } from "./memberData";
+import type { Member } from "./memberData";
 import { PATHS, memberEditPath } from "../../routes/paths";
 
 /** 여행 구성원 확정 */
@@ -16,8 +16,7 @@ export default function MemberConfirm() {
   const navigate = useNavigate();
   const passed = useLocation().state as { members?: Member[] } | null;
 
-  // 선택 화면에서 넘겨준 목록을 쓰고, 직접 주소로 들어오면 목업을 보여줍니다
-  const members = passed?.members ?? MOCK_MEMBERS;
+  const members = passed?.members ?? [];
 
   return (
     <div className="member-confirm">
@@ -43,7 +42,11 @@ export default function MemberConfirm() {
       </div>
 
       <BottomBar>
-        <Btn variant="primary" onClick={() => navigate(PATHS.tripName)}>
+        <Btn
+          variant={members.length > 0 ? "primary" : "muted"}
+          disabled={members.length === 0}
+          onClick={() => navigate(PATHS.tripName, { state: { members } })}
+        >
           다음으로
         </Btn>
       </BottomBar>

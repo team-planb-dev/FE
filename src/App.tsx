@@ -51,6 +51,7 @@ import TripFormProvider from "./pages/Trip/TripFormProvider";
 
 import SignupProvider from "./pages/Signup/SignupProvider";
 import BottomNavigation from "./components/BottomNavigation/BottomNavigation";
+import { useSession } from "./api/session";
 import { PATHS } from "./routes/paths";
 
 function SignupLayout() {
@@ -89,6 +90,10 @@ function AppLayout() {
 }
 
 function App() {
+  // 새로고침으로 사라진 Access Token 을 refreshToken 쿠키로 되살리고,
+  // 401 을 받으면 재발급 후 재시도하도록 연결합니다
+  useSession();
+
   return (
     <BrowserRouter>
       <Routes>

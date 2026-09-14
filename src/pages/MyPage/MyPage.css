@@ -89,3 +89,11 @@
   color: var(--status-negative-solid);
   white-space: nowrap;
 }
+
+/* 탈퇴 실패 안내. 회원탈퇴 버튼(top 668) 위에 둡니다 */
+.my-page__snackbar {
+  position: absolute;
+  top: 596px;
+  left: 24px;
+  width: 342px;
+}

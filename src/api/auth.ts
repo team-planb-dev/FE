@@ -84,6 +84,8 @@ export async function login(
 export async function logout(): Promise<void> {
   try {
     await requestRaw(AUTH_PATH.logout, { method: "POST" });
+  } catch {
+    // 서버에 닿지 못해도 로그아웃은 되어야 합니다
   } finally {
     clearAccessToken();
   }

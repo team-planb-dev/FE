@@ -7,9 +7,13 @@ import Header from "../../components/Header/Header";
 import TitleL from "../../components/TitleL/TitleL";
 import BottomNavigation from "../../components/BottomNavigation/BottomNavigation";
 import Modal from "../../components/Modal/Modal";
+import Snackbar from "../../components/Snackbar/Snackbar";
 
 import arrowIcon from "../../assets/icn_chevron_right.svg";
 
+import { logout as requestLogout } from "../../api/auth";
+import { deleteUser } from "../../api/user";
+import { clearAccessToken } from "../../api/tokenStore";
 import { PATHS, myTermsDetailPath } from "../../routes/paths";
 
 const WITHDRAW = "회원탈퇴";
@@ -29,11 +33,15 @@ const LOGOUT_MODAL = {
   confirmLabel: "로그아웃",
 };
 
+const WITHDRAW_ERROR_MESSAGE = "탈퇴하지 못했어요.";
+
 /** 마이페이지 */
 export default function MyPage() {
   const navigate = useNavigate();
   const [withdrawOpen, setWithdrawOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const menus = [
     {
@@ -51,14 +59,29 @@ export default function MyPage() {
     { label: "로그아웃", onClick: () => setLogoutOpen(true), arrow: false },
   ];
 
-  // TODO(api): 탈퇴 요청을 보내고 성공하면 이동합니다
-  const withdraw = () => {
-    setWithdrawOpen(false);
-    navigate(PATHS.landing, { replace: true });
+  const withdraw = async () => {
+    if (busy) return;
+    setBusy(true);
+    setError(null);
+
+    try {
+      await deleteUser();
+      clearAccessToken();
+      setWithdrawOpen(false);
+      navigate(PATHS.landing, { replace: true });
+    } catch {
+      setWithdrawOpen(false);
+      setError(WITHDRAW_ERROR_MESSAGE);
+      setBusy(false);
+    }
   };
 
-  // TODO(api): 토큰을 지우고 이동합니다
-  const logout = () => {
+  // 서버 호출이 실패해도 토큰은 비워지므로 그대로 진행합니다
+  const logout = async () => {
+    if (busy) return;
+    setBusy(true);
+
+    await requestLogout();
     setLogoutOpen(false);
     navigate(PATHS.landing, { replace: true });
   };
@@ -96,6 +119,8 @@ export default function MyPage() {
 
       <BottomNavigation />
 
+      {error && <Snackbar className="my-page__snackbar">{error}</Snackbar>}
+
       {withdrawOpen && (
         <Modal
           title={WITHDRAW_MODAL.title}
@@ -104,7 +129,7 @@ export default function MyPage() {
           confirmLabel={WITHDRAW_MODAL.confirmLabel}
           confirmVariant="danger"
           onCancel={() => setWithdrawOpen(false)}
-          onConfirm={withdraw}
+          onConfirm={() => void withdraw()}
         />
       )}
 
@@ -115,7 +140,7 @@ export default function MyPage() {
           cancelLabel={LOGOUT_MODAL.cancelLabel}
           confirmLabel={LOGOUT_MODAL.confirmLabel}
           onCancel={() => setLogoutOpen(false)}
-          onConfirm={logout}
+          onConfirm={() => void logout()}
         />
       )}
     </div>

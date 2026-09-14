@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./TripConfirm.css";
@@ -7,10 +8,14 @@ import TitleL from "../../components/TitleL/TitleL";
 import Subtitle from "../../components/Subtitle/Subtitle";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
+import Snackbar from "../../components/Snackbar/Snackbar";
 
 import editIcon from "../../assets/icn_edit.svg";
+import { toCreateTravelRequest } from "./tripForm";
 import { ALL_DISTRICTS, NIGHT_OPTIONS, useTripForm } from "./tripFormContext";
 import { PATHS } from "../../routes/paths";
+
+const PROBLEM_MS = 2000;
 
 function formatDate(dateKey: string) {
   return dateKey.replaceAll("-", ".");
@@ -32,6 +37,20 @@ function formatRange(startDate: string | null, nights: number) {
 export default function TripConfirm() {
   const navigate = useNavigate();
   const { form } = useTripForm();
+
+  const [problem, setProblem] = useState<string | null>(null);
+
+  // 빠진 값이 있으면 로딩 화면까지 갔다가 되돌아오게 되므로 여기서 먼저 봅니다
+  const next = () => {
+    const built = toCreateTravelRequest(form);
+    if (!built.ok) {
+      setProblem(built.message);
+      window.setTimeout(() => setProblem(null), PROBLEM_MS);
+      return;
+    }
+
+    navigate(PATHS.tripLoading);
+  };
 
   const nightsLabel =
     NIGHT_OPTIONS.find((o) => o.nights === form.nights)?.label ?? "";
@@ -104,8 +123,12 @@ export default function TripConfirm() {
         ))}
       </dl>
 
+      {problem && (
+        <Snackbar className="trip-confirm__snackbar">{problem}</Snackbar>
+      )}
+
       <BottomBar>
-        <Btn variant="primary" onClick={() => navigate(PATHS.tripLoading)}>
+        <Btn variant="primary" onClick={next}>
           다음으로
         </Btn>
       </BottomBar>

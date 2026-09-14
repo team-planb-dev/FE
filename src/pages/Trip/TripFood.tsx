@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./TripFood.css";
@@ -12,33 +12,78 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 
 import searchIcon from "../../assets/icn_search.svg";
-import { LOCAL_FOOD_SUGGESTIONS } from "./placeData";
+import { recommendLocalFoods } from "../../api/travel";
+import { locationDoOf, locationSiOf } from "./regionData";
 import { useTripForm } from "./tripFormContext";
 import { PATHS } from "../../routes/paths";
 
-/** 지역 음식 선택 */
+const SUGGEST_LABEL = "AI 추천 키워드";
+
+/** 지역 음식 선택. 추천에서 고른 것과 직접 적은 것을 서버가 따로 받습니다 */
 export default function TripFood() {
   const navigate = useNavigate();
   const { form, setField } = useTripForm();
 
   const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
-  const suggestions = LOCAL_FOOD_SUGGESTIONS[form.province ?? ""] ?? [];
-  const typedQuery = query.trim();
-  const shown = typedQuery
-    ? suggestions.filter((food) => food.includes(typedQuery))
-    : suggestions;
+  const locationDo = locationDoOf(form.province);
+  const locationSigungu = locationSiOf(form.district) ?? "";
 
-  const add = (food: string) => {
-    if (!form.foods.includes(food)) setField("foods", [...form.foods, food]);
+  useEffect(() => {
+    if (!locationDo) return;
+
+    const controller = new AbortController();
+
+    recommendLocalFoods(locationDo, locationSigungu, controller.signal)
+      .then((foods) => {
+        if (!controller.signal.aborted) setSuggestions(foods);
+      })
+      .catch(() => {
+        // 추천이 실패해도 직접 입력으로 넘어갈 수 있게 비워만 둡니다
+        if (!controller.signal.aborted) setSuggestions([]);
+      });
+
+    return () => controller.abort();
+  }, [locationDo, locationSigungu]);
+
+  const picked = [...form.recommendFoods, ...form.localFoods];
+  const typed = query.trim();
+
+  const shown = suggestions.filter(
+    (food) => !picked.includes(food) && (!typed || food.includes(typed)),
+  );
+
+  // 추천에 없는 음식은 직접 추가할 수 있습니다
+  const canAddTyped =
+    typed !== "" && !picked.includes(typed) && !suggestions.includes(typed);
+
+  const addRecommended = (food: string) => {
+    setField("recommendFoods", [...form.recommendFoods, food]);
     setQuery("");
   };
 
-  const remove = (food: string) =>
+  const addTyped = () => {
+    if (!canAddTyped) return;
+
+    setField("localFoods", [...form.localFoods, typed]);
+    setQuery("");
+  };
+
+  const remove = (food: string) => {
+    if (form.recommendFoods.includes(food)) {
+      setField(
+        "recommendFoods",
+        form.recommendFoods.filter((f) => f !== food),
+      );
+      return;
+    }
+
     setField(
-      "foods",
-      form.foods.filter((f) => f !== food),
+      "localFoods",
+      form.localFoods.filter((f) => f !== food),
     );
+  };
 
   return (
     <div className="trip-food">
@@ -60,16 +105,26 @@ export default function TripFood() {
           id="trip-food-search"
           value={query}
           onChange={setQuery}
+          onEnter={addTyped}
           placeholder="지역음식을 입력하세요"
           leadingIcon={searchIcon}
         />
 
-        {form.foods.length === 0 && shown.length > 0 && (
+        {(shown.length > 0 || canAddTyped) && (
           <div className="trip-food__suggest">
-            <p className="trip-food__suggest-label">AI 추천 키워드</p>
+            <p className="trip-food__suggest-label">{SUGGEST_LABEL}</p>
             <div className="trip-food__suggest-chips">
+              {canAddTyped && (
+                <ChipsM selected={false} onClick={addTyped}>
+                  {`${typed} 추가`}
+                </ChipsM>
+              )}
               {shown.map((food) => (
-                <ChipsM key={food} selected={false} onClick={() => add(food)}>
+                <ChipsM
+                  key={food}
+                  selected={false}
+                  onClick={() => addRecommended(food)}
+                >
                   {food}
                 </ChipsM>
               ))}
@@ -77,9 +132,9 @@ export default function TripFood() {
           </div>
         )}
 
-        {form.foods.length > 0 && (
+        {picked.length > 0 && (
           <div className="trip-food__tags">
-            {form.foods.map((food) => (
+            {picked.map((food) => (
               <TypeTag key={food} label={food} onRemove={() => remove(food)} />
             ))}
           </div>

@@ -9,6 +9,8 @@ type TextInputProps = {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  /** Enter 를 눌렀을 때. 태그를 직접 추가하는 입력칸에서 씁니다 */
+  onEnter?: () => void;
   type?: "text" | "email" | "tel";
   autoComplete?: string;
   clearable?: boolean;
@@ -23,6 +25,7 @@ export default function TextInput({
   value,
   onChange,
   placeholder,
+  onEnter,
   type = "text",
   autoComplete,
   clearable = true,
@@ -51,6 +54,11 @@ export default function TextInput({
         placeholder={placeholder}
         autoComplete={autoComplete}
         onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key !== "Enter" || !onEnter) return;
+          e.preventDefault();
+          onEnter();
+        }}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
       />

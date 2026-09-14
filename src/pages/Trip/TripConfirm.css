@@ -85,3 +85,10 @@
   width: 24px;
   height: 24px;
 }
+
+.trip-confirm__snackbar {
+  position: absolute;
+  top: 670px;
+  left: 24px;
+  width: 342px;
+}

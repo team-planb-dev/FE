@@ -48,6 +48,13 @@
   white-space: nowrap;
 }
 
+/* 서버가 준 사유를 그대로 보여줘서 길어질 수 있습니다 */
+.trip-loading__subtitle--error {
+  width: 300px;
+  white-space: normal;
+  word-break: keep-all;
+}
+
 .trip-loading__animation {
   position: absolute;
   top: 247px;

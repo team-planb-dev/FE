@@ -167,6 +167,10 @@ export const ERROR_CODE = {
   editNotApplied: "PLAN.EXCEPTION.EDIT_NOT_APPLIED",
   editResultNotFound: "PLAN.EXCEPTION.EDIT_RESULT_NOT_FOUND",
   invalidAiPlace: "PLAN.EXCEPTION.INVALID_AI_PLACE",
+  /* [7-10] 생성. add-with-recommend 설명에만 있고 errorCode 목록에는 없습니다 */
+  aiTemporarilyUnavailable: "AI.EXCEPTION.AI_TEMPORARILY_UNAVAILABLE",
+  aiResponseRejected: "AI.EXCEPTION.AI_RESPONSE_REJECTED",
+  aiInternalError: "AI.EXCEPTION.AI_INTERNAL_ERROR",
   companionNotOwned: "TRAVEL.EXCEPTION.COMPANION_NOT_OWNED",
   companionRequired: "TRAVEL.EXCEPTION.COMPANION_REQUIRED",
   travelNotSaved: "TRAVEL.EXCEPTION.TRAVEL_NOT_SAVED",

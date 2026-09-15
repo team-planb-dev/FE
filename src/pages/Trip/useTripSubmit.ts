@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { ApiRequestError } from "../../api/client";
+import { ERROR_CODE } from "../../api/schema";
 import type { CreatePlanResponse } from "../../api/schema";
 import { createTravelPlan } from "../../api/travel";
 
@@ -11,6 +12,20 @@ import { PATHS } from "../../routes/paths";
 
 const CREATE_FAILED = "일정을 만들지 못했어요.";
 const NETWORK_FAILED = "잠시 후 다시 시도해주세요.";
+
+/** 코드별 안내. add-with-recommend 의 Swagger 설명 기준입니다 */
+const FAILURE_TEXT: Record<string, string> = {
+  [ERROR_CODE.companionRequired]: "여행 구성원을 한 명 이상 골라주세요.",
+  [ERROR_CODE.companionNotOwned]: "내가 등록한 구성원만 넣을 수 있어요.",
+  [ERROR_CODE.invalidAiPlace]:
+    "일정에 넣을 수 없는 장소가 있어요. 예약 장소를 다시 골라주세요.",
+  [ERROR_CODE.aiTemporarilyUnavailable]:
+    "AI 가 잠시 응답하지 못했어요. 다시 시도해주세요.",
+  [ERROR_CODE.aiResponseRejected]:
+    "조건에 맞는 일정을 만들지 못했어요. 조건을 조금 바꿔보시겠어요?",
+  [ERROR_CODE.aiInternalError]:
+    "일정을 만들다 문제가 생겼어요. 잠시 후 다시 시도해주세요.",
+};
 
 /**
  * [7-10] 여행 조건 등록 + AI 일정 생성.
@@ -75,7 +90,9 @@ export function useTripSubmit() {
 function messageOf(caught: unknown): string {
   if (!(caught instanceof ApiRequestError)) return NETWORK_FAILED;
 
-  // 한 줄로 보여줘서 서버 문구가 길면 잘립니다
-  const fromServer = caught.message.trim();
-  return fromServer && fromServer.length <= 20 ? fromServer : CREATE_FAILED;
+  const known = caught.errorCode ? FAILURE_TEXT[caught.errorCode] : undefined;
+  if (known) return known;
+
+  // 모르는 코드는 서버 문구를 그대로 보여줍니다. 버리면 원인을 알 길이 없습니다
+  return caught.message.trim() || CREATE_FAILED;
 }

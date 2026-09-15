@@ -13,6 +13,7 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 
 import searchIcon from "../../assets/icn_search.svg";
+import { ApiRequestError } from "../../api/client";
 import { searchPlaces } from "../../api/travel";
 import type { Place } from "./placeData";
 import { toPlace } from "./tripForm";
@@ -22,6 +23,16 @@ import { PATHS } from "../../routes/paths";
 const EMPTY_TEXT = "검색 결과가 없습니다";
 const SEARCHING_TEXT = "검색 중입니다...";
 const FAILED_TEXT = "검색하지 못했어요. 잠시 후 다시 시도해주세요.";
+
+/** 서버가 HTTP 200 에 success:false 로 사유를 담아 보내는 경우가 있어 그대로 보여줍니다 */
+function messageOf(caught: unknown): string {
+  if (caught instanceof ApiRequestError) {
+    const fromServer = caught.message.trim();
+    if (fromServer) return fromServer;
+  }
+
+  return FAILED_TEXT;
+}
 
 /** 글자를 칠 때마다 부르지 않도록 잠깐 기다립니다 */
 const SEARCH_DELAY_MS = 300;
@@ -37,7 +48,10 @@ export default function TripPlace() {
   const [found, setFound] = useState<{ query: string; places: Place[] } | null>(
     null,
   );
-  const [failedQuery, setFailedQuery] = useState<string | null>(null);
+  const [failure, setFailure] = useState<{
+    query: string;
+    message: string;
+  } | null>(null);
 
   const typed = query.trim();
 
@@ -52,9 +66,9 @@ export default function TripPlace() {
           if (controller.signal.aborted) return;
           setFound({ query: typed, places: places.map(toPlace) });
         })
-        .catch(() => {
+        .catch((caught: unknown) => {
           if (controller.signal.aborted) return;
-          setFailedQuery(typed);
+          setFailure({ query: typed, message: messageOf(caught) });
         });
     }, SEARCH_DELAY_MS);
 
@@ -65,7 +79,7 @@ export default function TripPlace() {
   }, [typed]);
 
   const results = found?.query === typed ? found.places : [];
-  const failed = failedQuery === typed;
+  const failed = failure?.query === typed ? failure.message : null;
   const searching = typed !== "" && !failed && found?.query !== typed;
 
   const add = (place: Place) => {
@@ -82,7 +96,7 @@ export default function TripPlace() {
       form.places.filter((p) => p.id !== id),
     );
 
-  const emptyText = failed ? FAILED_TEXT : searching ? SEARCHING_TEXT : EMPTY_TEXT;
+  const emptyText = failed ?? (searching ? SEARCHING_TEXT : EMPTY_TEXT);
 
   return (
     <div className="trip-place">

@@ -38,8 +38,11 @@ export default function TripLoading() {
             error ? " trip-loading__subtitle--error" : ""
           }`}
         >
-          {error ?? SUBTITLE}
+          {error?.message ?? SUBTITLE}
         </p>
+        {error?.detail && (
+          <p className="trip-loading__detail">{error.detail}</p>
+        )}
       </div>
 
       {!error && (

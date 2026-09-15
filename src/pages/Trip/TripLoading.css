@@ -55,6 +55,19 @@
   word-break: keep-all;
 }
 
+/* 서버가 준 errorCode 와 원문. 사유를 덮지 않으려고 같이 보여줍니다 */
+.trip-loading__detail {
+  width: 300px;
+  margin: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.12px;
+  color: var(--neutral-500);
+  word-break: break-all;
+}
+
 .trip-loading__animation {
   position: absolute;
   top: 247px;

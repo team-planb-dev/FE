@@ -13,12 +13,17 @@ import { PATHS } from "../../routes/paths";
 const CREATE_FAILED = "일정을 만들지 못했어요.";
 const NETWORK_FAILED = "잠시 후 다시 시도해주세요.";
 
-/** 코드별 안내. add-with-recommend 의 Swagger 설명 기준입니다 */
+/**
+ * 코드별 안내. add-with-recommend 의 Swagger 설명 기준입니다.
+ *
+ * ⚠ PLAN.EXCEPTION.INVALID_AI_PLACE 는 일부러 넣지 않았습니다.
+ *   이름은 "장소" 지만 서버가 검증 실패 전반에 쓰고 있어서
+ *   ("일정 장소 검증 실패: 복약 기준시간 누락" 도 이 코드였습니다)
+ *   문구를 지어내면 진짜 사유를 덮어버립니다. 서버 문구를 그대로 씁니다
+ */
 const FAILURE_TEXT: Record<string, string> = {
   [ERROR_CODE.companionRequired]: "여행 구성원을 한 명 이상 골라주세요.",
   [ERROR_CODE.companionNotOwned]: "내가 등록한 구성원만 넣을 수 있어요.",
-  [ERROR_CODE.invalidAiPlace]:
-    "일정에 넣을 수 없는 장소가 있어요. 예약 장소를 다시 골라주세요.",
   [ERROR_CODE.aiTemporarilyUnavailable]:
     "AI 가 잠시 응답하지 못했어요. 다시 시도해주세요.",
   [ERROR_CODE.aiResponseRejected]:
@@ -26,6 +31,9 @@ const FAILURE_TEXT: Record<string, string> = {
   [ERROR_CODE.aiInternalError]:
     "일정을 만들다 문제가 생겼어요. 잠시 후 다시 시도해주세요.",
 };
+
+/** 화면 문구와, 그 밑에 작게 붙일 서버 원문 */
+export type TripFailure = { message: string; detail: string | null };
 
 /**
  * [7-10] 여행 조건 등록 + AI 일정 생성.
@@ -42,7 +50,7 @@ export function useTripSubmit() {
   const navigate = useNavigate();
   const { form } = useTripForm();
 
-  const [failure, setFailure] = useState<string | null>(null);
+  const [failure, setFailure] = useState<TripFailure | null>(null);
   const [attempt, setAttempt] = useState(0);
 
   const sentAttempt = useRef(-1);
@@ -71,7 +79,7 @@ export function useTripSubmit() {
         }
       })
       .catch((caught: unknown) => {
-        if (alive) setFailure(messageOf(caught));
+        if (alive) setFailure(failureOf(caught));
       });
 
     return () => {
@@ -84,15 +92,25 @@ export function useTripSubmit() {
     setAttempt((n) => n + 1);
   };
 
-  return { error: built.ok ? failure : built.message, retry };
+  const error: TripFailure | null = built.ok
+    ? failure
+    : { message: built.message, detail: null };
+
+  return { error, retry };
 }
 
-function messageOf(caught: unknown): string {
-  if (!(caught instanceof ApiRequestError)) return NETWORK_FAILED;
+function failureOf(caught: unknown): TripFailure {
+  if (!(caught instanceof ApiRequestError)) {
+    return { message: NETWORK_FAILED, detail: null };
+  }
 
+  const fromServer = caught.message.trim();
   const known = caught.errorCode ? FAILURE_TEXT[caught.errorCode] : undefined;
-  if (known) return known;
+  const message = known || fromServer || CREATE_FAILED;
 
-  // 모르는 코드는 서버 문구를 그대로 보여줍니다. 버리면 원인을 알 길이 없습니다
-  return caught.message.trim() || CREATE_FAILED;
+  // 같은 코드가 여러 사유로 오기 때문에 원문을 같이 남깁니다
+  const parts = [caught.errorCode, message === fromServer ? "" : fromServer];
+  const detail = parts.filter(Boolean).join(" · ");
+
+  return { message, detail: detail || null };
 }

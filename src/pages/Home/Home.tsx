@@ -7,6 +7,7 @@ import Header from "../../components/Header/Header";
 import Btn from "../../components/Btn/Btn";
 import Card from "../../components/Card/Card";
 
+import { TRAVEL_THEME_LABEL } from "../../api/labels";
 import type { TravelListItemResponse } from "../../api/schema";
 import { fetchTravels } from "../../api/travel";
 
@@ -32,11 +33,8 @@ const EMPTY_TAB_TEXT: Record<TabKey, string> = {
 type Trip = {
   travelId: number;
   title: string;
-  /**
-   * ⚠ 카드 아랫줄은 디자인상 "여행 테마" 인데 목록 응답에 테마가 없습니다.
-   *   지역명으로 대신 채워뒀습니다. 백엔드에 테마 추가를 요청해둔 상태입니다
-   */
-  region: string;
+  /** 카드 아랫줄. 테마가 없는 예전 여행은 지역명으로 채웁니다 */
+  tag: string;
   thumbnail?: string;
 };
 
@@ -45,10 +43,12 @@ function toTrip(item: TravelListItemResponse): Trip {
     .filter(Boolean)
     .join(" ");
 
+  const theme = item.travelTheme ? TRAVEL_THEME_LABEL[item.travelTheme] : null;
+
   return {
     travelId: item.travelId ?? 0,
     title: item.travelName ?? "이름 없는 여행",
-    region,
+    tag: theme ?? region,
     thumbnail: item.thumbnailUrl ?? undefined,
   };
 }
@@ -160,7 +160,7 @@ export default function Home() {
               <Card
                 key={trip.travelId}
                 title={trip.title}
-                theme={trip.region}
+                theme={trip.tag}
                 thumbnail={trip.thumbnail}
                 onClick={() => navigate(tripSavedPath(trip.travelId))}
               />

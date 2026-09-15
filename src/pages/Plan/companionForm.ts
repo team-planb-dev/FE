@@ -48,6 +48,42 @@ const MEAL_TO_RELATED: Record<Meal, RelatedMeal> = {
   저녁: "DINNER",
 };
 
+/* ─────────────────── 보내기 전 검사 ─────────────────── */
+
+/**
+ * 복약 정보로 시각을 계산할 수 있는지 봅니다. 문제가 없으면 null.
+ *
+ * ⚠ 서버는 기준시간 없는 복약을 등록 시점에는 200 으로 받아주고,
+ *   한참 뒤 [7-10] 일정 생성에서 "복약 기준시간 누락" 으로 터집니다.
+ *   (2026-09-15 백엔드 확인 — 등록 단계 검증은 서버에도 추가될 예정입니다)
+ *   [6-6] 등록 화면에는 이 검사가 있었지만 [6-4] 수정 화면에는 없었습니다
+ */
+export function missingFieldOf(form: MemberForm): string | null {
+  if (!form.name.trim()) return "이름을 입력해주세요.";
+
+  const considers = form.considerHealth === "yes";
+  if (!considers || form.takesMeds !== "yes") return null;
+
+  const basis = form.medsTiming
+    ? (MEDICATION_BASIS_BY_LABEL[form.medsTiming] ?? null)
+    : null;
+
+  if (basis === "INDEPENDENT") {
+    const time = toRequestTime(
+      form.medsTime.meridiem,
+      form.medsTime.hour,
+      form.medsTime.minute,
+    );
+    if (!time) return "복약 시간을 입력해주세요.";
+  }
+
+  if (basis === "WITH_MEAL" && mealRulesOf(form).length === 0) {
+    return "어느 식사를 기준으로 드시는지 골라주세요.";
+  }
+
+  return null;
+}
+
 /* ─────────────────── 폼 → 서버 ─────────────────── */
 
 /**
@@ -165,10 +201,12 @@ function medicationInfoListOf(form: MemberForm): MedicationInfoDetail[] {
 
   /*
    * ⚠ 기준시간이 하나도 없으면 보내지 않습니다.
-   *   "잘 모르겠어요"(UNKNOWN) 는 시각도 끼니 규칙도 없어서 이 경우에 해당하고,
-   *   "식사 기준" 인데 끼니를 안 골랐거나 "특정 시간대" 인데 시각이 비어도 같습니다.
-   *   그대로 보내면 [7-10] 이 PLAN.EXCEPTION.INVALID_AI_PLACE
-   *   "복약 기준시간 누락" 으로 실패합니다 (2026-09-15 백엔드 로그로 확인)
+   *   missingFieldOf() 가 INDEPENDENT·WITH_MEAL 의 빈 값은 미리 막으므로
+   *   여기까지 오는 건 "잘 모르겠어요"(UNKNOWN) 뿐입니다.
+   *   그대로 보내면 [7-10] 이 "복약 기준시간 누락" 으로 실패합니다.
+   *
+   *   ⚠ 이 경우 약을 드신다는 사실 자체가 서버에 남지 않습니다.
+   *     UNKNOWN 을 기본 시간으로 처리해줄 수 있는지 백엔드에 물어둔 상태입니다
    */
   const hasReference =
     entry.medicationTime !== null ||

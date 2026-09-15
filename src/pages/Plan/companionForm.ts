@@ -57,17 +57,24 @@ export function toCompanionRequest(form: MemberForm): AddCompanionRequest {
   const considers = form.considerHealth === "yes";
   const takesMeds = considers && form.takesMeds === "yes";
 
+  const medicationInfoList = takesMeds ? medicationInfoListOf(form) : [];
+
   return {
     travelerName: form.name.trim(),
     sensitiveAgree: considers && form.sensitiveAgreed,
-    hasMedication: takesMeds,
+    /*
+     * ⚠ 목록이 비었는데 true 로 보내면 안 됩니다.
+     *   서버가 "약은 먹는데 시간은 모른다" 로 읽어서 [7-10] 일정 생성이
+     *   PLAN.EXCEPTION.INVALID_AI_PLACE "복약 기준시간 누락" 으로 실패합니다
+     */
+    hasMedication: medicationInfoList.length > 0,
     healthInfo: {
       diseaseType: considers ? diseaseOf(form.conditions) : null,
       walkType: considers ? walkOf(form.walkLevel) : null,
     },
     mealInfo: mealInfoOf(form, considers),
     foodInfoList: considers ? foodInfoListOf(form) : [],
-    medicationInfoList: takesMeds ? medicationInfoListOf(form) : [],
+    medicationInfoList,
   };
 }
 

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import "./TripDetail.css";
 
@@ -12,7 +12,9 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 import Snackbar from "../../components/Snackbar/Snackbar";
 
+import type { CreatePlanResponse } from "../../api/schema";
 import { MOCK_PLAN_DAYS, dayTabLabels, toPlanItems } from "./planData";
+import { toPlanDays } from "./planNormalize";
 import { useTripForm } from "./tripFormContext";
 import { PATHS, restaurantDetailPath } from "../../routes/paths";
 
@@ -37,10 +39,26 @@ export default function TripDetail({
   const navigate = useNavigate();
   const { form } = useTripForm();
 
+  // [7-10] 이 생성 결과를 그대로 넘겨줍니다
+  const plan = (useLocation().state as { plan?: CreatePlanResponse } | null)
+    ?.plan;
+
   const saved = mode !== "edit";
-  const days = MOCK_PLAN_DAYS;
+
+  /*
+   * ⚠ 목업은 아직 남아 있습니다.
+   *   저장·공유 화면([S8])은 travelId 로 다시 불러와야 하는데 그건 다음 작업입니다.
+   *   생성 직후에는 넘겨받은 응답을 씁니다
+   */
+  const days = useMemo(() => {
+    const fromServer = toPlanDays(plan?.planDays);
+    return fromServer.length > 0 ? fromServer : MOCK_PLAN_DAYS;
+  }, [plan]);
+
   const [dayIndex, setDayIndex] = useState(0);
-  const items = toPlanItems(days[dayIndex]);
+  // 응답의 날 수가 목업보다 적을 수 있어 범위를 넘지 않게 합니다
+  const shownDay = days[Math.min(dayIndex, days.length - 1)];
+  const items = toPlanItems(shownDay);
   const [copied, setCopied] = useState(false);
 
   const share = () => {
@@ -160,7 +178,12 @@ export default function TripDetail({
           <Btn variant="outline" onClick={() => navigate(PATHS.tripEdit)}>
             수정하기
           </Btn>
-          <Btn variant="primary" onClick={() => navigate(PATHS.tripSaved)}>
+          <Btn
+            variant="primary"
+            onClick={() =>
+              navigate(PATHS.tripSaved, { state: { plan } })
+            }
+          >
             저장하기
           </Btn>
         </BottomBar>

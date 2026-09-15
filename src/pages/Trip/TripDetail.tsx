@@ -299,6 +299,8 @@ export default function TripDetail({
                         state: {
                           name: item.stop.name,
                           detail: item.schedule.restaurantDetail,
+                          // [8-2] 영양 참고 태그를 여기서 골라냅니다
+                          tags: item.schedule.tags,
                         },
                       })
                   : undefined

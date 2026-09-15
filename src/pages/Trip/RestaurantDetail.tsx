@@ -12,8 +12,11 @@ import {
   thumbnailSrc,
 } from "../../components/common/defaultThumbnail";
 
-import { MOCK_RESTAURANT, NUTRITION_NOTICE, toRestaurant } from "./restaurantData";
-import type { ApiRestaurantDetail } from "../../api/planTypes";
+import { NUTRITION_NOTICE, toRestaurant } from "./restaurantData";
+import type { ApiRestaurantDetail, CodeValue } from "../../api/planTypes";
+
+const MISSING_TEXT = "식당 정보를 불러올 수 없어요. 일정에서 다시 열어주세요.";
+const NO_LOCATION_TEXT = "위치 정보가 없어 지도를 띄울 수 없어요.";
 
 /** 식당 상세. 대표 메뉴 · 영양 정보 · 식당 정보 · 지도 */
 export default function RestaurantDetail() {
@@ -22,13 +25,31 @@ export default function RestaurantDetail() {
   const passed = useLocation().state as {
     name?: string;
     detail?: ApiRestaurantDetail | null;
+    tags?: CodeValue[];
   } | null;
 
-  // 일정 화면에서 넘겨준 값이 있으면 그걸 쓰고, 직접 주소로 들어오면 목업을 보여줍니다
+  /*
+   * ⚠ 식당 하나만 조회하는 API 가 없어서 일정 화면이 넘겨준 값에 의존합니다.
+   *   새로고침하거나 주소로 바로 들어오면 값이 없습니다
+   */
   const place =
     passed?.detail && placeId
-      ? toRestaurant(placeId, passed.name ?? "", passed.detail)
-      : MOCK_RESTAURANT;
+      ? toRestaurant(placeId, passed.name ?? "", passed.detail, passed.tags)
+      : null;
+
+  if (!place) {
+    return (
+      <div className="restaurant-detail">
+        <Header
+          className="restaurant-detail__header"
+          variant="title"
+          title="여행 일정 생성"
+          onBack={() => navigate(-1)}
+        />
+        <p className="restaurant-detail__status">{MISSING_TEXT}</p>
+      </div>
+    );
+  }
 
   const nutritionRows = [
     { key: "carbohydrate", label: "탄수화물", value: place.nutrition.carbohydrate },
@@ -36,9 +57,10 @@ export default function RestaurantDetail() {
     { key: "fat", label: "지방", value: place.nutrition.fat },
   ];
 
+  // 값이 없으면 라벨만 덩그러니 남아서, 영양 정보와 같이 자리표시자를 둡니다
   const infoRows = [
-    { key: "hours", label: "영업 시간", value: place.openingHours },
-    { key: "address", label: "주소", value: place.address },
+    { key: "hours", label: "영업 시간", value: place.openingHours || "--" },
+    { key: "address", label: "주소", value: place.address || "--" },
   ];
 
   return (
@@ -121,7 +143,13 @@ export default function RestaurantDetail() {
                 </div>
               </div>
 
-              <KakaoMap lat={place.lat} lng={place.lng} />
+              {place.lat !== null && place.lng !== null ? (
+                <KakaoMap lat={place.lat} lng={place.lng} />
+              ) : (
+                <p className="restaurant-detail__status restaurant-detail__status--inline">
+                  {NO_LOCATION_TEXT}
+                </p>
+              )}
             </section>
           </div>
         </div>

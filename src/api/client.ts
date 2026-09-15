@@ -98,8 +98,16 @@ async function send(
 
   const payload = await readJson(response);
 
-  // 만료된 Access Token → 한 번만 재발급 후 재시도합니다
-  if (response.status === 401 && auth && allowRetry && refreshHandler) {
+  /*
+   * 토큰이 없거나 만료됐을 때 한 번만 재발급 후 재시도합니다.
+   *
+   * ⚠ 401 만 보면 안 됩니다. 이 백엔드는 Authorization 헤더가 없는 요청에
+   *   본문 없는 403 을 돌려줍니다 (2026-09-15 확인: 토큰 없이 부르면
+   *   search-planned-place 가 403 Content-Length: 0). 403 을 빼놓으면
+   *   새로고침 직후처럼 토큰이 비었을 때 재발급이 아예 돌지 않습니다
+   */
+  const needsToken = response.status === 401 || response.status === 403;
+  if (needsToken && auth && allowRetry && refreshHandler) {
     const refreshed = await refreshOnce();
     if (refreshed) return send(path, options, false);
   }

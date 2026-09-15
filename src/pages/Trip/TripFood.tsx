@@ -18,6 +18,8 @@ import { useTripForm } from "./tripFormContext";
 import { PATHS } from "../../routes/paths";
 
 const SUGGEST_LABEL = "AI 추천 키워드";
+/** 직접 적은 음식은 추천이 아니므로 라벨을 나눕니다 */
+const TYPED_LABEL = "직접 추가";
 
 /** 지역 음식 선택. 추천에서 고른 것과 직접 적은 것을 서버가 따로 받습니다 */
 export default function TripFood() {
@@ -110,15 +112,21 @@ export default function TripFood() {
           leadingIcon={searchIcon}
         />
 
-        {(shown.length > 0 || canAddTyped) && (
+        {canAddTyped && (
+          <div className="trip-food__suggest">
+            <p className="trip-food__suggest-label">{TYPED_LABEL}</p>
+            <div className="trip-food__suggest-chips">
+              <ChipsM selected={false} onClick={addTyped}>
+                {`${typed} 추가`}
+              </ChipsM>
+            </div>
+          </div>
+        )}
+
+        {shown.length > 0 && (
           <div className="trip-food__suggest">
             <p className="trip-food__suggest-label">{SUGGEST_LABEL}</p>
             <div className="trip-food__suggest-chips">
-              {canAddTyped && (
-                <ChipsM selected={false} onClick={addTyped}>
-                  {`${typed} 추가`}
-                </ChipsM>
-              )}
               {shown.map((food) => (
                 <ChipsM
                   key={food}

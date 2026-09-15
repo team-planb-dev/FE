@@ -458,6 +458,8 @@ export type TravelListItemResponse = {
   startDate: RawDate | null;
   endDate: RawDate | null;
   status: TravelStatus | null;
+  /** 2026-09-15 백엔드가 추가해줬습니다. 이전에 만든 여행은 비어 있을 수 있습니다 */
+  travelTheme: TravelTheme | null;
   thumbnailUrl: string | null;
 };
 

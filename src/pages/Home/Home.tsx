@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import "./Home.css";
@@ -6,10 +6,13 @@ import "./Home.css";
 import Header from "../../components/Header/Header";
 import Btn from "../../components/Btn/Btn";
 import Card from "../../components/Card/Card";
-import type { ThumbnailKind } from "../../components/common/defaultThumbnail";
+
+import { TRAVEL_THEME_LABEL } from "../../api/labels";
+import type { TravelListItemResponse } from "../../api/schema";
+import { fetchTravels } from "../../api/travel";
 
 import characterImage from "../../assets/character.svg";
-import { PATHS } from "../../routes/paths";
+import { PATHS, tripSavedPath } from "../../routes/paths";
 
 const TABS = [
   { key: "upcoming", label: "일정" },
@@ -18,35 +21,98 @@ const TABS = [
 
 type TabKey = (typeof TABS)[number]["key"];
 
+const LOADING_TEXT = "일정을 불러오는 중이에요...";
+const FAILED_TEXT = "일정을 불러오지 못했어요. 잠시 후 다시 시도해주세요.";
+
+/** 한쪽 탭에만 일정이 있을 때 반대쪽이 텅 비지 않게 합니다 */
+const EMPTY_TAB_TEXT: Record<TabKey, string> = {
+  upcoming: "다가오는 일정이 없어요.",
+  past: "지난 일정이 없어요.",
+};
+
 type Trip = {
-  id: string;
+  travelId: number;
   title: string;
-  theme: string;
-  // TODO(api): 일정의 첫 번째 장소 썸네일과 장소 종류를 받아 넣습니다
+  /** 카드 아랫줄. 테마가 없는 예전 여행은 지역명으로 채웁니다 */
+  tag: string;
   thumbnail?: string;
-  thumbnailKind?: ThumbnailKind;
 };
 
-const MOCK_TRIPS: Record<TabKey, Trip[]> = {
-  upcoming: [
-    { id: "1", title: "여행 제목", theme: "여행 테마" },
-    { id: "2", title: "여행 제목", theme: "여행 테마" },
-  ],
+function toTrip(item: TravelListItemResponse): Trip {
+  const region = [item.locationDo, item.locationSigungu]
+    .filter(Boolean)
+    .join(" ");
 
-  past: [{ id: "3", title: "여행 제목", theme: "여행 테마" }],
-};
+  const theme = item.travelTheme ? TRAVEL_THEME_LABEL[item.travelTheme] : null;
 
-/** 메인 홈 */
+  return {
+    travelId: item.travelId ?? 0,
+    title: item.travelName ?? "이름 없는 여행",
+    tag: theme ?? region,
+    thumbnail: item.thumbnailUrl ?? undefined,
+  };
+}
+
+/** 메인 홈. 저장한 여행 목록을 보여줍니다 */
 export default function Home() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const [tab, setTab] = useState<TabKey>("upcoming");
-  const trips = MOCK_TRIPS[tab];
 
-  const hasAnyTrip = Object.values(MOCK_TRIPS).some((list) => list.length > 0);
-  const isEmpty = params.get("empty") === "1" || !hasAnyTrip;
+  const [travels, setTravels] = useState<TravelListItemResponse[] | null>(null);
+  const [failed, setFailed] = useState(false);
+
+  // 탭마다 부르지 않고 한 번 받아 status 로 나눕니다
+  useEffect(() => {
+    let alive = true;
+
+    fetchTravels()
+      .then((list) => {
+        if (alive) setTravels(list);
+      })
+      .catch(() => {
+        if (alive) setFailed(true);
+      });
+
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const byTab = useMemo(() => {
+    const list = (travels ?? []).filter((item) => item.travelId !== null);
+
+    return {
+      upcoming: list.filter((item) => item.status !== "COMPLETED").map(toTrip),
+      past: list.filter((item) => item.status === "COMPLETED").map(toTrip),
+    };
+  }, [travels]);
+
+  const loading = travels === null && !failed;
+  const hasAnyTrip = byTab.upcoming.length > 0 || byTab.past.length > 0;
+
+  // ?empty=1 은 디자인 확인용으로 남겨둡니다
+  const isEmpty = params.get("empty") === "1" || (!loading && !hasAnyTrip);
 
   const handleCreate = () => navigate(PATHS.planStart);
+
+  if (failed) {
+    return (
+      <div className="home">
+        <Header className="home__header" variant="empty" />
+        <p className="home__status">{FAILED_TEXT}</p>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="home">
+        <Header className="home__header" variant="empty" />
+        <p className="home__status">{LOADING_TEXT}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="home">
@@ -85,15 +151,18 @@ export default function Home() {
             ))}
           </div>
 
+          {byTab[tab].length === 0 && (
+            <p className="home__status">{EMPTY_TAB_TEXT[tab]}</p>
+          )}
+
           <div className="home__cards">
-            {trips.map((trip) => (
+            {byTab[tab].map((trip) => (
               <Card
-                key={trip.id}
+                key={trip.travelId}
                 title={trip.title}
-                theme={trip.theme}
+                theme={trip.tag}
                 thumbnail={trip.thumbnail}
-                thumbnailKind={trip.thumbnailKind}
-                onClick={() => {}}
+                onClick={() => navigate(tripSavedPath(trip.travelId))}
               />
             ))}
           </div>

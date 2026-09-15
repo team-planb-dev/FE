@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ApiRequestError } from "../../api/client";
 import { addCompanion, updateCompanion } from "../../api/companion";
 
-import { toCompanionRequest } from "./companionForm";
+import { missingFieldOf, toCompanionRequest } from "./companionForm";
 import { useMemberForm } from "./memberFormContext";
 import { PATHS } from "../../routes/paths";
 
@@ -22,6 +22,14 @@ export function useMemberSubmit() {
 
   const register = async () => {
     if (submitting) return;
+
+    // 서버가 받아주고 나중에 일정 생성에서 터지는 조합을 여기서 막습니다
+    const missing = missingFieldOf(form);
+    if (missing) {
+      setError(missing);
+      return;
+    }
+
     setSubmitting(true);
     setError(null);
 
@@ -48,6 +56,13 @@ export function useMemberSubmit() {
 
     const healthId = Number(memberId);
     if (!Number.isFinite(healthId)) return;
+
+    // [6-4] 수정 화면에는 단계별 검사가 없어서 여기서 한 번 더 봅니다
+    const missing = missingFieldOf(form);
+    if (missing) {
+      setError(missing);
+      return;
+    }
 
     setSubmitting(true);
     setError(null);

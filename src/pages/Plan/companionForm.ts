@@ -19,6 +19,7 @@ import {
 } from "../../api/labels";
 import type {
   AddCompanionRequest,
+  DiseaseType,
   CompanionDetailResponse,
   CompanionSummaryDetail,
   FoodInfoDetail,
@@ -105,7 +106,7 @@ export function toCompanionRequest(form: MemberForm): AddCompanionRequest {
      */
     hasMedication: medicationInfoList.length > 0,
     healthInfo: {
-      diseaseType: considers ? diseaseOf(form.conditions) : null,
+      diseaseTypes: considers ? diseaseOf(form.conditions) : [],
       walkType: considers ? walkOf(form.walkLevel) : null,
     },
     mealInfo: mealInfoOf(form, considers),
@@ -114,9 +115,11 @@ export function toCompanionRequest(form: MemberForm): AddCompanionRequest {
   };
 }
 
-function diseaseOf(conditions: Condition[]) {
-  const first = conditions[0];
-  return first ? (DISEASE_BY_LABEL[first] ?? null) : null;
+/** [6-2] 는 복수선택입니다. 전에는 서버가 하나만 받아서 첫 번째만 보냈습니다 */
+function diseaseOf(conditions: Condition[]): DiseaseType[] {
+  return conditions
+    .map((condition) => DISEASE_BY_LABEL[condition])
+    .filter((disease): disease is DiseaseType => Boolean(disease));
 }
 
 function walkOf(level: WalkLevel | null) {
@@ -256,9 +259,9 @@ export function toMemberForm(detail: CompanionDetailResponse): MemberForm {
     considerHealth: considers ? "yes" : "no",
     sensitiveAgreed: considers,
 
-    conditions: health?.diseaseType
-      ? [DISEASE_LABEL[health.diseaseType] as Condition]
-      : [],
+    conditions: (health?.diseaseTypes ?? []).map(
+      (disease) => DISEASE_LABEL[disease] as Condition,
+    ),
     walkLevel: health?.walkType
       ? (WALK_LABEL[health.walkType] as WalkLevel)
       : null,
@@ -337,7 +340,9 @@ export function toMember(summary: CompanionSummaryDetail): Member {
   const tags: string[] = [];
   if (summary.hasAllergy) tags.push("알레르기 주의");
   if (summary.hasMedication) tags.push("복약");
-  if (summary.diseaseType) tags.push(DISEASE_LABEL[summary.diseaseType]);
+  for (const disease of summary.diseaseTypes ?? []) {
+    tags.push(DISEASE_LABEL[disease]);
+  }
 
   return {
     id: String(summary.healthId ?? ""),

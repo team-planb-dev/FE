@@ -97,3 +97,20 @@
 .home__cards::-webkit-scrollbar {
   display: none;
 }
+
+/* 불러오는 중 · 불러오지 못한 경우 */
+.home__status {
+  position: absolute;
+  top: 280px;
+  left: 24px;
+  width: 342px;
+  margin: 0;
+  font-family: Pretendard, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.32px;
+  color: var(--neutral-600);
+  text-align: center;
+  word-break: keep-all;
+}

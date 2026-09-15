@@ -12,10 +12,17 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 import Snackbar from "../../components/Snackbar/Snackbar";
 
+import { ApiRequestError } from "../../api/client";
 import { TRAVEL_STYLE_LABEL, TRAVEL_THEME_LABEL } from "../../api/labels";
 import { formatDate } from "../../api/planFormat";
+import { ERROR_CODE } from "../../api/schema";
 import type { GetAiPlanResponse } from "../../api/schema";
-import { fetchSharedTravel, fetchTravelPlan, saveTravel } from "../../api/travel";
+import {
+  fetchSharedTravel,
+  fetchTravelPlan,
+  issueShareToken,
+  saveTravel,
+} from "../../api/travel";
 
 import { dayTabLabels, toPlanItems } from "./planData";
 import { toPlanDays } from "./planNormalize";
@@ -23,11 +30,25 @@ import {
   PATHS,
   restaurantDetailPath,
   tripSavedPath,
+  tripSharedPath,
 } from "../../routes/paths";
 
 type TripDetailMode = "edit" | "saved" | "shared";
 
 const COPIED_TEXT = "링크가 클립보드에 복사되었습니다.";
+const SHARE_FAILED = "공유 링크를 만들지 못했어요.";
+const NOT_SAVED = "저장한 일정만 공유할 수 있어요. 아래에서 저장해주세요.";
+const SAVED_TEXT = "일정을 저장했어요. 이제 공유할 수 있어요.";
+const NO_TOKEN = "서버가 공유 토큰을 주지 않았어요.";
+
+/** 서버가 사유를 담아 보내면 그대로 보여줍니다. 지어내면 진짜 원인을 덮습니다 */
+function shareFailureOf(caught: unknown): string {
+  if (!(caught instanceof ApiRequestError)) return SHARE_FAILED;
+  if (caught.errorCode === ERROR_CODE.travelNotSaved) return NOT_SAVED;
+
+  return caught.message.trim() || SHARE_FAILED;
+}
+const COPY_FAILED = "링크를 복사하지 못했어요. 주소창을 확인해주세요.";
 const SAVE_FAILED = "저장하지 못했어요.";
 const LOADING_TEXT = "일정을 불러오는 중이에요...";
 const MISSING_TEXT = "일정을 찾을 수 없어요.";
@@ -69,6 +90,16 @@ export default function TripDetail({
   const [dayIndex, setDayIndex] = useState(0);
   const [notice, setNotice] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [sharing, setSharing] = useState(false);
+
+  /*
+   * ⚠ 저장 여부를 응답에서 알 수 없습니다.
+   *   travel/list 는 저장 안 된 여행도 주는데 TravelListItemResponse 에도
+   *   GetAiPlanResponse 에도 saved 가 없어서, 화면에 들어오기 전에는 판단이 안 됩니다.
+   *   그래서 공유가 TRAVEL_NOT_SAVED 로 막혔을 때 저장 버튼을 꺼내줍니다.
+   *   백엔드에 saved 추가를 요청해둔 상태입니다
+   */
+  const [needsSave, setNeedsSave] = useState(false);
 
   useEffect(() => {
     if (target === null) return;
@@ -111,10 +142,46 @@ export default function TripDetail({
     window.setTimeout(() => setNotice(null), SNACKBAR_MS);
   };
 
+  /**
+   * [S10] 공유 링크 발급.
+   *
+   * 현재 주소가 아니라 shareToken 주소를 복사해야 합니다.
+   * /trip/saved/:travelId 는 만든 사람 계정에서만 열리기 때문입니다.
+   * 이미 발급한 여행은 서버가 같은 토큰을 돌려줘서 여러 번 눌러도 괜찮습니다
+   */
   const share = () => {
-    // TODO([S10]): share/issue 로 받은 shareToken 주소를 복사해야 합니다
-    void navigator.clipboard?.writeText(window.location.href);
-    flash(COPIED_TEXT);
+    if (sharing || typeof target !== "number") return;
+
+    setSharing(true);
+
+    issueShareToken(target)
+      .then(async (issued) => {
+        if (!issued.shareToken) {
+          flash(NO_TOKEN);
+          return;
+        }
+
+        const url = `${window.location.origin}${tripSharedPath(issued.shareToken)}`;
+
+        try {
+          // https 나 localhost 가 아니면 클립보드를 못 씁니다
+          await navigator.clipboard.writeText(url);
+          flash(COPIED_TEXT);
+        } catch {
+          flash(COPY_FAILED);
+        }
+      })
+      .catch((caught: unknown) => {
+        if (
+          caught instanceof ApiRequestError &&
+          caught.errorCode === ERROR_CODE.travelNotSaved
+        ) {
+          setNeedsSave(true);
+        }
+
+        flash(shareFailureOf(caught));
+      })
+      .finally(() => setSharing(false));
   };
 
   const save = () => {
@@ -123,7 +190,18 @@ export default function TripDetail({
     setSaving(true);
 
     saveTravel(target)
-      .then(() => navigate(tripSavedPath(target), { replace: true }))
+      .then(() => {
+        setSaving(false);
+        setNeedsSave(false);
+
+        // 저장 전 화면에서는 "내 일정" 으로 넘어가고, 이미 거기면 문구만 띄웁니다
+        if (mode === "edit") {
+          navigate(tripSavedPath(target), { replace: true });
+          return;
+        }
+
+        flash(SAVED_TEXT);
+      })
       .catch(() => {
         setSaving(false);
         flash(SAVE_FAILED);
@@ -159,7 +237,12 @@ export default function TripDetail({
         variant="title"
         title={HEADER_TITLE[mode]}
         onBack={mode === "saved" ? () => navigate(PATHS.home) : undefined}
-        action={saved ? { label: "일정 공유하기", onClick: share } : undefined}
+        action={
+          // 공유받은 화면에서는 다시 공유할 수 없습니다 (발급은 소유자만 가능)
+          mode === "saved"
+            ? { label: sharing ? "링크 만드는 중..." : "일정 공유하기", onClick: share }
+            : undefined
+        }
       />
 
       <div className="trip-detail__top">
@@ -238,6 +321,14 @@ export default function TripDetail({
           <Btn variant="outline" onClick={() => navigate(PATHS.tripEdit)}>
             수정하기
           </Btn>
+          <Btn variant={saving ? "muted" : "primary"} onClick={save}>
+            저장하기
+          </Btn>
+        </BottomBar>
+      )}
+
+      {mode === "saved" && needsSave && (
+        <BottomBar>
           <Btn variant={saving ? "muted" : "primary"} onClick={save}>
             저장하기
           </Btn>

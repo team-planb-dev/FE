@@ -149,21 +149,32 @@ function medicationInfoListOf(form: MemberForm): MedicationInfoDetail[] {
 
   const byMeal = basis === "WITH_MEAL";
 
-  return [
-    {
-      drugName: form.medsLabel.trim(),
-      medicationBasis: basis,
-      medicationTime:
-        basis === "INDEPENDENT"
-          ? toRequestTime(
-              form.medsTime.meridiem,
-              form.medsTime.hour,
-              form.medsTime.minute,
-            )
-          : null,
-      mealMedicationRuleDetails: byMeal ? mealRulesOf(form) : [],
-    },
-  ];
+  const entry: MedicationInfoDetail = {
+    drugName: form.medsLabel.trim(),
+    medicationBasis: basis,
+    medicationTime:
+      basis === "INDEPENDENT"
+        ? toRequestTime(
+            form.medsTime.meridiem,
+            form.medsTime.hour,
+            form.medsTime.minute,
+          )
+        : null,
+    mealMedicationRuleDetails: byMeal ? mealRulesOf(form) : [],
+  };
+
+  /*
+   * ⚠ 기준시간이 하나도 없으면 보내지 않습니다.
+   *   "잘 모르겠어요"(UNKNOWN) 는 시각도 끼니 규칙도 없어서 이 경우에 해당하고,
+   *   "식사 기준" 인데 끼니를 안 골랐거나 "특정 시간대" 인데 시각이 비어도 같습니다.
+   *   그대로 보내면 [7-10] 이 PLAN.EXCEPTION.INVALID_AI_PLACE
+   *   "복약 기준시간 누락" 으로 실패합니다 (2026-09-15 백엔드 로그로 확인)
+   */
+  const hasReference =
+    entry.medicationTime !== null ||
+    (entry.mealMedicationRuleDetails?.length ?? 0) > 0;
+
+  return hasReference ? [entry] : [];
 }
 
 function mealRulesOf(form: MemberForm): MealMedicationRuleDetail[] {

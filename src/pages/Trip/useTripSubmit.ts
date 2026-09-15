@@ -8,10 +8,12 @@ import { createTravelPlan } from "../../api/travel";
 
 import { toCreateTravelRequest } from "./tripForm";
 import { useTripForm } from "./tripFormContext";
-import { PATHS } from "../../routes/paths";
+import { tripDetailPath } from "../../routes/paths";
 
 const CREATE_FAILED = "일정을 만들지 못했어요.";
 const NETWORK_FAILED = "잠시 후 다시 시도해주세요.";
+/** 만들어진 일정을 다시 불러오려면 travelId 가 꼭 있어야 합니다 */
+const NO_TRAVEL_ID = "응답에 travelId 가 없습니다";
 
 /**
  * 코드별 안내. add-with-recommend 의 Swagger 설명 기준입니다.
@@ -74,9 +76,14 @@ export function useTripSubmit() {
 
     request
       .then((plan) => {
-        if (alive) {
-          navigate(PATHS.tripDetail, { replace: true, state: { plan } });
+        if (!alive) return;
+
+        if (typeof plan.travelId !== "number") {
+          setFailure({ message: CREATE_FAILED, detail: NO_TRAVEL_ID });
+          return;
         }
+
+        navigate(tripDetailPath(plan.travelId), { replace: true });
       })
       .catch((caught: unknown) => {
         if (alive) setFailure(failureOf(caught));

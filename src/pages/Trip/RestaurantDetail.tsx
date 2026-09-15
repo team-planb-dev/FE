@@ -14,7 +14,6 @@ import {
 
 import { MOCK_RESTAURANT, NUTRITION_NOTICE, toRestaurant } from "./restaurantData";
 import type { ApiRestaurantDetail } from "../../api/planTypes";
-import { PATHS } from "../../routes/paths";
 
 /** 식당 상세. 대표 메뉴 · 영양 정보 · 식당 정보 · 지도 */
 export default function RestaurantDetail() {
@@ -48,7 +47,7 @@ export default function RestaurantDetail() {
         className="restaurant-detail__header"
         variant="title"
         title="여행 일정 생성"
-        onBack={() => navigate(PATHS.tripDetail)}
+        onBack={() => navigate(-1)}
       />
 
       <div className="restaurant-detail__body">

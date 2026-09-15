@@ -29,7 +29,6 @@ import {
   SAVE_DONE,
   SAVING,
 } from "./editScript";
-import { PATHS } from "../../routes/paths";
 
 const SUGGEST_TITLE = "이런 요청을 할 수 있어요";
 
@@ -82,7 +81,7 @@ export default function TripEdit() {
       <div className="trip-edit__glow" aria-hidden="true" />
       <Header
         className="trip-edit__header"
-        onBack={() => navigate(PATHS.tripDetail)}
+        onBack={() => navigate(-1)}
       />
 
       <div className="trip-edit__scroll" ref={scrollRef}>

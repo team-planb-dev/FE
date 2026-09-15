@@ -332,16 +332,59 @@ export function locationSiOf(district: string | null): string | null {
   return district;
 }
 
-export function findRegionByQuery(query: string): Region | null {
-  const q = query.trim();
-  if (!q) return null;
+export type RegionMatch = {
+  /** 한 곳으로 좁혀진 시/도. 후보가 여럿이면 null */
+  region: Region | null;
+  /** 시/군/구까지 좁혀졌을 때의 이름 */
+  district: string | null;
+  /** 검색어에 걸리는 시/도. 칩 목록을 좁히는 데 씁니다 */
+  candidates: Region[];
+};
 
-  return (
-    REGIONS.find(
-      (region) =>
-        region.name.includes(q) ||
-        region.requestName.includes(q) ||
-        region.districts.some((district) => district.includes(q)),
-    ) ?? null
+/**
+ * 지역 검색어를 시/도 · 시/군/구로 풀어냅니다.
+ *
+ * 부분일치만 쓰면 "서구" 가 서울의 "강서구" 에 걸려서 서울이 잡혔습니다.
+ * 그래서 정확히 일치하는 쪽을 먼저 보고, 여러 시/도에 같은 이름의 구가 있으면
+ * (서구 → 인천·대전·대구·광주·부산) 하나를 찍지 않고 후보만 좁혀 고르게 합니다
+ */
+export function matchRegions(query: string): RegionMatch {
+  const q = query.trim();
+  if (!q) return { region: null, district: null, candidates: REGIONS };
+
+  // 1) 시/도 이름이 그대로 맞는 경우 ("서울")
+  const province = REGIONS.find((r) => r.name === q || r.requestName === q);
+  if (province) {
+    return { region: province, district: null, candidates: [province] };
+  }
+
+  // 2) 시/군/구 이름이 그대로 맞는 경우 ("종로구" · "서구")
+  const byDistrict = REGIONS.filter((r) => r.districts.includes(q));
+  if (byDistrict.length === 1) {
+    return { region: byDistrict[0], district: q, candidates: byDistrict };
+  }
+  if (byDistrict.length > 1) {
+    return { region: null, district: null, candidates: byDistrict };
+  }
+
+  // 3) 부분일치 ("종로" → 서울 종로구)
+  const partial = REGIONS.filter(
+    (r) =>
+      r.name.includes(q) ||
+      r.requestName.includes(q) ||
+      r.districts.some((district) => district.includes(q)),
   );
+
+  if (partial.length === 1) {
+    const only = partial[0];
+    const hits = only.districts.filter((district) => district.includes(q));
+
+    return {
+      region: only,
+      district: hits.length === 1 ? hits[0] : null,
+      candidates: partial,
+    };
+  }
+
+  return { region: null, district: null, candidates: partial };
 }

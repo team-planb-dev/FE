@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import "./TripDetail.css";
 
@@ -12,15 +12,26 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 import Snackbar from "../../components/Snackbar/Snackbar";
 
-import { MOCK_PLAN_DAYS, dayTabLabels, toPlanItems } from "./planData";
-import { useTripForm } from "./tripFormContext";
-import { PATHS, restaurantDetailPath } from "../../routes/paths";
+import { TRAVEL_STYLE_LABEL, TRAVEL_THEME_LABEL } from "../../api/labels";
+import { formatDate } from "../../api/planFormat";
+import type { GetAiPlanResponse } from "../../api/schema";
+import { fetchSharedTravel, fetchTravelPlan, saveTravel } from "../../api/travel";
 
-const dot = (key: string) => key.replaceAll("-", ".");
+import { dayTabLabels, toPlanItems } from "./planData";
+import { toPlanDays } from "./planNormalize";
+import {
+  PATHS,
+  restaurantDetailPath,
+  tripSavedPath,
+} from "../../routes/paths";
 
 type TripDetailMode = "edit" | "saved" | "shared";
 
 const COPIED_TEXT = "링크가 클립보드에 복사되었습니다.";
+const SAVE_FAILED = "저장하지 못했어요.";
+const LOADING_TEXT = "일정을 불러오는 중이에요...";
+const MISSING_TEXT = "일정을 찾을 수 없어요.";
+const SNACKBAR_MS = 2000;
 
 const HEADER_TITLE: Record<TripDetailMode, string> = {
   edit: "여행 일정 생성",
@@ -28,38 +39,118 @@ const HEADER_TITLE: Record<TripDetailMode, string> = {
   shared: "여행 일정 생성",
 };
 
-/** 생성된 여행 일정. mode 로 저장 전 / 저장 후 / 공유받은 화면을 구분합니다 */
+/**
+ * 생성된 여행 일정. mode 로 저장 전 / 저장 후 / 공유받은 화면을 구분합니다.
+ *
+ * 주소의 travelId(공유는 shareToken)로 매번 다시 불러옵니다.
+ * 새로고침하거나 뒤로 갔다 와도 같은 일정이 나와야 하기 때문입니다
+ */
 export default function TripDetail({
   mode = "edit",
 }: {
   mode?: TripDetailMode;
 }) {
   const navigate = useNavigate();
-  const { form } = useTripForm();
+  const { travelId: idParam, shareToken } = useParams();
 
   const saved = mode !== "edit";
-  const days = MOCK_PLAN_DAYS;
-  const [dayIndex, setDayIndex] = useState(0);
-  const items = toPlanItems(days[dayIndex]);
-  const [copied, setCopied] = useState(false);
 
-  const share = () => {
-    void navigator.clipboard?.writeText(window.location.href);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2000);
+  // 공유 화면은 토큰으로, 나머지는 번호로 부릅니다
+  const target = useMemo<number | string | null>(() => {
+    if (mode === "shared") return shareToken ?? null;
+
+    const id = Number(idParam);
+    return Number.isFinite(id) && id > 0 ? id : null;
+  }, [mode, idParam, shareToken]);
+
+  const [plan, setPlan] = useState<GetAiPlanResponse | null>(null);
+  const [failed, setFailed] = useState(false);
+
+  const [dayIndex, setDayIndex] = useState(0);
+  const [notice, setNotice] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (target === null) return;
+
+    let alive = true;
+
+    const request =
+      typeof target === "string"
+        ? fetchSharedTravel(target)
+        : fetchTravelPlan(target);
+
+    request
+      .then((loaded) => {
+        if (alive) setPlan(loaded);
+      })
+      .catch(() => {
+        if (alive) setFailed(true);
+      });
+
+    return () => {
+      alive = false;
+    };
+  }, [target]);
+
+  const days = useMemo(() => toPlanDays(plan?.planDays), [plan]);
+
+  const missing = target === null || failed;
+  const loading = !missing && !plan;
+
+  const conditions = [
+    plan?.travelStyle ? TRAVEL_STYLE_LABEL[plan.travelStyle] : null,
+    plan?.travelTheme ? TRAVEL_THEME_LABEL[plan.travelTheme] : null,
+  ].filter(Boolean) as string[];
+
+  const nightsLabel =
+    days.length <= 1 ? "당일치기" : `${days.length - 1}박 ${days.length}일`;
+
+  const flash = (text: string) => {
+    setNotice(text);
+    window.setTimeout(() => setNotice(null), SNACKBAR_MS);
   };
 
-  const conditions = [form.style, form.theme].filter(Boolean) as string[];
+  const share = () => {
+    // TODO([S10]): share/issue 로 받은 shareToken 주소를 복사해야 합니다
+    void navigator.clipboard?.writeText(window.location.href);
+    flash(COPIED_TEXT);
+  };
 
-  const nightsLabel = form.nights === 0 ? "당일치기" : `${form.nights}박 ${form.nights + 1}일`;
-  const endDate = (() => {
-    if (!form.startDate) return null;
-    const [y, m, d] = form.startDate.split("-").map(Number);
-    const end = new Date(y, m - 1, d + form.nights);
-    return `${end.getFullYear()}.${String(end.getMonth() + 1).padStart(2, "0")}.${String(
-      end.getDate(),
-    ).padStart(2, "0")}`;
-  })();
+  const save = () => {
+    if (saving || typeof target !== "number") return;
+
+    setSaving(true);
+
+    saveTravel(target)
+      .then(() => navigate(tripSavedPath(target), { replace: true }))
+      .catch(() => {
+        setSaving(false);
+        flash(SAVE_FAILED);
+      });
+  };
+
+  if (missing || loading) {
+    return (
+      <div className="trip-detail">
+        <Header
+          className="trip-detail__header"
+          variant="title"
+          title={HEADER_TITLE[mode]}
+          onBack={() => navigate(PATHS.home)}
+        />
+        <p className="trip-detail__status">
+          {missing ? MISSING_TEXT : LOADING_TEXT}
+        </p>
+      </div>
+    );
+  }
+
+  const shownDay = days[Math.min(dayIndex, days.length - 1)];
+  const items = shownDay ? toPlanItems(shownDay) : [];
+
+  const firstDate = days[0]?.date ?? null;
+  const lastDate = days[days.length - 1]?.date ?? null;
 
   return (
     <div className={`trip-detail${saved ? " trip-detail--saved" : ""}`}>
@@ -73,24 +164,13 @@ export default function TripDetail({
 
       <div className="trip-detail__top">
         <div className="trip-detail__heading">
-          <TitleL>{form.name || "{일정 이름}"}</TitleL>
+          <TitleL>{plan?.planName || "여행 일정"}</TitleL>
           <div className="trip-detail__dates">
             <p className="trip-detail__dates-text">
-              {form.startDate ? (
-                <>
-                  <span>{dot(form.startDate)}</span>
-                  <span>-</span>
-                  <span>{endDate}</span>
-                  <span>({nightsLabel})</span>
-                </>
-              ) : (
-                <>
-                  <span>2026.08.01</span>
-                  <span>-</span>
-                  <span>2026.08.02</span>
-                  <span>(1박 2일)</span>
-                </>
-              )}
+              <span>{formatDate(firstDate)}</span>
+              <span>-</span>
+              <span>{formatDate(lastDate)}</span>
+              <span>({nightsLabel})</span>
             </p>
           </div>
         </div>
@@ -101,9 +181,7 @@ export default function TripDetail({
             <p className="trip-detail__ai-text">
               AI가{" "}
               <span className="trip-detail__ai-strong">
-                {conditions.length > 0
-                  ? conditions.join(", ")
-                  : "{조건 A}, {조건 B}, {조건 C}"}
+                {conditions.join(", ")}
               </span>
               를 고려하여
               <br />
@@ -149,9 +227,9 @@ export default function TripDetail({
         )}
       </div>
 
-      {copied && (
+      {notice && (
         <Snackbar className="trip-detail__snackbar" withIcon={false}>
-          {COPIED_TEXT}
+          {notice}
         </Snackbar>
       )}
 
@@ -160,7 +238,7 @@ export default function TripDetail({
           <Btn variant="outline" onClick={() => navigate(PATHS.tripEdit)}>
             수정하기
           </Btn>
-          <Btn variant="primary" onClick={() => navigate(PATHS.tripSaved)}>
+          <Btn variant={saving ? "muted" : "primary"} onClick={save}>
             저장하기
           </Btn>
         </BottomBar>

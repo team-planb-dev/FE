@@ -23,9 +23,11 @@ import type {
 /** [7-5] 장소 검색. ⚠ 응답에 좌표가 없어 지도를 띄울 수 없습니다 */
 export async function searchPlaces(
   searchText: string,
+  signal?: AbortSignal,
 ): Promise<PlannedPlaceDetail[]> {
   const data = await request<SearchPlannedPlaceResponse>(ENDPOINT.searchPlace, {
     query: { searchText },
+    signal,
   });
   return data?.plannedPlaces ?? [];
 }
@@ -34,10 +36,11 @@ export async function searchPlaces(
 export async function recommendLocalFoods(
   locationDo: string,
   locationSigungu: string,
+  signal?: AbortSignal,
 ): Promise<string[]> {
   const data = await request<MakeRecommendFoodResponse>(
     ENDPOINT.recommendFood,
-    { query: { locationDo, locationSigungu } },
+    { query: { locationDo, locationSigungu }, signal },
   );
   return data?.foods ?? [];
 }

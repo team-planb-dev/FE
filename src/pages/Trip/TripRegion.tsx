@@ -11,7 +11,8 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import Btn from "../../components/Btn/Btn";
 
 import searchIcon from "../../assets/icn_search.svg";
-import { REGIONS, findRegionByQuery } from "./regionData";
+import { REGIONS, matchRegions } from "./regionData";
+import type { Region } from "./regionData";
 import { ALL_DISTRICTS, useTripForm } from "./tripFormContext";
 import { PATHS } from "../../routes/paths";
 
@@ -20,20 +21,41 @@ export default function TripRegion() {
   const navigate = useNavigate();
   const { form, setField } = useTripForm();
 
+  const typed = form.regionQuery.trim();
+  const match = matchRegions(form.regionQuery);
+
   const selected = REGIONS.find((r) => r.name === form.province) ?? null;
 
-  const selectProvince = (name: string) => {
-    setField("province", name);
+  // 걸리는 게 없으면 전체를 보여줍니다. 빈 화면이 되면 고를 수가 없습니다
+  const provinces = match.candidates.length > 0 ? match.candidates : REGIONS;
 
-    setField("district", ALL_DISTRICTS);
+  // 시/도가 정해졌으면 구 칩도 검색어로 좁힙니다
+  const districtHits =
+    typed && selected
+      ? selected.districts.filter((district) => district.includes(typed))
+      : [];
+  const districts =
+    districtHits.length > 0 ? districtHits : (selected?.districts ?? []);
+
+  const selectProvince = (region: Region) => {
+    setField("province", region.name);
+
+    // 검색어가 이 시/도의 구 이름이면 구까지 같이 고릅니다
+    setField(
+      "district",
+      region.districts.includes(typed) ? typed : ALL_DISTRICTS,
+    );
   };
 
   const handleQuery = (value: string) => {
     setField("regionQuery", value);
-    const matched = findRegionByQuery(value);
-    if (matched && matched.name !== form.province) {
-      selectProvince(matched.name);
-    }
+
+    const next = matchRegions(value);
+    // 후보가 여럿이면(서구 → 인천·대전·…) 찍지 않고 칩만 좁힙니다
+    if (!next.region) return;
+
+    setField("province", next.region.name);
+    setField("district", next.district ?? ALL_DISTRICTS);
   };
 
   return (
@@ -55,22 +77,22 @@ export default function TripRegion() {
           />
 
           <div className="trip-region__provinces">
-            {REGIONS.map((region) => (
+            {provinces.map((region) => (
               <Chips
                 key={region.name}
                 selected={form.province === region.name}
-                onClick={() => selectProvince(region.name)}
+                onClick={() => selectProvince(region)}
               >
                 {region.name}
               </Chips>
             ))}
           </div>
 
-          {selected && (
+          {selected && districts.length > 0 && (
             <>
               <hr className="trip-region__divider" />
               <div className="trip-region__districts">
-                {[ALL_DISTRICTS, ...selected.districts].map((district) => (
+                {[ALL_DISTRICTS, ...districts].map((district) => (
                   <ChipsM
                     key={district}
                     selected={form.district === district}

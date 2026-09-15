@@ -55,11 +55,11 @@ export const PATHS = {
 
   tripLoading: "/plan/trip/loading",
 
-  tripDetail: "/trip/detail",
+  tripDetail: "/trip/detail/:travelId",
 
-  tripSaved: "/trip/saved",
+  tripSaved: "/trip/saved/:travelId",
 
-  tripShared: "/trip/shared",
+  tripShared: "/trip/shared/:shareToken",
 
   tripEdit: "/trip/edit",
 
@@ -82,3 +82,13 @@ export const restaurantDetailPath = (placeId: string) =>
 
 export const memberEditPath = (memberId: string) =>
   `/plan/members/${memberId}/edit`;
+
+/* 여행 화면은 주소에 travelId 를 답니다.
+ * 새로고침·뒤로가기·링크 공유 어느 쪽으로 들어와도 같은 일정을 불러오기 위해서입니다 */
+
+export const tripDetailPath = (travelId: number) => `/trip/detail/${travelId}`;
+
+export const tripSavedPath = (travelId: number) => `/trip/saved/${travelId}`;
+
+export const tripSharedPath = (shareToken: string) =>
+  `/trip/shared/${encodeURIComponent(shareToken)}`;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./MyPage.css";
@@ -11,7 +11,7 @@ import Snackbar from "../../components/Snackbar/Snackbar";
 
 import arrowIcon from "../../assets/icn_chevron_right.svg";
 
-import { logout as requestLogout } from "../../api/auth";
+import { fetchMe, logout as requestLogout } from "../../api/auth";
 import { deleteUser } from "../../api/user";
 import { clearAccessToken } from "../../api/tokenStore";
 import { PATHS, myTermsDetailPath } from "../../routes/paths";
@@ -35,9 +35,30 @@ const LOGOUT_MODAL = {
 
 const WITHDRAW_ERROR_MESSAGE = "탈퇴하지 못했어요.";
 
+/** 이름을 못 불러왔을 때. username 은 이메일이라 화면에 쓰지 않습니다 */
+const NAME_FALLBACK = "내 정보";
+
 /** 마이페이지 */
 export default function MyPage() {
   const navigate = useNavigate();
+
+  const [nickname, setNickname] = useState<string | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+
+    fetchMe()
+      .then((me) => {
+        if (alive) setNickname(me.nickname);
+      })
+      .catch(() => {
+        // 이름은 없어도 나머지 메뉴는 쓸 수 있어야 합니다
+      });
+
+    return () => {
+      alive = false;
+    };
+  }, []);
   const [withdrawOpen, setWithdrawOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -89,7 +110,7 @@ export default function MyPage() {
   return (
     <div className="my-page">
       <Header className="my-page__header" variant="empty" />
-      <TitleL className="my-page__title">{"{사용자 이름}"}</TitleL>
+      <TitleL className="my-page__title">{nickname || NAME_FALLBACK}</TitleL>
       <ul className="my-page__menu">
         {menus.map((menu) => (
           <li key={menu.label}>

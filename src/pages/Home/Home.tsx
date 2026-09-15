@@ -59,16 +59,23 @@ export default function Home() {
   const [params] = useSearchParams();
   const [tab, setTab] = useState<TabKey>("upcoming");
 
-  const [travels, setTravels] = useState<TravelListItemResponse[] | null>(null);
+  const [travels, setTravels] = useState<Record<
+    TabKey,
+    TravelListItemResponse[]
+  > | null>(null);
   const [failed, setFailed] = useState(false);
 
-  // 탭마다 부르지 않고 한 번 받아 status 로 나눕니다
+  /*
+   * ⚠ 탭마다 따로 불러야 합니다.
+   *   status 를 안 보내면 서버가 UPCOMING 으로 봐서 지난 일정이 아예 안 옵니다.
+   *   두 개를 같이 받아두면 탭을 눌렀을 때 기다리지 않습니다
+   */
   useEffect(() => {
     let alive = true;
 
-    fetchTravels()
-      .then((list) => {
-        if (alive) setTravels(list);
+    Promise.all([fetchTravels("UPCOMING"), fetchTravels("PAST")])
+      .then(([upcoming, past]) => {
+        if (alive) setTravels({ upcoming, past });
       })
       .catch(() => {
         if (alive) setFailed(true);
@@ -80,11 +87,12 @@ export default function Home() {
   }, []);
 
   const byTab = useMemo(() => {
-    const list = (travels ?? []).filter((item) => item.travelId !== null);
+    const clean = (list: TravelListItemResponse[]) =>
+      list.filter((item) => item.travelId !== null).map(toTrip);
 
     return {
-      upcoming: list.filter((item) => item.status !== "COMPLETED").map(toTrip),
-      past: list.filter((item) => item.status === "COMPLETED").map(toTrip),
+      upcoming: clean(travels?.upcoming ?? []),
+      past: clean(travels?.past ?? []),
     };
   }, [travels]);
 

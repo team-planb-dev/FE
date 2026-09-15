@@ -73,6 +73,16 @@ export type TravelTheme = (typeof TRAVEL_THEMES)[number];
 export const TRAVEL_STATUSES = ["UPCOMING", "ONGOING", "COMPLETED"] as const;
 export type TravelStatus = (typeof TRAVEL_STATUSES)[number];
 
+/**
+ * `travel/list` 의 status 쿼리 값.
+ *
+ * ⚠ 응답의 status 필드(위 TravelStatus)와 값이 다릅니다.
+ *   쿼리는 UPCOMING·PAST 두 가지뿐이고, 안 보내면 서버가 UPCOMING 으로 봅니다.
+ *   그래서 "지난 일정" 을 보려면 PAST 를 꼭 보내야 합니다 (2026-09-15 확인)
+ */
+export const TRAVEL_LIST_FILTERS = ["UPCOMING", "PAST"] as const;
+export type TravelListFilter = (typeof TRAVEL_LIST_FILTERS)[number];
+
 export const SCHEDULE_TYPES = [
   "BREAKFAST",
   "LUNCH",
@@ -228,7 +238,10 @@ export type UserCreateResponse = {
 
 export type UserAuthCache = {
   userId: number | null;
+  /** 이메일입니다. 화면에 보여줄 이름은 nickname 을 씁니다 */
   username: string | null;
+  /** 2026-09-15 추가됐습니다 */
+  nickname: string | null;
   role: string | null;
 };
 
@@ -273,7 +286,8 @@ export type ResetPasswordResponse = {
 /* ──────────────────────────── 동행인 ──────────────────────────── */
 
 export type HealthInfo = {
-  diseaseType: DiseaseType | null;
+  /** 2026-09-15 단일 값에서 배열로 바뀌었습니다. [6-2] 는 복수선택입니다 */
+  diseaseTypes: DiseaseType[] | null;
   walkType: WalkType | null;
 };
 
@@ -327,7 +341,7 @@ export type CompanionSummaryDetail = {
   travelerName: string | null;
   hasAllergy: boolean | null;
   hasMedication: boolean | null;
-  diseaseType: DiseaseType | null;
+  diseaseTypes: DiseaseType[] | null;
 };
 
 export type CompanionSummaryResponse = {

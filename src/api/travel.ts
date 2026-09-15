@@ -14,8 +14,8 @@ import type {
   SearchPlannedPlaceResponse,
   ShareTravelResponse,
   TravelListItemResponse,
+  TravelListFilter,
   TravelListResponse,
-  TravelStatus,
 } from "./schema";
 
 /* ─────────────── [S7] 일정 생성 ─────────────── */
@@ -96,9 +96,12 @@ export function fetchSharedTravel(
 
 /* ─────────────── [S5] 홈 ─────────────── */
 
-/** status 를 비우면 전체. "지난 일정" 탭은 COMPLETED 입니다 */
+/**
+ * ⚠ status 를 비우면 전체가 아니라 UPCOMING 입니다 (서버 기본값).
+ *   "지난 일정" 은 PAST 를 보내야 옵니다
+ */
 export async function fetchTravels(
-  status?: TravelStatus,
+  status: TravelListFilter,
 ): Promise<TravelListItemResponse[]> {
   const data = await request<TravelListResponse>(ENDPOINT.travelList, {
     query: { status },

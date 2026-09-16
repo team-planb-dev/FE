@@ -2,7 +2,6 @@
  * 여행 생성 폼(TripForm)과 여행 API 사이의 변환.
  *
  * 폼은 화면에 보이는 한글 문구를 그대로 담고 있고, 서버는 enum 을 받습니다.
- * 양쪽을 잇는 규칙은 전부 이 파일에만 둡니다. (구성원 쪽은 companionForm.ts)
  */
 
 import {
@@ -40,11 +39,6 @@ function toPlannedPlace(place: Place): PlannedPlaceDetail {
 
 /**
  * [7-2] 사용자가 지역 검색창에 적은 말.
- *
- * ⚠ 백엔드 예시가 locationDo "경상북도" · locationSigungu "경주시" 일 때
- *   decidedLocation 이 "경주" 였습니다. 검색어를 그대로 보내고
- *   비어 있으면 시군구, 그것도 없으면 시/도로 채웁니다.
- *   정확한 의미는 백엔드 확인이 필요합니다
  */
 function decidedLocationOf(form: TripForm): string {
   const typed = form.regionQuery.trim();

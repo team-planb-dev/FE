@@ -33,16 +33,18 @@ export default function CompareCard({
       <div className="compare-card__body">
         <div className="compare-card__row">
           <p className="compare-card__title">{title}</p>
-          <button
-            type="button"
-            className="compare-card__more"
-            onClick={onMore}
-          >
-            <span className="compare-card__more-text">{MORE_LABEL}</span>
-            <span className="compare-card__more-icon">
-              <img src={chevronIcon} alt="" />
-            </span>
-          </button>
+          {onMore && (
+            <button
+              type="button"
+              className="compare-card__more"
+              onClick={onMore}
+            >
+              <span className="compare-card__more-text">{MORE_LABEL}</span>
+              <span className="compare-card__more-icon">
+                <img src={chevronIcon} alt="" />
+              </span>
+            </button>
+          )}
         </div>
         <Tag tone="purple">{theme}</Tag>
       </div>

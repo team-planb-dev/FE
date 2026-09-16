@@ -61,7 +61,7 @@ export const PATHS = {
 
   tripShared: "/trip/shared/:shareToken",
 
-  tripEdit: "/trip/edit",
+  tripEdit: "/trip/:travelId/edit",
 
   restaurantDetail: "/trip/restaurant/:placeId",
 
@@ -89,6 +89,8 @@ export const memberEditPath = (memberId: string) =>
 export const tripDetailPath = (travelId: number) => `/trip/detail/${travelId}`;
 
 export const tripSavedPath = (travelId: number) => `/trip/saved/${travelId}`;
+
+export const tripEditPath = (travelId: number) => `/trip/${travelId}/edit`;
 
 export const tripSharedPath = (shareToken: string) =>
   `/trip/shared/${encodeURIComponent(shareToken)}`;

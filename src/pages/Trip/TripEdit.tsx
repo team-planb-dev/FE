@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import "./TripEdit.css";
 
@@ -15,74 +15,140 @@ import Btn from "../../components/Btn/Btn";
 import sparkleIcon from "../../assets/icn_sparkle.svg";
 import sendIcon from "../../assets/icn_send.svg";
 
+import { TRAVEL_THEME_LABEL } from "../../api/labels";
+import type {
+  EditPlanPreviewResponse,
+  PlanDayDetail,
+} from "../../api/schema";
+import { PATHS, tripDetailPath } from "../../routes/paths";
+
 import {
   ASK,
-  COMPARE_THEME,
-  COMPARE_TITLE,
-  EDITING,
-  EDIT_DONE,
-  EDIT_NOTES,
-  GREETING,
+  COMPARE_THEME_FALLBACK,
+  COMPARE_TITLE_FALLBACK,
+  CONNECTING,
+  DONE_LABEL,
+  INPUT_PLACEHOLDER,
   KEEP_NEW,
   KEEP_OLD,
-  MOCK_DELAY_MS,
-  SAVE_DONE,
-  SAVING,
+  LOGIN_LABEL,
+  NO_TRAVEL,
+  RETRY_LABEL,
+  SUGGESTIONS,
+  SUGGEST_TITLE,
+  greetingOf,
 } from "./editScript";
+import { useEditChat } from "./useEditChat";
 
-const SUGGEST_TITLE = "이런 요청을 할 수 있어요";
+/** 카드에 쓸 대표 이미지. 일정 중 처음 나오는 사진을 씁니다 */
+function coverOf(days: PlanDayDetail[] | null): string | undefined {
+  for (const day of days ?? []) {
+    for (const schedule of day.schedules ?? []) {
+      const image = schedule.thumbNailImageUrl ?? schedule.imageUrl;
+      if (image) return image;
+    }
+  }
 
-const SUGGESTIONS = [
-  "덜 걷고 싶어요",
-  "정해진 시간에 식사하고 싶어요",
-  "관광지 추천을 줄이고 싶어요",
-];
+  return undefined;
+}
 
-const INPUT_PLACEHOLDER = "수정하고 싶은 일정을 구체적으로 알려주세요.";
+/** Before/After 카드에 넣을 값. 테마는 after 에 없어서 before 것을 같이 씁니다 */
+function cardsOf(preview: EditPlanPreviewResponse) {
+  const theme = preview.before?.travelTheme;
+  const themeLabel = theme ? TRAVEL_THEME_LABEL[theme] : COMPARE_THEME_FALLBACK;
 
-type Stage = "intro" | "editing" | "result" | "saving" | "saved";
+  return {
+    themeLabel,
+    before: {
+      title: preview.before?.planName?.trim() || COMPARE_TITLE_FALLBACK,
+      image: coverOf(preview.before?.planDays ?? null),
+    },
+    after: {
+      title:
+        preview.after?.planName?.trim() ||
+        preview.before?.planName?.trim() ||
+        COMPARE_TITLE_FALLBACK,
+      image: coverOf(preview.after?.planDays ?? null),
+    },
+  };
+}
 
-/** AI 일정 수정 대화. stage 로 요청 → 결과 → 저장까지 진행합니다 */
+/**
+ * [S9] AI 일정 수정 대화.
+ *
+ * REST 가 아니라 STOMP(WebSocket)로 주고받습니다.
+ * 보내는 것은 TALK · CONFIRM · CANCEL 세 가지뿐이고,
+ * 수정안은 응답의 editPreview 로 옵니다.
+ */
 export default function TripEdit() {
   const navigate = useNavigate();
+  const { travelId: idParam } = useParams();
+
+  const travelId = useMemo(() => {
+    const id = Number(idParam);
+    return Number.isFinite(id) && id > 0 ? id : null;
+  }, [idParam]);
+
+  if (travelId === null) return <MissingTravel />;
+
+  return <EditChat travelId={travelId} onDone={() => navigate(tripDetailPath(travelId))} />;
+}
+
+function MissingTravel() {
+  const navigate = useNavigate();
+
+  return (
+    <div className="trip-edit">
+      <Header className="trip-edit__header" onBack={() => navigate(-1)} />
+      <div className="trip-edit__scroll">
+        <div className="trip-edit__thread">
+          <ChatBubble>{NO_TRAVEL}</ChatBubble>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EditChat({
+  travelId,
+  onDone,
+}: {
+  travelId: number;
+  onDone: () => void;
+}) {
+  const navigate = useNavigate();
   const [text, setText] = useState("");
-  const [stage, setStage] = useState<Stage>("intro");
 
-  const [request, setRequest] = useState("");
-
-  const [choice, setChoice] = useState("");
+  const {
+    entries,
+    status,
+    error,
+    needsLogin,
+    nickname,
+    busy,
+    done,
+    send,
+    decide,
+  } = useEditChat(travelId);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = scrollRef.current;
     if (el) el.scrollTop = el.scrollHeight;
-  }, [stage]);
+  }, [entries, status]);
 
-  const send = (value: string) => {
-    const body = value.trim();
-    if (body.length === 0) return;
-    setRequest(body);
+  const submit = () => {
+    send(text);
     setText("");
-    setStage("editing");
-    window.setTimeout(() => setStage("result"), MOCK_DELAY_MS);
   };
 
-  const pick = (label: string) => {
-    setChoice(label);
-    setStage("saving");
-    window.setTimeout(() => setStage("saved"), MOCK_DELAY_MS);
-  };
-
-  const started = stage !== "intro";
+  const started = entries.length > 0;
 
   return (
     <div className="trip-edit">
       <div className="trip-edit__glow" aria-hidden="true" />
-      <Header
-        className="trip-edit__header"
-        onBack={() => navigate(-1)}
-      />
+      <Header className="trip-edit__header" onBack={() => navigate(-1)} />
 
       <div className="trip-edit__scroll" ref={scrollRef}>
         <div className="trip-edit__thread">
@@ -90,76 +156,103 @@ export default function TripEdit() {
             <Avatar />
             <div className="trip-edit__bubbles">
               <ChatBubble className="trip-edit__bubble--wide">
-                {GREETING}
+                {greetingOf(nickname)}
               </ChatBubble>
               <ChatBubble>{ASK}</ChatBubble>
             </div>
           </div>
 
-          {started && <ChatBubble variant="user">{request}</ChatBubble>}
+          {status === "connecting" && (
+            <ChatBubble variant="loading">{CONNECTING}</ChatBubble>
+          )}
 
-          {started && (
-            <div className="trip-edit__result">
-              {stage === "editing" ? (
-                <ChatBubble variant="loading">{EDITING}</ChatBubble>
-              ) : (
-                <ChatBubble>{EDIT_DONE}</ChatBubble>
-              )}
+          {entries.map((entry) => {
+            if (entry.kind === "preview") {
+              const { themeLabel, before, after } = cardsOf(entry.preview);
+              const changes = entry.preview.after?.changes ?? [];
 
-              {stage !== "editing" && (
-                <>
+              return (
+                <div className="trip-edit__result" key={entry.id}>
                   <div className="trip-edit__compare">
                     <CompareCard
                       badge="Before"
-                      title={COMPARE_TITLE}
-                      theme={COMPARE_THEME}
+                      title={before.title}
+                      theme={themeLabel}
+                      image={before.image}
                     />
                     <CompareCard
                       badge="After"
-                      title={COMPARE_TITLE}
-                      theme={COMPARE_THEME}
+                      title={after.title}
+                      theme={themeLabel}
+                      image={after.image}
                     />
                   </div>
 
-                  <EditNote items={EDIT_NOTES} />
-                </>
-              )}
+                  {changes.length > 0 && <EditNote items={changes} />}
 
-              {stage === "result" && (
-                <>
-                  <Btn
-                    variant="accent"
-                    size="md"
-                    onClick={() => pick(KEEP_NEW)}
-                  >
-                    {KEEP_NEW}
-                  </Btn>
-                  <Btn
-                    variant="accent"
-                    size="md"
-                    onClick={() => pick(KEEP_OLD)}
-                  >
-                    {KEEP_OLD}
-                  </Btn>
-                </>
-              )}
+                  {entry.pending && (
+                    <>
+                      <Btn
+                        variant="accent"
+                        size="md"
+                        onClick={() => decide(true)}
+                      >
+                        {KEEP_NEW}
+                      </Btn>
+                      <Btn
+                        variant="accent"
+                        size="md"
+                        onClick={() => decide(false)}
+                      >
+                        {KEEP_OLD}
+                      </Btn>
+                    </>
+                  )}
+                </div>
+              );
+            }
 
-              {(stage === "saving" || stage === "saved") && (
-                <ChatBubble variant="user">{choice}</ChatBubble>
-              )}
+            if (entry.kind === "loading") {
+              return (
+                <ChatBubble variant="loading" key={entry.id}>
+                  {entry.text}
+                </ChatBubble>
+              );
+            }
 
-              {stage === "saving" && (
-                <ChatBubble variant="loading">{SAVING}</ChatBubble>
-              )}
+            return (
+              <ChatBubble variant={entry.kind} key={entry.id}>
+                {entry.text}
+              </ChatBubble>
+            );
+          })}
 
-              {stage === "saved" && <ChatBubble>{SAVE_DONE}</ChatBubble>}
+          {/* 서버가 사유를 주면 그대로 보여줍니다. 지어내면 진짜 원인을 덮습니다 */}
+          {status === "error" && error && (
+            <div className="trip-edit__result">
+              <ChatBubble>{error}</ChatBubble>
+              <Btn
+                variant="accent"
+                size="md"
+                onClick={() =>
+                  needsLogin ? navigate(PATHS.login) : navigate(0)
+                }
+              >
+                {needsLogin ? LOGIN_LABEL : RETRY_LABEL}
+              </Btn>
             </div>
+          )}
+
+          {done && (
+            <Btn variant="accent" size="md" onClick={onDone}>
+              {DONE_LABEL}
+            </Btn>
           )}
         </div>
       </div>
 
       <div className="trip-edit__bottom">
-        {!started && (
+        {!started && status !== "error" && (
           <div className="trip-edit__suggest">
             <p className="trip-edit__suggest-title">{SUGGEST_TITLE}</p>
             <div className="trip-edit__suggest-list">
@@ -179,9 +272,10 @@ export default function TripEdit() {
         <ChatInput
           value={text}
           onChange={setText}
-          onSend={() => send(text)}
+          onSend={submit}
           placeholder={INPUT_PLACEHOLDER}
           sendIcon={sendIcon}
+          disabled={status !== "ready" || busy || done}
         />
       </div>
     </div>

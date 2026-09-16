@@ -4,7 +4,7 @@
 
 import { Client } from "@stomp/stompjs";
 
-import { API_BASE } from "./client";
+import { API_BASE, BACKEND_BASE } from "./client";
 import { STOMP } from "./endpoints";
 import type { SendChatMessageRequest, SendChatMessageResponse } from "./schema";
 import { getAccessToken } from "./tokenStore";
@@ -18,12 +18,11 @@ const NO_TOKEN = "로그인이 필요해요.";
 
 /** https → wss, http → ws */
 function socketUrl(): string {
-  /* 개발 중에는 `/backend` 라 같은 출처가 되고, 배포에서는 백엔드 주소입니다.
-   * Vercel 의 rewrite 는 WebSocket 을 프록시하지 못해 배포에서는 어차피
-   * 백엔드에 직접 붙어야 합니다 */
-  const base = API_BASE.startsWith("http")
-    ? API_BASE
-    : window.location.origin + API_BASE;
+  /* Vercel의 rewrite는 WebSocket 프록시가 아니므로 배포에서는 Railway에
+   * 직접 연결하고, 개발 환경만 Vite의 ws 프록시를 사용합니다. */
+  const base = import.meta.env.DEV
+    ? window.location.origin + API_BASE
+    : BACKEND_BASE || window.location.origin;
 
   return `${base.replace(/^http/, "ws")}${STOMP.endpoint}`;
 }

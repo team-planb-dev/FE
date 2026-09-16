@@ -12,15 +12,11 @@ export const BACKEND_BASE = (import.meta.env.VITE_API_BASE_URL ?? "").replace(
 );
 
 /*
- * 개발 중에는 Vite 프록시(`/backend`)를 거칩니다.
- *
- * 프론트와 백엔드가 다른 출처면 브라우저가 refreshToken 쿠키를 서드파티로 보고
- * 막아서, 새로고침할 때 재발급이 실패합니다. 같은 출처로 부르면 사라집니다.
- *
- * 배포 환경은 백엔드를 직접 부릅니다. 같은 출처로 만들려면 호스팅 쪽에
- * 프록시(`vercel.json` 의 rewrite)를 따로 깔아야 해서 배포 작업에서 다룹니다.
+ * 개발에서는 Vite, 배포에서는 Vercel의 `/backend` 프록시를 사용합니다.
+ * 브라우저가 API를 프론트와 같은 출처로 호출해야 refreshToken 쿠키가
+ * 서드파티 쿠키로 차단되지 않습니다.
  */
-export const API_BASE = import.meta.env.DEV ? "/backend" : BACKEND_BASE;
+export const API_BASE = "/backend";
 
 const BASE_URL = API_BASE;
 

@@ -49,19 +49,11 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
 
-<<<<<<< Updated upstream
   /* 로그인이 필요해 튕겨온 경우, 원래 가려던 주소로 돌려보냅니다.
    * 히스토리 state 가 먼저고, 그게 없으면 가드가 적어둔 값을 씁니다 */
   const passed = (location.state as { from?: unknown } | null)?.from;
   const fromState =
     typeof passed === "string" && isSafeRedirect(passed) ? passed : null;
-=======
-  /* 로그인이 필요해 튕겨온 경우, 원래 가려던 주소로 돌려보냅니다 */
-  const from =
-    typeof (location.state as { from?: unknown } | null)?.from === "string"
-      ? (location.state as { from: string }).from
-      : PATHS.home;
->>>>>>> Stashed changes
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -87,11 +79,7 @@ export default function Login() {
 
     try {
       await login(email.trim(), password);
-<<<<<<< Updated upstream
       navigate(fromState ?? takeRedirect() ?? PATHS.home, { replace: true });
-=======
-      navigate(from, { replace: true });
->>>>>>> Stashed changes
     } catch (caught) {
       setError(messageOf(caught));
       setSubmitting(false);

@@ -22,7 +22,8 @@
   align-items: flex-start;
   gap: 8px;
   flex-shrink: 0;
-  width: 200px;
+  width: 100%;
+  min-width: 0;
 }
 
 .card-place__name {
@@ -47,6 +48,9 @@
   line-height: 1.5;
   letter-spacing: -0.21px;
   color: var(--neutral-800);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .card-place--empty {

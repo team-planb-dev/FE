@@ -5,7 +5,6 @@ import {
   Outlet,
   Route,
   Routes,
-  useNavigate,
 } from "react-router-dom";
 
 import Landing from "./pages/Landing/Landing";
@@ -80,12 +79,10 @@ function TripFormLayout() {
 }
 
 function AppLayout() {
-  const navigate = useNavigate();
-
   return (
     <>
       <Outlet />
-      <BottomNavigation onFabClick={() => navigate(PATHS.planStart)} />
+      <BottomNavigation />
     </>
   );
 }

@@ -58,6 +58,11 @@ export function connectChat({
     brokerURL: socketUrl(),
     connectHeaders: token ? { Authorization: `Bearer ${token}` } : {},
     reconnectDelay: 0,
+    /* 개발 중에는 주고받는 STOMP 프레임을 콘솔에 남깁니다.
+     * 답이 안 올 때 보낸 게 갔는지부터 확인할 수 있어야 합니다 */
+    debug: import.meta.env.DEV
+      ? (line) => console.log("[STOMP]", line)
+      : undefined,
   });
 
   client.onConnect = () => {
@@ -90,6 +95,9 @@ export function connectChat({
 
       client.publish({
         destination: STOMP.publish(roomId),
+        /* CONNECT 에서 이미 검증하지만, 스웨거가 SEND 에도 Authorization 을
+         * 필수로 표시해둬서 같이 실어 보냅니다 */
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: JSON.stringify(body),
       });
       return true;

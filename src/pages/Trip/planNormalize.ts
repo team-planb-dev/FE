@@ -14,8 +14,27 @@ import {
   PLAN_TAG_LABEL,
   SCHEDULE_TYPE_LABEL,
 } from "../../api/labels";
-import type { ApiPlanDay, ApiSchedule, ApiTime, CodeValue } from "../../api/planTypes";
+import type {
+  ApiPlanDay,
+  ApiSchedule,
+  ApiTime,
+  CodeValue,
+} from "../../api/planTypes";
 import type { PlanDayDetail, PlanScheduleDetail } from "../../api/schema";
+
+/**
+ * 코드 하나만 필요할 때. 문자열로 오든 `{ code }` 객체로 오든 코드만 꺼냅니다.
+ * 여행 테마처럼 라벨을 따로 찾아 쓰는 값에 씁니다
+ */
+export function codeOf(value: unknown): string | null {
+  if (typeof value === "string" && value) return value;
+  if (value && typeof value === "object" && "code" in value) {
+    const raw = (value as { code?: unknown }).code;
+    return typeof raw === "string" && raw ? raw : null;
+  }
+
+  return null;
+}
 
 /** 코드 문자열로 오든 객체로 오든 `{ code, codeName }` 으로 맞춥니다 */
 function toCodeValue(
@@ -51,7 +70,11 @@ function toApiTime(value: unknown): ApiTime | null {
 
 function toSchedule(raw: PlanScheduleDetail): ApiSchedule {
   return {
-    scheduleType: toCodeValue(raw.scheduleType, SCHEDULE_TYPE_LABEL, "ACTIVITY"),
+    scheduleType: toCodeValue(
+      raw.scheduleType,
+      SCHEDULE_TYPE_LABEL,
+      "ACTIVITY",
+    ),
     courseType: toCodeValue(raw.courseType, COURSE_TYPE_LABEL, "ATTRACTION"),
     startTime: toApiTime(raw.startTime),
     endTime: toApiTime(raw.endTime),
@@ -72,7 +95,9 @@ function toSchedule(raw: PlanScheduleDetail): ApiSchedule {
 }
 
 /** 일정이 없는 날은 버립니다. 탭이 비면 화면이 깨집니다 */
-export function toPlanDays(days: PlanDayDetail[] | null | undefined): ApiPlanDay[] {
+export function toPlanDays(
+  days: PlanDayDetail[] | null | undefined,
+): ApiPlanDay[] {
   if (!days) return [];
 
   return days

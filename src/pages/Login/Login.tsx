@@ -95,7 +95,7 @@ export default function Login() {
       <TitleL className="login-page__title">
         건강한 여행 관리,
         <br />
-        {"{서비스 이름}"}과 시작하세요.
+        여로와 시작하세요.
       </TitleL>
 
       <div className="login-page__body">

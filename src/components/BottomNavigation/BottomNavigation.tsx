@@ -21,14 +21,8 @@ const TABS: Tab[] = [
   { key: "profile", label: "프로필", icon: profileIcon, to: PATHS.myPage },
 ];
 
-type BottomNavigationProps = {
-  onFabClick?: () => void;
-};
-
 /** 하단 탭 바. 홈 · 계획 생성 · 프로필 */
-export default function BottomNavigation({
-  onFabClick,
-}: BottomNavigationProps) {
+export default function BottomNavigation() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -45,7 +39,6 @@ export default function BottomNavigation({
                 aria-current={active ? "page" : undefined}
                 onClick={() => tab.to && navigate(tab.to)}
               >
-
                 <span
                   className={`bottom-nav__icon${tab.icon ? "" : " bottom-nav__icon--empty"}`}
                   style={
@@ -68,7 +61,7 @@ export default function BottomNavigation({
         type="button"
         className="bottom-nav__fab"
         aria-label="일정 생성"
-        onClick={onFabClick}
+        onClick={() => navigate(PATHS.planStart)}
       >
         <span className="bottom-nav__fab-icon" aria-hidden="true" />
       </button>

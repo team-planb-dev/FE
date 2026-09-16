@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import "./Login.css";
 
@@ -15,6 +15,7 @@ import { login, LoginFailedError, TokenNotExposedError } from "../../api/auth";
 import { ERROR_CODE } from "../../api/schema";
 import { PASSWORD_MIN_LENGTH } from "../../utils/validation";
 import { PATHS } from "../../routes/paths";
+import { isSafeRedirect, takeRedirect } from "../../routes/redirectTarget";
 
 /** 로그인 */
 export type LoginErrorCode =
@@ -46,6 +47,13 @@ const TOKEN_ERROR_MESSAGE = "로그인 응답을 읽지 못했어요.";
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  /* 로그인이 필요해 튕겨온 경우, 원래 가려던 주소로 돌려보냅니다.
+   * 히스토리 state 가 먼저고, 그게 없으면 가드가 적어둔 값을 씁니다 */
+  const passed = (location.state as { from?: unknown } | null)?.from;
+  const fromState =
+    typeof passed === "string" && isSafeRedirect(passed) ? passed : null;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -71,7 +79,7 @@ export default function Login() {
 
     try {
       await login(email.trim(), password);
-      navigate(PATHS.home, { replace: true });
+      navigate(fromState ?? takeRedirect() ?? PATHS.home, { replace: true });
     } catch (caught) {
       setError(messageOf(caught));
       setSubmitting(false);

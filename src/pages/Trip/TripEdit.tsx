@@ -16,10 +16,7 @@ import sparkleIcon from "../../assets/icn_sparkle.svg";
 import sendIcon from "../../assets/icn_send.svg";
 
 import { TRAVEL_THEME_LABEL } from "../../api/labels";
-import type {
-  EditPlanPreviewResponse,
-  PlanDayDetail,
-} from "../../api/schema";
+import type { EditPlanPreviewResponse, PlanDayDetail } from "../../api/schema";
 import { PATHS, tripDetailPath } from "../../routes/paths";
 
 import {
@@ -38,6 +35,7 @@ import {
   SUGGEST_TITLE,
   greetingOf,
 } from "./editScript";
+import { codeOf } from "./planNormalize";
 import { useEditChat } from "./useEditChat";
 
 /** 카드에 쓸 대표 이미지. 일정 중 처음 나오는 사진을 씁니다 */
@@ -54,8 +52,11 @@ function coverOf(days: PlanDayDetail[] | null): string | undefined {
 
 /** Before/After 카드에 넣을 값. 테마는 after 에 없어서 before 것을 같이 씁니다 */
 function cardsOf(preview: EditPlanPreviewResponse) {
-  const theme = preview.before?.travelTheme;
-  const themeLabel = theme ? TRAVEL_THEME_LABEL[theme] : COMPARE_THEME_FALLBACK;
+  /* 테마는 "NATURE" 로도 { code: "NATURE", codeName: "자연" } 으로도 옵니다 */
+  const theme = codeOf(preview.before?.travelTheme);
+  const themeLabel =
+    (theme && TRAVEL_THEME_LABEL[theme as TravelTheme]) ||
+    COMPARE_THEME_FALLBACK;
 
   return {
     themeLabel,
@@ -91,7 +92,12 @@ export default function TripEdit() {
 
   if (travelId === null) return <MissingTravel />;
 
-  return <EditChat travelId={travelId} onDone={() => navigate(tripDetailPath(travelId))} />;
+  return (
+    <EditChat
+      travelId={travelId}
+      onDone={() => navigate(tripDetailPath(travelId))}
+    />
+  );
 }
 
 function MissingTravel() {
@@ -121,6 +127,8 @@ function EditChat({
 
   const {
     entries,
+    greeting,
+    started,
     status,
     error,
     needsLogin,
@@ -143,7 +151,11 @@ function EditChat({
     setText("");
   };
 
-  const started = entries.length > 0;
+  /* [9-2] 빠른 수정 — 칩을 누르면 입력창을 거치지 않고 바로 보냅니다 */
+  const pick = (label: string) => {
+    setText("");
+    send(label);
+  };
 
   return (
     <div className="trip-edit">
@@ -154,11 +166,18 @@ function EditChat({
         <div className="trip-edit__thread">
           <div className="trip-edit__intro">
             <Avatar />
+            {/* 서버가 입장 안내를 보내주면 그걸 쓰고, 없으면 화면 기본 문구를 씁니다 */}
             <div className="trip-edit__bubbles">
-              <ChatBubble className="trip-edit__bubble--wide">
-                {greetingOf(nickname)}
-              </ChatBubble>
-              <ChatBubble>{ASK}</ChatBubble>
+              {(greeting ?? [greetingOf(nickname), ASK]).map((line, index) => (
+                <ChatBubble
+                  key={line}
+                  className={
+                    index === 0 ? "trip-edit__bubble--wide" : undefined
+                  }
+                >
+                  {line}
+                </ChatBubble>
+              ))}
             </div>
           </div>
 
@@ -262,7 +281,7 @@ function EditChat({
                   size="m"
                   label={label}
                   icon={sparkleIcon}
-                  onClick={() => setText(label)}
+                  onClick={() => pick(label)}
                 />
               ))}
             </div>

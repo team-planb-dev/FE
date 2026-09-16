@@ -25,6 +25,8 @@ import {
   KEEP_OLD,
   NEED_LOGIN,
   ROOM_FAILED,
+  NO_REPLY,
+  REPLY_TIMEOUT_MS,
   SAVING,
   SEND_FAILED,
 } from "./editScript";
@@ -75,6 +77,10 @@ export function useEditChat(travelId: number) {
   /** 에러 원인이 로그인 풀림이면 다시 시도 대신 로그인으로 보냅니다 */
   const [needsLogin, setNeedsLogin] = useState(false);
   const [nickname, setNickname] = useState<string | null>(null);
+  /* 서버가 첫 입장 때 보내주는 안내 말풍선. 화면 맨 위 인사 자리를 채웁니다 */
+  const [greeting, setGreeting] = useState<string[] | null>(null);
+  /* 사용자가 한 번이라도 말을 걸었는지. 추천 칩을 언제 감출지 정합니다 */
+  const [started, setStarted] = useState(false);
   /** 서버 응답을 기다리는 중 */
   const [busy, setBusy] = useState(false);
   /** CONFIRM · CANCEL 까지 끝난 상태 */
@@ -84,37 +90,83 @@ export function useEditChat(travelId: number) {
   const myId = useRef<number | null>(null);
   /** 방금 내가 보낸 문장. 서버가 그대로 돌려줄 때 두 번 그리지 않으려고 둡니다 */
   const lastSent = useRef<string | null>(null);
+  const startedRef = useRef(false);
+  /* 답을 기다리는 타이머. 서버가 조용하면 무한 로딩 대신 사유를 보여줍니다 */
+  const waitTimer = useRef<number | null>(null);
 
-  const receive = useCallback((message: SendChatMessageResponse) => {
-    const type = message.type;
-    /* ENTER · LEAVE 는 서버가 구독/해제 때 알리는 신호라 화면에 쓰지 않습니다 */
-    if (type === "ENTER" || type === "LEAVE") return;
+  const stopWaiting = useCallback(() => {
+    if (waitTimer.current !== null) {
+      window.clearTimeout(waitTimer.current);
+      waitTimer.current = null;
+    }
+  }, []);
 
-    const text = message.message?.trim() ?? "";
-    const preview = message.editPreview;
+  const startWaiting = useCallback(() => {
+    stopWaiting();
+    waitTimer.current = window.setTimeout(() => {
+      waitTimer.current = null;
+      setBusy(false);
+      setEntries((prev) => [
+        ...prev.filter((entry) => entry.kind !== "loading"),
+        { id: nextId(), kind: "ai", text: NO_REPLY },
+      ]);
+    }, REPLY_TIMEOUT_MS);
+  }, [stopWaiting]);
 
-    /* 내가 보낸 문장이 그대로 되돌아온 경우. 화면에는 이미 그려져 있습니다 */
-    const isEcho =
-      message.senderId !== null &&
-      message.senderId === myId.current &&
-      preview === null &&
-      text === lastSent.current;
-
-    if (isEcho) return;
-
-    setBusy(false);
-    setEntries((prev) => {
-      const next = prev.filter((entry) => entry.kind !== "loading");
-      if (text) next.push({ id: nextId(), kind: "ai", text });
-      if (preview && hasPlan(preview)) {
-        next.push({ id: nextId(), kind: "preview", preview, pending: true });
+  const receive = useCallback(
+    (message: SendChatMessageResponse) => {
+      const type = message.type;
+      /* ENTER · LEAVE 는 서버가 구독/해제 때 알리는 신호라 화면에 쓰지 않습니다 */
+      if (type === "ENTER" || type === "LEAVE") {
+        if (import.meta.env.DEV) console.log("[CHAT] 버림 — 입퇴장 신호");
+        return;
       }
 
-      return next;
-    });
+      const text = message.message?.trim() ?? "";
+      const preview = message.editPreview;
 
-    if (type === "CONFIRM" || type === "CANCEL") setDone(true);
-  }, []);
+      /* 내가 보낸 문장이 그대로 되돌아온 경우. 화면에는 이미 그려져 있습니다 */
+      const isEcho =
+        message.senderId !== null &&
+        message.senderId === myId.current &&
+        preview === null &&
+        text === lastSent.current;
+
+      if (isEcho) {
+        if (import.meta.env.DEV)
+          console.log("[CHAT] 버림 — 내가 보낸 것의 메아리");
+        return;
+      }
+
+      /*
+       * 사용자가 말을 걸기 전에 오는 메시지는 채팅방 입장 안내입니다.
+       * 디자인에서 화면 맨 위에 고정으로 놓인 인사 자리라서, 대화 목록에
+       * 쌓지 않고 그 자리를 채웁니다. 그냥 쌓으면 인사가 두 번 나옵니다
+       */
+      if (!startedRef.current && !preview) {
+        if (text) setGreeting((prev) => [...(prev ?? []), text]);
+        return;
+      }
+
+      stopWaiting();
+      setBusy(false);
+      setEntries((prev) => {
+        const next = prev.filter((entry) => entry.kind !== "loading");
+        if (text) next.push({ id: nextId(), kind: "ai", text });
+        if (import.meta.env.DEV && preview && !hasPlan(preview)) {
+          console.log("[CHAT] 수정안이 비어 있어 카드를 그리지 않습니다");
+        }
+        if (preview && hasPlan(preview)) {
+          next.push({ id: nextId(), kind: "preview", preview, pending: true });
+        }
+
+        return next;
+      });
+
+      if (type === "CONFIRM" || type === "CANCEL") setDone(true);
+    },
+    [stopWaiting],
+  );
 
   useEffect(() => {
     let alive = true;
@@ -171,8 +223,9 @@ export function useEditChat(travelId: number) {
       alive = false;
       opened?.close();
       connection.current = null;
+      stopWaiting();
     };
-  }, [travelId, receive]);
+  }, [travelId, receive, stopWaiting]);
 
   const send = useCallback(
     (raw: string) => {
@@ -183,14 +236,18 @@ export function useEditChat(travelId: number) {
       if (!conn) return;
 
       lastSent.current = text;
+      startedRef.current = true;
+      setStarted(true);
       setEntries((prev) => [
         ...prev,
         { id: nextId(), kind: "user", text },
         { id: nextId(), kind: "loading", text: EDITING },
       ]);
       setBusy(true);
+      startWaiting();
 
       if (!conn.send({ type: "TALK", message: text })) {
+        stopWaiting();
         setBusy(false);
         setEntries((prev) => [
           ...prev.filter((entry) => entry.kind !== "loading"),
@@ -198,7 +255,7 @@ export function useEditChat(travelId: number) {
         ]);
       }
     },
-    [busy, done],
+    [busy, done, startWaiting, stopWaiting],
   );
 
   /** accept 면 CONFIRM(수정안 반영), 아니면 CANCEL(수정안 폐기) */
@@ -211,6 +268,8 @@ export function useEditChat(travelId: number) {
 
       const label = accept ? KEEP_NEW : KEEP_OLD;
       lastSent.current = label;
+      startedRef.current = true;
+      setStarted(true);
       setEntries((prev) => [
         ...prev.map((entry) =>
           entry.kind === "preview" ? { ...entry, pending: false } : entry,
@@ -219,8 +278,10 @@ export function useEditChat(travelId: number) {
         { id: nextId(), kind: "loading", text: accept ? SAVING : CANCELLING },
       ]);
       setBusy(true);
+      startWaiting();
 
       if (!conn.send({ type: accept ? "CONFIRM" : "CANCEL" })) {
+        stopWaiting();
         setBusy(false);
         setEntries((prev) => [
           ...prev.filter((entry) => entry.kind !== "loading"),
@@ -228,11 +289,13 @@ export function useEditChat(travelId: number) {
         ]);
       }
     },
-    [busy, done],
+    [busy, done, startWaiting, stopWaiting],
   );
 
   return {
     entries,
+    greeting,
+    started,
     status,
     error,
     needsLogin,

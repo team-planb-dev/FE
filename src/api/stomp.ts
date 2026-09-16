@@ -4,11 +4,10 @@
 
 import { Client } from "@stomp/stompjs";
 
+import { API_BASE } from "./client";
 import { STOMP } from "./endpoints";
 import type { SendChatMessageRequest, SendChatMessageResponse } from "./schema";
 import { getAccessToken } from "./tokenStore";
-
-const HTTP_BASE = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/+$/, "");
 
 /* 핸드셰이크 자체가 막힌 경우와 서버가 STOMP 단계에서 거절한 경우를 구분합니다.
  * 앞쪽은 보통 서버의 WebSocket 허용 Origin 설정 문제입니다 */
@@ -19,7 +18,13 @@ const NO_TOKEN = "로그인이 필요해요.";
 
 /** https → wss, http → ws */
 function socketUrl(): string {
-  const base = HTTP_BASE || window.location.origin;
+  /* 개발 중에는 `/backend` 라 같은 출처가 되고, 배포에서는 백엔드 주소입니다.
+   * Vercel 의 rewrite 는 WebSocket 을 프록시하지 못해 배포에서는 어차피
+   * 백엔드에 직접 붙어야 합니다 */
+  const base = API_BASE.startsWith("http")
+    ? API_BASE
+    : window.location.origin + API_BASE;
+
   return `${base.replace(/^http/, "ws")}${STOMP.endpoint}`;
 }
 
@@ -53,6 +58,11 @@ export function connectChat({
     brokerURL: socketUrl(),
     connectHeaders: token ? { Authorization: `Bearer ${token}` } : {},
     reconnectDelay: 0,
+    /* 개발 중에는 주고받는 STOMP 프레임을 콘솔에 남깁니다.
+     * 답이 안 올 때 보낸 게 갔는지부터 확인할 수 있어야 합니다 */
+    debug: import.meta.env.DEV
+      ? (line) => console.log("[STOMP]", line)
+      : undefined,
   });
 
   client.onConnect = () => {
@@ -85,6 +95,9 @@ export function connectChat({
 
       client.publish({
         destination: STOMP.publish(roomId),
+        /* CONNECT 에서 이미 검증하지만, 스웨거가 SEND 에도 Authorization 을
+         * 필수로 표시해둬서 같이 실어 보냅니다 */
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: JSON.stringify(body),
       });
       return true;

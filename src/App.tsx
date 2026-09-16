@@ -52,6 +52,7 @@ import TripFormProvider from "./pages/Trip/TripFormProvider";
 import SignupProvider from "./pages/Signup/SignupProvider";
 import BottomNavigation from "./components/BottomNavigation/BottomNavigation";
 import { useSession } from "./api/session";
+import RequireAuth from "./routes/RequireAuth";
 import { PATHS } from "./routes/paths";
 
 function SignupLayout() {
@@ -89,9 +90,10 @@ function AppLayout() {
   );
 }
 
+/* 로그인 없이 열리는 화면. 공유 링크는 받은 사람이 로그인 없이 봐야 합니다 */
 function App() {
-  // 새로고침으로 사라진 Access Token 을 refreshToken 쿠키로 되살리고,
-  // 401 을 받으면 재발급 후 재시도하도록 연결합니다
+  /* 새로고침으로 사라진 Access Token 을 refreshToken 쿠키로 되살리고,
+   * 만료된 Access Token으로 401을 받으면 재발급 후 재시도하도록 연결합니다 */
   useSession();
 
   return (
@@ -112,55 +114,63 @@ function App() {
           path={PATHS.findPasswordResult}
           element={<FindPasswordResult />}
         />
-
-        <Route element={<AppLayout />}>
-          <Route path={PATHS.home} element={<Home />} />
-        </Route>
-
-        <Route path={PATHS.planStart} element={<PlanStart />} />
-        <Route path={PATHS.planMembers} element={<PlanMembers />} />
-        <Route element={<MemberFormLayout />}>
-          <Route path={PATHS.memberNew} element={<MemberNew />} />
-          <Route path={PATHS.memberNewConsent} element={<MemberConsent />} />
-          <Route path={PATHS.memberNewHealth} element={<MemberHealth />} />
-          <Route path={PATHS.memberNewMeds} element={<MemberMeds />} />
-          <Route
-            path={PATHS.memberNewMedsDetail}
-            element={<MemberMedsDetail />}
-          />
-          <Route path={PATHS.memberNewMealtime} element={<MemberMealtime />} />
-          <Route path={PATHS.memberNewFood} element={<MemberFood />} />
-
-          {/* 수정 화면에서 단계 화면을 다녀와도 입력값이 유지되도록 같은 Provider 안에 둡니다 */}
-          <Route path={PATHS.memberEdit} element={<MemberEdit />} />
-        </Route>
-
-        <Route path={PATHS.memberConfirm} element={<MemberConfirm />} />
-        <Route path={PATHS.myPage} element={<MyPage />} />
-        <Route path={PATHS.myMembers} element={<MyMembers />} />
-        <Route path={PATHS.myTermsDetail} element={<TermsView />} />
-        <Route element={<TripFormLayout />}>
-          <Route path={PATHS.tripName} element={<TripName />} />
-          <Route path={PATHS.tripRegion} element={<TripRegion />} />
-          <Route path={PATHS.tripDate} element={<TripDate />} />
-          <Route path={PATHS.tripTransport} element={<TripTransport />} />
-          <Route path={PATHS.tripPlace} element={<TripPlace />} />
-          <Route path={PATHS.tripStyle} element={<TripStyle />} />
-          <Route path={PATHS.tripTheme} element={<TripTheme />} />
-          <Route path={PATHS.tripFood} element={<TripFood />} />
-          <Route path={PATHS.tripConfirm} element={<TripConfirm />} />
-          <Route path={PATHS.tripLoading} element={<TripLoading />} />
-          <Route path={PATHS.tripDetail} element={<TripDetail />} />
-          <Route path={PATHS.tripSaved} element={<TripDetail mode="saved" />} />
-          <Route path={PATHS.tripShared} element={<TripDetail mode="shared" />} />
-          <Route path={PATHS.tripEdit} element={<TripEdit />} />
-          <Route
-            path={PATHS.restaurantDetail}
-            element={<RestaurantDetail />}
-          />
-        </Route>
-
         <Route path={PATHS.landing} element={<Landing />} />
+        <Route path={PATHS.tripShared} element={<TripDetail mode="shared" />} />
+
+        {/* 여기서부터는 로그인이 필요합니다 */}
+        <Route element={<RequireAuth />}>
+          <Route element={<AppLayout />}>
+            <Route path={PATHS.home} element={<Home />} />
+          </Route>
+
+          <Route path={PATHS.planStart} element={<PlanStart />} />
+          <Route path={PATHS.planMembers} element={<PlanMembers />} />
+          <Route element={<MemberFormLayout />}>
+            <Route path={PATHS.memberNew} element={<MemberNew />} />
+            <Route path={PATHS.memberNewConsent} element={<MemberConsent />} />
+            <Route path={PATHS.memberNewHealth} element={<MemberHealth />} />
+            <Route path={PATHS.memberNewMeds} element={<MemberMeds />} />
+            <Route
+              path={PATHS.memberNewMedsDetail}
+              element={<MemberMedsDetail />}
+            />
+            <Route
+              path={PATHS.memberNewMealtime}
+              element={<MemberMealtime />}
+            />
+            <Route path={PATHS.memberNewFood} element={<MemberFood />} />
+
+            {/* 수정 화면에서 단계 화면을 다녀와도 입력값이 유지되도록 같은 Provider 안에 둡니다 */}
+            <Route path={PATHS.memberEdit} element={<MemberEdit />} />
+          </Route>
+
+          <Route path={PATHS.memberConfirm} element={<MemberConfirm />} />
+          <Route path={PATHS.myPage} element={<MyPage />} />
+          <Route path={PATHS.myMembers} element={<MyMembers />} />
+          <Route path={PATHS.myTermsDetail} element={<TermsView />} />
+          <Route element={<TripFormLayout />}>
+            <Route path={PATHS.tripName} element={<TripName />} />
+            <Route path={PATHS.tripRegion} element={<TripRegion />} />
+            <Route path={PATHS.tripDate} element={<TripDate />} />
+            <Route path={PATHS.tripTransport} element={<TripTransport />} />
+            <Route path={PATHS.tripPlace} element={<TripPlace />} />
+            <Route path={PATHS.tripStyle} element={<TripStyle />} />
+            <Route path={PATHS.tripTheme} element={<TripTheme />} />
+            <Route path={PATHS.tripFood} element={<TripFood />} />
+            <Route path={PATHS.tripConfirm} element={<TripConfirm />} />
+            <Route path={PATHS.tripLoading} element={<TripLoading />} />
+            <Route path={PATHS.tripDetail} element={<TripDetail />} />
+            <Route
+              path={PATHS.tripSaved}
+              element={<TripDetail mode="saved" />}
+            />
+            <Route path={PATHS.tripEdit} element={<TripEdit />} />
+            <Route
+              path={PATHS.restaurantDetail}
+              element={<RestaurantDetail />}
+            />
+          </Route>
+        </Route>
 
         <Route path="*" element={<Navigate to={PATHS.login} replace />} />
       </Routes>

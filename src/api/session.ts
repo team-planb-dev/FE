@@ -37,8 +37,12 @@ export function useSession(): SessionStatus {
       if (alive) setStatus(token ? "authed" : "guest");
     });
 
-    void ensureSession().then((ok) => {
-      if (alive) setStatus(ok ? "authed" : "guest");
+    /* ⚠ ensureSession 은 앱이 뜰 때 딱 한 번만 실행되고 결과를 캐시합니다.
+     * 그래서 로그아웃 상태로 시작했다면 로그인한 뒤에 이 훅을 새로 부르는
+     * 화면(보호 라우트)에서도 계속 false 를 돌려줍니다.
+     * 캐시된 결과가 아니라 지금 토큰이 있는지로 판단해야 합니다 */
+    void ensureSession().then(() => {
+      if (alive) setStatus(getAccessToken() ? "authed" : "guest");
     });
 
     return () => {

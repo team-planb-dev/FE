@@ -6,7 +6,23 @@ import type { ApiResult } from "./schema";
 import { ERROR_CODE } from "./schema";
 import { clearAccessToken, getAccessToken } from "./tokenStore";
 
-const BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/+$/, "");
+export const BACKEND_BASE = (import.meta.env.VITE_API_BASE_URL ?? "").replace(
+  /\/+$/,
+  "",
+);
+
+/*
+ * 개발 중에는 Vite 프록시(`/backend`)를 거칩니다.
+ *
+ * 프론트와 백엔드가 다른 출처면 브라우저가 refreshToken 쿠키를 서드파티로 보고
+ * 막아서, 새로고침할 때 재발급이 실패합니다. 같은 출처로 부르면 사라집니다.
+ *
+ * 배포 환경은 백엔드를 직접 부릅니다. 같은 출처로 만들려면 호스팅 쪽에
+ * 프록시(`vercel.json` 의 rewrite)를 따로 깔아야 해서 배포 작업에서 다룹니다.
+ */
+export const API_BASE = import.meta.env.DEV ? "/backend" : BACKEND_BASE;
+
+const BASE_URL = API_BASE;
 
 export class ApiRequestError extends Error {
   readonly status: number;
@@ -62,7 +78,6 @@ export async function request<T>(
   return unwrap<T>(response, payload);
 }
 
-
 export async function requestRaw(
   path: string,
   options: RequestOptions = {},
@@ -99,14 +114,21 @@ async function send(
   const payload = await readJson(response);
 
   /*
-   * 토큰이 없거나 만료됐을 때 한 번만 재발급 후 재시도합니다.
+   * 토큰 문제로 보일 때만 한 번 재발급하고 재시도합니다.
    *
-   * ⚠ 401 만 보면 안 됩니다. 이 백엔드는 Authorization 헤더가 없는 요청에
-   *   본문 없는 403 을 돌려줍니다 (2026-09-15 확인: 토큰 없이 부르면
-   *   search-planned-place 가 403 Content-Length: 0). 403 을 빼놓으면
-   *   새로고침 직후처럼 토큰이 비었을 때 재발급이 아예 돌지 않습니다
+   * 401 은 만료된 Access Token 입니다.
+   *
+   * 403 은 두 가지가 섞여 있어 본문으로 가릅니다.
+   *  - Security Filter 가 막은 경우: 본문이 비어 있습니다
+   *    (2026-09-16 확인: 토큰 없이 `user/me` 를 부르면 401 이 아니라 403 + 빈 본문)
+   *  - 권한 부족(남의 여행 조회 등): 서버가 ApiResult 에 사유를 담아 보냅니다
+   *
+   * 뒤쪽까지 재발급하면 Refresh Token 을 쓸데없이 회전시킵니다.
+   * 이 서버는 회전한 새 토큰을 쿠키로 내려주지 않아서, 한 번 헛돌 때마다
+   * 로그인이 풀립니다
    */
-  const needsToken = response.status === 401 || response.status === 403;
+  const looksLikeMissingToken = response.status === 403 && payload === null;
+  const needsToken = response.status === 401 || looksLikeMissingToken;
   if (needsToken && auth && allowRetry && refreshHandler) {
     const refreshed = await refreshOnce();
     if (refreshed) return send(path, options, false);

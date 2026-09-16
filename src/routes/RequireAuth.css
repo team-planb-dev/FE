@@ -1,0 +1,11 @@
+.require-auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 100dvh;
+  margin: 0;
+
+  color: var(--neutral-500);
+  font-size: 14px;
+}

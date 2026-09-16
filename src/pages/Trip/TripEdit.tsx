@@ -16,7 +16,11 @@ import sparkleIcon from "../../assets/icn_sparkle.svg";
 import sendIcon from "../../assets/icn_send.svg";
 
 import { TRAVEL_THEME_LABEL } from "../../api/labels";
-import type { EditPlanPreviewResponse, PlanDayDetail } from "../../api/schema";
+import type {
+  EditPlanPreviewResponse,
+  PlanDayDetail,
+  TravelTheme,
+} from "../../api/schema";
 import { PATHS, tripDetailPath } from "../../routes/paths";
 
 import {

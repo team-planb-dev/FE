@@ -46,6 +46,9 @@ export type EditChatStatus = "connecting" | "ready" | "error";
 let seq = 0;
 const nextId = () => `entry-${(seq += 1)}`;
 
+/** 백엔드가 서버 로그를 맞춰볼 수 있도록 시각을 남깁니다 */
+const stamp = () => new Date().toLocaleTimeString("ko-KR", { hour12: false });
+
 /** 수정안이 실제로 볼 만한 내용인지. 빈 미리보기는 카드로 그리지 않습니다 */
 function hasPlan(preview: EditPlanPreviewResponse | null): boolean {
   if (!preview) return false;
@@ -105,6 +108,8 @@ export function useEditChat(travelId: number) {
     stopWaiting();
     waitTimer.current = window.setTimeout(() => {
       waitTimer.current = null;
+      if (import.meta.env.DEV)
+        console.log(`[CHAT] ${stamp()} 응답 없이 시간 초과`);
       setBusy(false);
       setEntries((prev) => [
         ...prev.filter((entry) => entry.kind !== "loading"),
@@ -235,6 +240,7 @@ export function useEditChat(travelId: number) {
       const conn = connection.current;
       if (!conn) return;
 
+      if (import.meta.env.DEV) console.log(`[CHAT] ${stamp()} 전송`, text);
       lastSent.current = text;
       startedRef.current = true;
       setStarted(true);
@@ -267,6 +273,7 @@ export function useEditChat(travelId: number) {
       if (!conn) return;
 
       const label = accept ? KEEP_NEW : KEEP_OLD;
+      if (import.meta.env.DEV) console.log(`[CHAT] ${stamp()} 전송`, label);
       lastSent.current = label;
       startedRef.current = true;
       setStarted(true);

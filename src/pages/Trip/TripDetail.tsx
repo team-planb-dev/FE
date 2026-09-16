@@ -29,6 +29,7 @@ import { toPlanDays } from "./planNormalize";
 import {
   PATHS,
   restaurantDetailPath,
+  tripEditPath,
   tripSavedPath,
   tripSharedPath,
 } from "../../routes/paths";
@@ -290,7 +291,12 @@ export default function TripDetail({
 
       {!saved && (
         <BottomBar>
-          <Btn variant="outline" onClick={() => navigate(PATHS.tripEdit)}>
+          <Btn
+            variant="outline"
+            onClick={() =>
+              typeof target === "number" && navigate(tripEditPath(target))
+            }
+          >
             수정하기
           </Btn>
           <Btn variant={saving ? "muted" : "primary"} onClick={save}>

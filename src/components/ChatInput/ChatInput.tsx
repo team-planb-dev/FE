@@ -7,6 +7,8 @@ type ChatInputProps = {
   placeholder: string;
   sendIcon?: string;
   className?: string;
+  /** 연결 전이거나 답을 기다리는 동안 입력을 막습니다 */
+  disabled?: boolean;
 };
 
 /** AI 수정 화면 하단 입력바 */
@@ -17,6 +19,7 @@ export default function ChatInput({
   placeholder,
   sendIcon,
   className,
+  disabled = false,
 }: ChatInputProps) {
   return (
     <div className={`chat-input${className ? ` ${className}` : ""}`}>
@@ -25,6 +28,7 @@ export default function ChatInput({
           className="chat-input__field"
           value={value}
           placeholder={placeholder}
+          disabled={disabled}
           onChange={(e) => onChange(e.target.value)}
         />
         <button
@@ -32,7 +36,7 @@ export default function ChatInput({
           className="chat-input__send"
           aria-label="보내기"
           onClick={onSend}
-          disabled={value.trim().length === 0}
+          disabled={disabled || value.trim().length === 0}
         >
           {sendIcon ? (
             <img className="chat-input__send-icon" src={sendIcon} alt="" />

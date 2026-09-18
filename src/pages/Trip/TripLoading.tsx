@@ -11,7 +11,7 @@ import cloveAnimation from "../../assets/clove.json";
 import { useTripSubmit } from "./useTripSubmit";
 import { PATHS } from "../../routes/paths";
 
-const TITLE = ["{AI}가 관광 명소를", "찾아보고 있어요.."];
+const TITLE = ["여로 AI가 관광 명소를", "찾아보고 있어요.."];
 const SUBTITLE = "잠시만 기다려 주세요..";
 
 const FAILED_TITLE = ["일정을 만들지", "못했어요."];

@@ -54,7 +54,7 @@ export default function MemberMeds() {
         <Subtitle>
           처방전이나  안내받은 내용이 있을 때만 입력해주세요.
           <br />
-          {"{서비스명}"}이 복약시간을 새로 결정하지 않습니다.
+          여로는 복약시간을 새로 결정하지 않습니다.
         </Subtitle>
       </div>
 

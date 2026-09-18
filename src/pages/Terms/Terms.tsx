@@ -12,7 +12,7 @@ import { ApiRequestError } from "../../api/client";
 import { createUser } from "../../api/user";
 import type { RecoveryQuestionCode } from "../../api/schema";
 import { useSignup } from "../Signup/signupContext";
-import { MARKETING_NOTICE, TERMS } from "./termsData";
+import { TERMS } from "./termsData";
 import { PATHS, termsDetailPath } from "../../routes/paths";
 
 const ALL_AGREE = "전체 동의하기";
@@ -97,8 +97,6 @@ export default function Terms() {
             </li>
           ))}
         </ul>
-
-        <p className="terms-page__notice">{MARKETING_NOTICE}</p>
       </div>
 
       {error && <Snackbar className="terms-page__snackbar">{error}</Snackbar>}

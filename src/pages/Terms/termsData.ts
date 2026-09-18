@@ -32,8 +32,5 @@ export const TERMS: readonly Term[] = [
   },
 ];
 
-export const MARKETING_NOTICE =
-  "여로의 새로운 기능, 혜택 및 이벤트 등 다양한 소식을 이메일로 받아볼 수 있습니다.";
-
 export const findTerm = (key: string | undefined) =>
   TERMS.find((term) => term.key === key);

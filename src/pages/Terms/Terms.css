@@ -92,19 +92,6 @@
   cursor: pointer;
 }
 
-.terms-page__notice {
-  width: 100%;
-  margin: 0;
-  flex-shrink: 0;
-  font-family: Pretendard, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: -0.21px;
-  color: var(--neutral-400);
-  word-break: break-word;
-}
-
 .terms-page__all {
   position: absolute;
   top: 710px;

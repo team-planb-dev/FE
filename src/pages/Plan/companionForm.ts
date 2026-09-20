@@ -29,7 +29,7 @@ import type {
   RelatedMeal,
 } from "../../api/schema";
 
-import { EMPTY_MEMBER_FORM, MEALS } from "./memberFormContext";
+import { EMPTY_MEMBER_FORM, MEALS, NO_CONDITION } from "./memberFormContext";
 import type {
   Condition,
   Meal,
@@ -113,6 +113,15 @@ export function toCompanionRequest(form: MemberForm): AddCompanionRequest {
     foodInfoList: considers ? foodInfoListOf(form) : [],
     medicationInfoList,
   };
+}
+
+/* 서버에 질환이 하나도 없으면 "없음" 을 고른 상태로 둡니다.
+ * 비워두면 [6-2] 가 미입력으로 보고 다음으로를 막습니다 */
+function conditionsOf(diseases: DiseaseType[] | null | undefined): Condition[] {
+  const labels = (diseases ?? []).map(
+    (disease) => DISEASE_LABEL[disease] as Condition,
+  );
+  return labels.length > 0 ? labels : [NO_CONDITION];
 }
 
 /** [6-2] 는 복수선택입니다. 전에는 서버가 하나만 받아서 첫 번째만 보냈습니다 */
@@ -259,9 +268,7 @@ export function toMemberForm(detail: CompanionDetailResponse): MemberForm {
     considerHealth: considers ? "yes" : "no",
     sensitiveAgreed: considers,
 
-    conditions: (health?.diseaseTypes ?? []).map(
-      (disease) => DISEASE_LABEL[disease] as Condition,
-    ),
+    conditions: considers ? conditionsOf(health?.diseaseTypes) : [],
     walkLevel: health?.walkType
       ? (WALK_LABEL[health.walkType] as WalkLevel)
       : null,

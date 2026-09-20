@@ -1,7 +1,11 @@
 import { useCallback, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
-import { EMPTY_MEMBER_FORM, MemberFormContext } from "./memberFormContext";
+import {
+  EMPTY_MEMBER_FORM,
+  MemberFormContext,
+  NO_CONDITION,
+} from "./memberFormContext";
 import type {
   Condition,
   Meal,
@@ -27,14 +31,27 @@ export default function MemberFormProvider({
     [],
   );
 
+  /** "없음" 과 실제 질환은 함께 고를 수 없습니다 */
   const toggleCondition = useCallback(
     (condition: Condition) =>
-      setForm((prev) => ({
-        ...prev,
-        conditions: prev.conditions.includes(condition)
-          ? prev.conditions.filter((c) => c !== condition)
-          : [...prev.conditions, condition],
-      })),
+      setForm((prev) => {
+        if (condition === NO_CONDITION) {
+          return {
+            ...prev,
+            conditions: prev.conditions.includes(NO_CONDITION)
+              ? []
+              : [NO_CONDITION],
+          };
+        }
+
+        const others = prev.conditions.filter((c) => c !== NO_CONDITION);
+        return {
+          ...prev,
+          conditions: others.includes(condition)
+            ? others.filter((c) => c !== condition)
+            : [...others, condition],
+        };
+      }),
     [],
   );
 

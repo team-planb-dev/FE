@@ -5,7 +5,10 @@ import type { TimeValue } from "../../components/TimeSelect/TimeSelect";
 /** 구성원 등록 폼 컨텍스트 */
 export type ConsiderHealth = "yes" | "no" | null;
 
-export const CONDITIONS = ["당뇨", "고혈압", "이상지질혈증"] as const;
+/* 질환이 없는 구성원도 다음 단계로 갈 수 있어야 해서 "없음" 을 함께 둡니다.
+ * "없음" 은 서버 enum 에 없는 값이라 전송할 때 걸러집니다(companionForm.ts) */
+export const NO_CONDITION = "없음";
+export const CONDITIONS = ["당뇨", "고혈압", "이상지질혈증", NO_CONDITION] as const;
 export type Condition = (typeof CONDITIONS)[number];
 
 export const WALK_LEVELS = [

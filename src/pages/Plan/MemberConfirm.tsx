@@ -20,7 +20,11 @@ export default function MemberConfirm() {
 
   return (
     <div className="member-confirm">
-      <Header className="member-confirm__header" variant="empty" />
+      <Header
+        className="member-confirm__header"
+        variant="back"
+        onBack={() => navigate(PATHS.planMembers)}
+      />
       <TitleL className="member-confirm__title">여행 구성원을 확정했어요! </TitleL>
 
       <div className="member-confirm__list">

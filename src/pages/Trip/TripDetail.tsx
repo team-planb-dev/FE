@@ -24,6 +24,8 @@ import {
   saveTravel,
 } from "../../api/travel";
 
+import { objectParticle } from "../../utils/text";
+
 import { dayTabLabels, toPlanItems } from "./planData";
 import { toPlanDays } from "./planNormalize";
 import {
@@ -124,6 +126,8 @@ export default function TripDetail({
     plan?.travelStyle ? TRAVEL_STYLE_LABEL[plan.travelStyle] : null,
     plan?.travelTheme ? TRAVEL_THEME_LABEL[plan.travelTheme] : null,
   ].filter(Boolean) as string[];
+
+  const conditionText = conditions.join(", ");
 
   const nightsLabel =
     days.length <= 1 ? "당일치기" : `${days.length - 1}박 ${days.length}일`;
@@ -233,13 +237,20 @@ export default function TripDetail({
           <div className="trip-detail__ai-inner">
             <span className="trip-detail__ai-avatar" aria-hidden="true" />
             <p className="trip-detail__ai-text">
-              AI가{" "}
-              <span className="trip-detail__ai-strong">
-                {conditions.join(", ")}
-              </span>
-              를 고려하여
-              <br />
-              맞춤 일정을 생성했어요!
+              {conditionText ? (
+                <>
+                  AI가{" "}
+                  <span className="trip-detail__ai-strong">
+                    {conditionText}
+                  </span>
+                  {objectParticle(conditionText)} 고려하여
+                  <br />
+                  맞춤 일정을 생성했어요!
+                </>
+              ) : (
+                /* 여행 스타일·테마가 둘 다 없으면 조건 없이 알립니다 */
+                <>AI가 맞춤 일정을 생성했어요!</>
+              )}
             </p>
           </div>
         </div>

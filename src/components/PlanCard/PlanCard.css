@@ -160,11 +160,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   width: 100%;
 }
 
 .plan-card__name {
   margin: 0;
+  /* 이름이 길면 줄바꿈 대신 말줄임. min-width: 0 이 없으면 flex 가 글자 길이만큼
+   * 자리를 내줘서 옆의 [상세 보기] 를 밀고 겹칩니다 */
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-family: Pretendard, sans-serif;
   font-size: 16px;
   font-weight: 600;

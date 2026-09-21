@@ -86,6 +86,12 @@
   -webkit-overflow-scrolling: touch;
 }
 
+/* 아래 공간이 모자랄 때는 트리거 위로 펼칩니다 */
+.select__panel--up {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+
 .select__panel > li {
   width: 100%;
 }

@@ -206,7 +206,11 @@ export default function TripDetail({
   const lastDate = days[days.length - 1]?.date ?? null;
 
   return (
-    <div className={`trip-detail${saved ? " trip-detail--saved" : ""}`}>
+    <div
+      className={`trip-detail${saved ? " trip-detail--saved" : ""}${
+        mode === "saved" ? " trip-detail--saved-mine" : ""
+      }`}
+    >
       <Header
         className="trip-detail__header"
         variant="title"
@@ -312,6 +316,22 @@ export default function TripDetail({
           </Btn>
           <Btn variant={saving ? "muted" : "primary"} onClick={save}>
             저장하기
+          </Btn>
+        </BottomBar>
+      )}
+
+      {/* 저장 후에도 AI 수정으로 들어갈 수 있게 합니다.
+       * ⚠ "shared" 에는 절대 붙이면 안 됩니다. 공유 링크로 들어온 사람에게
+       *   남의 일정을 고치는 버튼이 보입니다 */}
+      {mode === "saved" && (
+        <BottomBar>
+          <Btn
+            variant="primary"
+            onClick={() =>
+              typeof target === "number" && navigate(tripEditPath(target))
+            }
+          >
+            수정하기
           </Btn>
         </BottomBar>
       )}

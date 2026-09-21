@@ -16,6 +16,13 @@
   border: 1px solid var(--neutral-200);
   border-radius: 8px;
   background: var(--neutral-0);
+  transition:
+    transform var(--motion-fast) var(--motion-ease),
+    border-color var(--motion-base) var(--motion-ease);
+}
+
+.select__trigger:active {
+  transform: scale(0.98);
 }
 
 .select__trigger--open {
@@ -58,6 +65,10 @@
   height: 7px;
 }
 
+.select__icon {
+  transition: transform var(--motion-base) var(--motion-ease);
+}
+
 .select__trigger--open .select__icon {
   transform: rotate(180deg);
 }
@@ -84,6 +95,26 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
+  animation: select-panel-in var(--motion-fast) var(--motion-ease);
+}
+
+@keyframes select-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* 위로 펼칠 때는 아래에서 올라오게 */
+.select__panel--up {
+  animation-name: select-panel-in-up;
+}
+
+@keyframes select-panel-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
 }
 
 /* 아래 공간이 모자랄 때는 트리거 위로 펼칩니다 */

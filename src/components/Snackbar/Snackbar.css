@@ -8,6 +8,14 @@
   padding: 15px 16px;
   border-radius: 10px;
   background: var(--neutral-800);
+  animation: snackbar-in var(--motion-base) var(--motion-ease);
+}
+
+@keyframes snackbar-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
 }
 
 .snackbar__icon {

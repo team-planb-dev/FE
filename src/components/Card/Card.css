@@ -20,6 +20,11 @@
   overflow: hidden;
   cursor: pointer;
   text-align: left;
+  transition: transform var(--motion-fast) var(--motion-ease);
+}
+
+.card__button:active {
+  transform: scale(0.98);
 }
 
 .card__thumbnail {

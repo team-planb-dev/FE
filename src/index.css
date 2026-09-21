@@ -7,6 +7,27 @@
   box-sizing: border-box;
 }
 
+/*
+ * 모션 값.
+ * 주 사용자가 시니어·질환자라 과한 움직임은 피합니다.
+ * 짧게(120~160ms), 작게(0.97배), 기기에서 모션 줄이기를 켜면 전부 꺼집니다
+ */
+:root {
+  --motion-fast: 120ms;
+  --motion-base: 160ms;
+  --motion-ease: cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 :root {
   font-family: Pretendard, sans-serif;
   color: var(--neutral-900);

@@ -16,6 +16,16 @@
   letter-spacing: -0.14px;
   font-feature-settings: "dlig" 1, "lnum" 1, "pnum" 1;
   white-space: nowrap;
+  transition:
+    transform var(--motion-fast) var(--motion-ease),
+    background-color var(--motion-base) var(--motion-ease),
+    border-color var(--motion-base) var(--motion-ease),
+    color var(--motion-base) var(--motion-ease);
+}
+
+/* 눌렸다는 걸 손끝으로 알 수 있게 살짝 줄입니다 */
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 .btn--primary {

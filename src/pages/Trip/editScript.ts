@@ -39,11 +39,11 @@ export const RETRY_LABEL = "다시 시도하기";
 export const LOGIN_LABEL = "로그인하러 가기";
 
 /* 실패 문구 — 서버가 사유를 주면 그걸 쓰고, 없을 때만 이걸 씁니다 */
-export const ROOM_FAILED = "대화방을 열지 못했어요.";
+export const ROOM_FAILED = "대화방을 열지 못했어요. (ROOM-FAILED)";
 export const SEND_FAILED = "아직 연결 중이에요. 잠시 후 다시 보내주세요.";
 export const NO_REPLY = "답이 오지 않았어요. 잠시 후 다시 시도해주세요.";
 
 /** 이 시간이 지나도 응답이 없으면 무한 로딩 대신 사유를 보여줍니다 */
 export const REPLY_TIMEOUT_MS = 150_000;
 export const NO_TRAVEL = "수정할 일정을 찾을 수 없어요.";
-export const NEED_LOGIN = "로그인이 풀렸어요. 다시 로그인해주세요.";
+export const NEED_LOGIN = "로그인이 풀렸어요. 다시 로그인해주세요. (NO-LOGIN)";

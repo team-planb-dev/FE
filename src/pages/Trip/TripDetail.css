@@ -139,6 +139,11 @@
   padding-bottom: 24px;
 }
 
+/* 내 저장 일정에는 하단 바가 있어 가려지지 않을 만큼 띄웁니다 */
+.trip-detail--saved-mine .trip-detail__list {
+  padding-bottom: 120px;
+}
+
 .trip-detail__snackbar {
   position: absolute;
   top: 670px;

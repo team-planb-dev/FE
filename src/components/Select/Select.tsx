@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 
 import "./Select.css";
 
@@ -12,6 +13,12 @@ type SelectProps = {
   placeholder?: string;
 };
 
+/* 패널이 화면 밖으로 밀리지 않게 하는 값들 */
+const PANEL_GAP = 8;
+const PANEL_MARGIN = 16;
+const PANEL_MAX = 272;
+const PANEL_MIN = 120;
+
 /** 드롭다운 선택 */
 export default function Select({
   id,
@@ -21,7 +28,39 @@ export default function Select({
   placeholder = "placeholder",
 }: SelectProps) {
   const [open, setOpen] = useState(false);
+  /** 아래 공간이 모자라면 위로 펼칩니다 */
+  const [up, setUp] = useState(false);
+  const [panelStyle, setPanelStyle] = useState<CSSProperties>();
   const rootRef = useRef<HTMLDivElement>(null);
+
+  /*
+   * 열릴 때마다 트리거 위아래 공간을 재서 방향과 높이를 정합니다.
+   * 화면 아래쪽에서 열면 패널이 잘려 마지막 항목을 못 고르기 때문입니다.
+   *
+   * visualViewport 를 쓰는 이유: iOS 사파리는 주소창·툴바가 화면을 덮는데
+   * window.innerHeight 는 그 영역까지 포함해서 공간을 실제보다 넓게 봅니다
+   */
+  useLayoutEffect(() => {
+    if (!open) return;
+
+    const rect = rootRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const viewport = window.visualViewport;
+    const viewportHeight = viewport?.height ?? window.innerHeight;
+    const offsetTop = viewport?.offsetTop ?? 0;
+
+    const below = viewportHeight - (rect.bottom - offsetTop) - PANEL_GAP - PANEL_MARGIN;
+    const above = rect.top - offsetTop - PANEL_GAP - PANEL_MARGIN;
+
+    const flip = below < Math.min(PANEL_MAX, above) && above > below;
+    const room = flip ? above : below;
+
+    setUp(flip);
+    setPanelStyle({
+      maxHeight: Math.max(PANEL_MIN, Math.min(PANEL_MAX, room)),
+    });
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -63,7 +102,12 @@ export default function Select({
       </button>
 
       {open && (
-        <ul className="select__panel" role="listbox" aria-labelledby={id}>
+        <ul
+          className={`select__panel${up ? " select__panel--up" : ""}`}
+          style={panelStyle}
+          role="listbox"
+          aria-labelledby={id}
+        >
           {options.map((option) => (
             <li key={option} role="option" aria-selected={option === value}>
               <button

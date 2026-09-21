@@ -26,6 +26,8 @@ import {
 
 import { objectParticle } from "../../utils/text";
 
+import { copyText } from "../../utils/clipboard";
+
 import { dayTabLabels, toPlanItems } from "./planData";
 import { toPlanDays } from "./planNormalize";
 import {
@@ -50,7 +52,7 @@ function shareFailureOf(caught: unknown): string {
 
   return caught.message.trim() || SHARE_FAILED;
 }
-const COPY_FAILED = "링크를 복사하지 못했어요. 주소창을 확인해주세요.";
+const COPY_FAILED = "링크를 복사하지 못했어요. 다시 한 번 눌러주세요.";
 const SAVE_FAILED = "저장하지 못했어요.";
 const LOADING_TEXT = "일정을 불러오는 중이에요...";
 const MISSING_TEXT = "일정을 찾을 수 없어요.";
@@ -93,6 +95,8 @@ export default function TripDetail({
   const [notice, setNotice] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [sharing, setSharing] = useState(false);
+  /** 미리 받아둔 공유 주소. 눌렀을 때 기다림 없이 바로 복사하려고 둡니다 */
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (target === null) return;
@@ -116,6 +120,31 @@ export default function TripDetail({
       alive = false;
     };
   }, [target]);
+
+  /*
+   * 저장된 내 일정이면 공유 주소를 미리 받아둡니다.
+   * 서버는 이미 발급한 여행에 같은 토큰을 돌려주므로 여러 번 불러도 안전합니다.
+   * 미리 받아두는 이유는 share() 주석에 있습니다
+   */
+  useEffect(() => {
+    if (mode !== "saved" || typeof target !== "number") return;
+
+    let alive = true;
+
+    issueShareToken(target)
+      .then((issued) => {
+        if (!alive || !issued.shareToken) return;
+        setShareUrl(
+          `${window.location.origin}${tripSharedPath(issued.shareToken)}`,
+        );
+      })
+      /* 실패해도 조용히 둡니다. 공유를 누를 때 다시 시도합니다 */
+      .catch(() => undefined);
+
+    return () => {
+      alive = false;
+    };
+  }, [mode, target]);
 
   const days = useMemo(() => toPlanDays(plan?.planDays), [plan]);
 
@@ -144,27 +173,39 @@ export default function TripDetail({
    * /trip/saved/:travelId 는 만든 사람 계정에서만 열리기 때문입니다.
    * 이미 발급한 여행은 서버가 같은 토큰을 돌려줘서 여러 번 눌러도 괜찮습니다
    */
+  const copyAndFlash = (url: string) => {
+    void copyText(url).then((copied) =>
+      flash(copied ? COPIED_TEXT : COPY_FAILED),
+    );
+  };
+
   const share = () => {
-    if (sharing || typeof target !== "number") return;
+    if (sharing) return;
+
+    /*
+     * 미리 받아둔 주소가 있으면 기다리지 않고 바로 복사합니다.
+     * 서버 응답을 기다린 뒤에 복사하면 브라우저가 "사용자 동작이 끝났다" 고 보고
+     * 복사를 거부합니다. 데스크톱 사파리·파이어폭스에서 특히 엄격합니다
+     */
+    if (shareUrl) {
+      copyAndFlash(shareUrl);
+      return;
+    }
+
+    if (typeof target !== "number") return;
 
     setSharing(true);
 
     issueShareToken(target)
-      .then(async (issued) => {
+      .then((issued) => {
         if (!issued.shareToken) {
           flash(NO_TOKEN);
           return;
         }
 
         const url = `${window.location.origin}${tripSharedPath(issued.shareToken)}`;
-
-        try {
-          // https 나 localhost 가 아니면 클립보드를 못 씁니다
-          await navigator.clipboard.writeText(url);
-          flash(COPIED_TEXT);
-        } catch {
-          flash(COPY_FAILED);
-        }
+        setShareUrl(url);
+        copyAndFlash(url);
       })
       .catch((caught: unknown) => flash(shareFailureOf(caught)))
       .finally(() => setSharing(false));

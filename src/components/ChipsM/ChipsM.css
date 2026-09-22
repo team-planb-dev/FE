@@ -15,6 +15,15 @@
   letter-spacing: -0.42px;
   font-feature-settings: "dlig" 1, "lnum" 1, "pnum" 1;
   white-space: nowrap;
+  transition:
+    transform var(--motion-fast) var(--motion-ease),
+    background-color var(--motion-base) var(--motion-ease),
+    border-color var(--motion-base) var(--motion-ease),
+    color var(--motion-base) var(--motion-ease);
+}
+
+.chips-m:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 .chips-m--off {

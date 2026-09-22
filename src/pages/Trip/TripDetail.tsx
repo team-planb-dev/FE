@@ -320,7 +320,7 @@ export default function TripDetail({
               key={item.stop.id}
               stop={item.stop}
               onDetail={
-                item.stop.kind === "food" && mode !== "shared"
+                item.stop.kind === "food"
                   ? () =>
                       navigate(restaurantDetailPath(item.stop.id), {
                         state: {

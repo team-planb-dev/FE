@@ -187,6 +187,11 @@
   padding: 0;
   border: none;
   background: transparent;
+  transition: transform var(--motion-fast) var(--motion-ease);
+}
+
+.plan-card__more:active {
+  transform: scale(0.94);
 }
 
 .plan-card__more-text {

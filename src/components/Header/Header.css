@@ -18,6 +18,11 @@
   padding: 0;
   border: none;
   background: transparent;
+  transition: transform var(--motion-fast) var(--motion-ease);
+}
+
+.header__back:active {
+  transform: scale(0.88);
 }
 
 .header__back-icon {
@@ -45,6 +50,11 @@
   padding: 0;
   border: none;
   background: transparent;
+  transition: transform var(--motion-fast) var(--motion-ease);
+}
+
+.header__action:active {
+  transform: scale(0.88);
 }
 
 .header__action-icon {

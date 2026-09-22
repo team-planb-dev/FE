@@ -59,6 +59,13 @@
   border-radius: 2000px;
   background: var(--brand-accent);
   overflow: hidden;
+  transition:
+    transform var(--motion-fast) var(--motion-ease),
+    background-color var(--motion-base) var(--motion-ease);
+}
+
+.chat-input__send:active:not(:disabled) {
+  transform: scale(0.94);
 }
 
 .chat-input__send:disabled {

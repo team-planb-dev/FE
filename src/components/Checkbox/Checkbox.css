@@ -23,6 +23,11 @@
   width: 20px;
   height: 20px;
   pointer-events: none;
+  transition: transform var(--motion-fast) var(--motion-ease);
+}
+
+.checkbox__input:active + .checkbox__icon {
+  transform: scale(0.9);
 }
 
 .checkbox__input:focus-visible + .checkbox__icon {

@@ -17,6 +17,14 @@
   border-radius: 10px;
   background: var(--neutral-50);
   overflow: hidden;
+  transition:
+    transform var(--motion-fast) var(--motion-ease),
+    background-color var(--motion-base) var(--motion-ease),
+    border-color var(--motion-base) var(--motion-ease);
+}
+
+.chips-xl:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .chips-xl--on {

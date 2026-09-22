@@ -10,6 +10,11 @@
   border-radius: 10px;
   background: var(--neutral-100);
   overflow: hidden;
+  transition: transform var(--motion-fast) var(--motion-ease);
+}
+
+.member-add:active {
+  transform: scale(0.98);
 }
 
 .member-add__icon {

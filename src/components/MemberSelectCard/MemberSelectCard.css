@@ -12,6 +12,14 @@
   background: var(--neutral-0);
   overflow: hidden;
   cursor: pointer;
+  transition:
+    transform var(--motion-fast) var(--motion-ease),
+    background-color var(--motion-base) var(--motion-ease),
+    border-color var(--motion-base) var(--motion-ease);
+}
+
+.member-card:not(.member-card--plain):active {
+  transform: scale(0.98);
 }
 
 .member-card--plain {

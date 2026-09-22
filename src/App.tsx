@@ -114,6 +114,12 @@ function App() {
         <Route path={PATHS.landing} element={<Landing />} />
         <Route path={PATHS.tripShared} element={<TripDetail mode="shared" />} />
 
+        {/*
+         * 식당 상세는 일정 화면이 넘겨준 값만으로 그리고 서버를 부르지 않습니다.
+         * 그래서 공유받은 사람도 열 수 있게 로그인 밖에 둡니다
+         */}
+        <Route path={PATHS.restaurantDetail} element={<RestaurantDetail />} />
+
         {/* 여기서부터는 로그인이 필요합니다 */}
         <Route element={<RequireAuth />}>
           <Route element={<AppLayout />}>
@@ -162,10 +168,6 @@ function App() {
               element={<TripDetail mode="saved" />}
             />
             <Route path={PATHS.tripEdit} element={<TripEdit />} />
-            <Route
-              path={PATHS.restaurantDetail}
-              element={<RestaurantDetail />}
-            />
           </Route>
         </Route>
 

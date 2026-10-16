@@ -505,6 +505,7 @@ export type EditPlanAiResponse = {
 };
 
 export type EditPlanPreviewResponse = {
+  editRequestId?: string | null;
   before: GetAiPlanResponse | null;
   after: EditPlanAiResponse | null;
 };
@@ -519,6 +520,7 @@ export type CreateChatRoomResponse = {
 };
 
 export type SendChatMessageRequest = {
+  editRequestId?: string | null;
   type: SendableChatType;
   message?: string;
 };

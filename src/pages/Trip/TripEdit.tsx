@@ -218,14 +218,14 @@ function EditChat({
                       <Btn
                         variant="accent"
                         size="md"
-                        onClick={() => decide(true)}
+                        onClick={() => decide(true, entry.preview.editRequestId)}
                       >
                         {KEEP_NEW}
                       </Btn>
                       <Btn
                         variant="accent"
                         size="md"
-                        onClick={() => decide(false)}
+                        onClick={() => decide(false, entry.preview.editRequestId)}
                       >
                         {KEEP_OLD}
                       </Btn>

@@ -126,17 +126,23 @@ export function previewEditPlan(
   });
 }
 
-/** 미리보기를 실제 일정에 반영합니다 */
-export function confirmEditPlan(travelId: number): Promise<CreatePlanResponse> {
+/** 선택한 미리보기의 실제 일정 반영 */
+export function confirmEditPlan(
+  travelId: number,
+  editRequestId?: string | null,
+): Promise<CreatePlanResponse> {
   return request<CreatePlanResponse>(ENDPOINT.editConfirm, {
     method: "POST",
-    body: { travelId },
+    body: { travelId, editRequestId: editRequestId ?? undefined },
   });
 }
 
-export function cancelEditPlan(travelId: number): Promise<null> {
+export function cancelEditPlan(
+  travelId: number,
+  editRequestId?: string | null,
+): Promise<null> {
   return request<null>(ENDPOINT.editCancel, {
     method: "POST",
-    body: { travelId },
+    body: { travelId, editRequestId: editRequestId ?? undefined },
   });
 }

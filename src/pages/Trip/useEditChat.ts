@@ -266,7 +266,7 @@ export function useEditChat(travelId: number) {
 
   /** accept 면 CONFIRM(수정안 반영), 아니면 CANCEL(수정안 폐기) */
   const decide = useCallback(
-    (accept: boolean) => {
+    (accept: boolean, editRequestId?: string | null) => {
       if (busy || done) return;
 
       const conn = connection.current;
@@ -287,7 +287,10 @@ export function useEditChat(travelId: number) {
       setBusy(true);
       startWaiting();
 
-      if (!conn.send({ type: accept ? "CONFIRM" : "CANCEL" })) {
+      if (!conn.send({
+        type: accept ? "CONFIRM" : "CANCEL",
+        editRequestId: editRequestId ?? undefined,
+      })) {
         stopWaiting();
         setBusy(false);
         setEntries((prev) => [
